@@ -2,16 +2,17 @@ version: 2.1
 
 orbs:
   hmpps: ministryofjustice/hmpps@3.2
+  browser-tools: circleci/browser-tools@1.1.3
 
 executors:
-  docker:
+  python-docker:
     docker:
       - image: cimg/python:3.9
     working_directory: ~/app
 
 jobs:
-  build:
-    executor: docker
+  docker-check:
+    executor: python-docker
     steps:
       - checkout
       - setup_remote_docker:
@@ -31,3 +32,30 @@ jobs:
       - run:
           name: Stop docker containers
           command: docker-compose stop
+
+  build:
+    docker:
+      - image: cimg/openjdk:16.0.0-browsers
+        environment:
+          SERENITY_USERNAME: $SERENITY_USERNAME
+          SERENITY_PASSWORD: $SERENITY_PASSWORD
+    steps:
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
+      - checkout
+      - run:
+          name: "Run Gradle"
+          command: ./gradlew test
+      - store_artifacts:
+          path: build/reports/tests/test
+          destination: test-summary
+      - store_artifacts:
+          path: target/site/serenity/
+          destination: serenity-report
+
+workflows:
+  version: 2
+  docker_and_build:
+    jobs:
+      - build
+      - docker-check
