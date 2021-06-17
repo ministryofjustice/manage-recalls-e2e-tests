@@ -1,0 +1,77 @@
+version: '3.1'
+services:
+
+  redis:
+    image: 'bitnami/redis:5.0'
+    networks:
+      - manage-recalls-e2e
+    container_name: redis-e2e
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '6379:6379'
+
+  hmpps-auth:
+    image: quay.io/hmpps/hmpps-auth:latest
+    networks:
+      - manage-recalls-e2e
+    container_name: hmpps-auth-e2e
+    ports:
+      - "9090:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/auth/health"]
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - DELIUS_ENABLED=false
+
+  fake-prisoner-offender-search-api:
+    build: ./fake-prisoner-offender-search-api
+    networks:
+      - manage-recalls-e2e
+    container_name: fake-prisoner-offender-search-api-e2e
+    ports:
+      - "9092:8080"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/health/liveness" ]
+    command: --verbose
+
+  manage-recalls-api:
+    image: quay.io/hmpps/manage-recalls-api:latest
+    networks:
+      - manage-recalls-e2e
+    container_name: manage-recalls-api-e2e
+    ports:
+      - "9091:9091"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/health/ping" ]
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - OAUTH_ENDPOINT_URL=http://hmpps-auth:8080/auth
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://hmpps-auth:8080/auth/.well-known/jwks.json
+      - PRISONERSEARCH_ENDPOINT_URL=http://fake-prisoner-offender-search-api:8080
+
+  manage-recalls-ui:
+    image: quay.io/hmpps/manage-recalls-ui:latest
+    networks:
+      - manage-recalls-e2e
+    container_name: manage-recalls-ui-e2e
+    depends_on: [redis, hmpps-auth]
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/ping" ]
+    environment:
+      - NODE_ENV=dev
+      - REDIS_HOST=redis
+      - INGRESS_URL=http://localhost:3000
+      - HMPPS_AUTH_EXTERNAL_URL=http://localhost:9090/auth
+      - HMPPS_AUTH_URL=http://hmpps-auth:8080/auth
+      - MANAGE_RECALLS_API_URL=http://manage-recalls-api:9091
+      - API_CLIENT_ID=ppud-ui-client
+      - API_CLIENT_SECRET=clientsecret
+      - SYSTEM_CLIENT_ID=system-client-id
+      - SYSTEM_CLIENT_SECRET=system-client-secret
+      - SESSION_SECRET=session-secret
+
+networks:
+  manage-recalls-e2e:
