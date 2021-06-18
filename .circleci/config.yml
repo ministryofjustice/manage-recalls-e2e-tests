@@ -1,0 +1,33 @@
+version: 2.1
+
+orbs:
+  hmpps: ministryofjustice/hmpps@3.2
+
+executors:
+  docker:
+    docker:
+      - image: cimg/python:3.9
+    working_directory: ~/app
+
+jobs:
+  build:
+    executor: docker
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Build and pull docker containers
+          command: |
+            docker-compose build
+            docker-compose pull
+      - run:
+          name: Start docker compose and verify the services are running
+          command: |
+            set -x
+            docker-compose up -d
+            docker run --network container:manage-recalls-ui-e2e \
+                appropriate/curl -4 -v --retry 30 --retry-delay 1 --retry-connrefused http://localhost:3000/ping
+      - run:
+          name: Stop docker containers
+          command: docker-compose stop
