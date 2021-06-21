@@ -4,7 +4,7 @@ import net.serenitybdd.screenplay.targets.Target;
 import net.thucydides.core.annotations.DefaultUrl;
 import net.thucydides.core.pages.PageObject;
 
-@DefaultUrl("https://manage-recalls-dev.hmpps.service.justice.gov.uk")
+@DefaultUrl("https://manage-recalls-dev.hmpps.service.justice.gov.uk/")
 public class StartPage extends PageObject {
 
     public static final String TITLE = "Manage Recalls - Home";

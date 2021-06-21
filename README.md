@@ -21,14 +21,16 @@ The `fake-prisoner-search-offender-api` is a wiremock container with some stub d
 
 You can login locally to [manage-recalls](http://localhost:3000) with `PPUD_USER` / `password123456`, this user has the `MANAGE_RECALLS` role that allows access to the service.
 
-## Use Gradle
-
-Open a command window and run:
+## Running the tests
 
     gradlew test 
 
+By default, this will run tests against a local environment (see above to start it).
+
+To run against another system then add `-Denvironment={dev/preprod/prod}`
+
+Credentials are loaded from file referenced as `serenity.credentials` in `serenity.properties`.
 
 ## Viewing the reports
-
-Both of the commands provided above will produce a Serenity test report in the `target/site/serenity` directory. Go take a look!
+Running the above command will produce a Serenity test report in the `target/site/serenity` directory. Go take a look!
 
