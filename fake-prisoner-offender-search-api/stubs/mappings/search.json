@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "POST",
-    "url": "/match-prisoners"
+    "url": "/prisoner-search/match-prisoners"
   },
   "response": {
     "status": 200,
