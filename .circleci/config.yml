@@ -5,15 +5,20 @@ orbs:
   browser-tools: circleci/browser-tools@1.1.3
 
 executors:
-  python-docker:
+  local-docker:
     docker:
-      - image: cimg/python:3.9
+      - image: cimg/openjdk:16.0.0-browsers
+#      environment:
+#        SERENITY_USERNAME: PPUD_USER
+#        SERENITY_PASSWORD: password123456
     working_directory: ~/app
 
 jobs:
-  docker-check:
-    executor: python-docker
+  local-check:
+    executor: local-docker
     steps:
+#      - browser-tools/install-chrome
+#      - browser-tools/install-chromedriver
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
@@ -29,11 +34,20 @@ jobs:
             docker-compose up -d
             docker run --network container:manage-recalls-ui-e2e \
                 appropriate/curl -4 -v --retry 30 --retry-delay 1 --retry-connrefused http://localhost:3000/ping
+#      - run:
+#          name: "Run Gradle tests local"
+#          command: ./gradlew test  -Dchrome.switches=--headless
+      - store_artifacts:
+          path: build/reports/tests/test
+          destination: local-test-summary
+      - store_artifacts:
+          path: target/site/serenity/
+          destination: local-serenity-report
       - run:
           name: Stop docker containers
           command: docker-compose stop
 
-  build:
+  dev-check:
     docker:
       - image: cimg/openjdk:16.0.0-browsers
         environment:
@@ -44,18 +58,18 @@ jobs:
       - browser-tools/install-chromedriver
       - checkout
       - run:
-          name: "Run Gradle"
-          command: ./gradlew test
+          name: "Run Gradle tests dev"
+          command: ./gradlew test -Denvironment=dev  -Dchrome.switches=--headless
       - store_artifacts:
           path: build/reports/tests/test
-          destination: test-summary
+          destination: dev-test-summary
       - store_artifacts:
           path: target/site/serenity/
-          destination: serenity-report
+          destination: dev-serenity-report
 
 workflows:
   version: 2
   docker_and_build:
     jobs:
-      - build
-      - docker-check
+      - local-check
+      - dev-check

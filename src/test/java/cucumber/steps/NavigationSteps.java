@@ -2,6 +2,8 @@ package cucumber.steps;
 
 import cucumber.pages.managerecalls.LoginPage;
 import cucumber.pages.managerecalls.StartPage;
+import cucumber.pages.managerecalls.VerifyEmailPage;
+import cucumber.questions.UserIsOn;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -11,6 +13,7 @@ import net.serenitybdd.screenplay.actions.Enter;
 import net.serenitybdd.screenplay.actions.EnterPassword;
 import net.serenitybdd.screenplay.actions.Open;
 import net.serenitybdd.screenplay.actors.OnlineCast;
+import net.serenitybdd.screenplay.conditions.Check;
 import net.serenitybdd.screenplay.ensure.Ensure;
 import net.thucydides.core.util.EnvironmentVariables;
 import net.thucydides.core.util.SystemEnvironmentVariables;
@@ -42,7 +45,7 @@ public class NavigationSteps {
         } else {
             Files.readAllLines(pathToCreds).forEach(row -> {
                 String[] keyVal = row.split("=");
-                if(keyVal.length == 2) {
+                if (keyVal.length == 2) {
                     environmentVariables.setProperty("SERENITY_" + keyVal[0].toUpperCase(), keyVal[1]);
                 }
             });
@@ -50,7 +53,7 @@ public class NavigationSteps {
 
     }
 
-    @Before (order = 100)
+    @Before(order = 100)
     public void prepareTests() {
         setTheStage(new OnlineCast());
     }
@@ -65,19 +68,23 @@ public class NavigationSteps {
     @When("{word} logs in")
     public void logIn(String customer) {
         theActorCalled(customer).attemptsTo(
-//                Check.whether()
-                Ensure.thatTheCurrentPage().title().isEqualTo(LoginPage.TITLE),
-                Enter.theValue(environmentVariables.getProperty("SERENITY_USERNAME"))
-                    .into(LoginPage.USERNAME),
-                EnterPassword.theValue(environmentVariables.getProperty("SERENITY_PASSWORD")).into(LoginPage.PASSWORD),
-                Click.on(LoginPage.SUBMIT)
+                Check.whether(UserIsOn.loginPage()).andIfSo(
+                        Ensure.thatTheCurrentPage().title().isEqualTo(LoginPage.TITLE),
+                        Enter.theValue(environmentVariables.getProperty("SERENITY_USERNAME"))
+                                .into(LoginPage.USERNAME),
+                        EnterPassword.theValue(environmentVariables.getProperty("SERENITY_PASSWORD")).into(LoginPage.PASSWORD),
+                        Click.on(LoginPage.SUBMIT)
+                ),
+                Check.whether(UserIsOn.verifyEmailPage()).andIfSo(
+                        Click.on(VerifyEmailPage.SKIP_FOR_NOW)
+                )
         );
     }
 
     @Then("{word} can see the start page")
     public void onStartPage(String customer) {
         theActorCalled(customer).attemptsTo(
-                Ensure.thatTheCurrentPage().title().isEqualTo(StartPage.TITLE)
+                Ensure.thatTheCurrentPage().title().asAString().hasValue().isEqualTo(StartPage.TITLE)
         );
     }
 }
