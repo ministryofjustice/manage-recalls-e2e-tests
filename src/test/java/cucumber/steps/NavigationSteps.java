@@ -1,8 +1,8 @@
 package cucumber.steps;
 
-import cucumber.pages.managerecalls.LoginPage;
-import cucumber.pages.managerecalls.FindAnOffenderPage;
-import cucumber.pages.managerecalls.VerifyEmailPage;
+import cucumber.pages.LoginPage;
+import cucumber.pages.FindAnOffenderPage;
+import cucumber.pages.VerifyEmailPage;
 import cucumber.questions.UserIsOn;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;

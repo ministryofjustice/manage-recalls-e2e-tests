@@ -1,4 +1,4 @@
-package cucumber.pages.managerecalls;
+package cucumber.pages;
 
 import net.serenitybdd.screenplay.targets.Target;
 import net.thucydides.core.annotations.DefaultUrl;
