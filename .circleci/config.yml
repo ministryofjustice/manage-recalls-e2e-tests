@@ -7,41 +7,33 @@ orbs:
 executors:
   local-docker:
     docker:
-      - image: cimg/openjdk:16.0.0-browsers
-#      environment:
-#        SERENITY_USERNAME: PPUD_USER
-#        SERENITY_PASSWORD: password123456
+      - image: cimg/python:3.9
     working_directory: ~/app
 
 jobs:
   local-check:
     executor: local-docker
     steps:
-#      - browser-tools/install-chrome
-#      - browser-tools/install-chromedriver
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
           name: Build and pull docker containers
           command: |
-            docker-compose build
-            docker-compose pull
+            docker-compose -f docker-compose.yml -f docker-compose.ci.yml build
+            docker-compose -f docker-compose.yml -f docker-compose.ci.yml pull
       - run:
-          name: Start docker compose and verify the services are running
+          name: Start docker compose and run the end-to-end tests
           command: |
             set -x
-            docker-compose up -d
-            docker run --network container:manage-recalls-ui-e2e \
-                appropriate/curl -4 -v --retry 30 --retry-delay 1 --retry-connrefused http://localhost:3000/ping
-#      - run:
-#          name: "Run Gradle tests local"
-#          command: ./gradlew test  -Dchrome.switches=--headless
+            docker-compose -f docker-compose.yml -f docker-compose.ci.yml up --exit-code-from manage-recalls-e2e-tests manage-recalls-e2e-tests
+            docker cp manage-recalls-e2e-tests:/home/circleci/project/build/reports/tests/test/ test-report
+            docker cp manage-recalls-e2e-tests:/home/circleci/project/target/site/serenity/ serenity-report
       - store_artifacts:
-          path: build/reports/tests/test
+          path: test-report
           destination: local-test-summary
       - store_artifacts:
-          path: target/site/serenity/
+          path: serenity-report
           destination: local-serenity-report
       - run:
           name: Stop docker containers

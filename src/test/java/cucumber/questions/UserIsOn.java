@@ -1,7 +1,7 @@
 package cucumber.questions;
 
-import cucumber.pages.managerecalls.LoginPage;
-import cucumber.pages.managerecalls.VerifyEmailPage;
+import cucumber.pages.LoginPage;
+import cucumber.pages.VerifyEmailPage;
 import net.serenitybdd.core.Serenity;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Question;
