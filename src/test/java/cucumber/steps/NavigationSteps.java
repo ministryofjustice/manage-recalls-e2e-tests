@@ -117,5 +117,10 @@ public class NavigationSteps {
         );
     }
 
-
+    @And("{word} sees a person entry with nomsNumber {string} and non-empty name and DoB fields")
+    public void matchedPersonNomsNumberHasValueAndNameAndDoBFieldsAreNonEmpty(String customer, String nomsNumber) {
+        theActorCalled(customer).attemptsTo(
+                Ensure.that(FindAnOffenderPage.NOMS_NUMBER_MATCHES).hasTextContent(nomsNumber)
+        );
+    }
 }

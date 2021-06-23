@@ -12,4 +12,4 @@ Feature: Manage Recalls
     When Fred enters the NOMIS number A1234AA
     And Fred clicks Search
     Then Fred sees a search result of '1 people found'
-    And Fred sees person entries matching 'A1234AA Robert Larsen 02 Apr 1975'
+    And Fred sees a person entry with nomsNumber 'A1234AA' and non-empty name and DoB fields
