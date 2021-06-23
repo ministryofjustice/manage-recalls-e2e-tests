@@ -120,7 +120,10 @@ public class NavigationSteps {
     @And("{word} sees a person entry with nomsNumber {string} and non-empty name and DoB fields")
     public void matchedPersonNomsNumberHasValueAndNameAndDoBFieldsAreNonEmpty(String customer, String nomsNumber) {
         theActorCalled(customer).attemptsTo(
-                Ensure.that(FindAnOffenderPage.NOMS_NUMBER_MATCHES).hasTextContent(nomsNumber)
+                Ensure.that(FindAnOffenderPage.NOMS_NUMBER_MATCHES).hasTextContent(nomsNumber),
+                Ensure.that(FindAnOffenderPage.FIRST_NAME_MATCHES).text().isNotBlank(),
+                Ensure.that(FindAnOffenderPage.LAST_NAME_MATCHES).text().isNotBlank(),
+                Ensure.that(FindAnOffenderPage.DATE_OF_BIRTH_MATCHES).text().isNotBlank()
         );
     }
 }
