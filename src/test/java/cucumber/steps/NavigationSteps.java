@@ -70,7 +70,7 @@ public class NavigationSteps {
     public void logIn(String customer) {
         theActorCalled(customer).attemptsTo(
                 Check.whether(UserIsOn.loginPage()).andIfSo(
-                        Ensure.thatTheCurrentPage().title().isEqualTo(LoginPage.TITLE),
+                        Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(LoginPage.TITLE),
                         Enter.theValue(environmentVariables.getProperty("SERENITY_USERNAME"))
                                 .into(LoginPage.USERNAME),
                         EnterPassword.theValue(environmentVariables.getProperty("SERENITY_PASSWORD")).into(LoginPage.PASSWORD),
@@ -85,7 +85,7 @@ public class NavigationSteps {
     @Then("{word} is on the Find An Offender page")
     public void onStartPage(String customer) {
         theActorCalled(customer).attemptsTo(
-                Ensure.thatTheCurrentPage().title().asAString().hasValue().isEqualTo(FindAnOffenderPage.TITLE)
+                Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(FindAnOffenderPage.TITLE)
         );
     }
 
