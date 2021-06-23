@@ -11,5 +11,5 @@ public class LoginPage extends PageObject {
 
     public static final Target USERNAME = Target.the("username field").locatedBy("#username");
     public static final Target PASSWORD = Target.the("password field").locatedBy("#password");
-    public static final Target SUBMIT   = Target.the("submit button").locatedBy("#submit");
+    public static final Target SIGN_IN_BUTTON = Target.the("sign in button").locatedBy("#submit");
 }

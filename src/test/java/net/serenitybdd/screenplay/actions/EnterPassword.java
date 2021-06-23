@@ -1,10 +1,6 @@
 package net.serenitybdd.screenplay.actions;
 
-import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.screenplay.targets.Target;
-import org.openqa.selenium.By;
-
-import java.util.Arrays;
 
 import static net.serenitybdd.screenplay.Tasks.instrumented;
 
