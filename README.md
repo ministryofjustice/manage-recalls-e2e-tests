@@ -65,7 +65,9 @@ To run against another system add `-Denvironment={dev/preprod/prod}`
 ### Test development
 To run or debug tests within Intellij/Idea it should be sufficient, 
 in edit of your Run Config template for `Cucumber Java`, to
-set `Main class` to `net.serenitybdd.cucumber.cli.Main`.
+set `Main class` to `net.serenitybdd.cucumber.cli.Main`, set glue to `cucumber.steps`, set the feature path to `manage-recalls-e2e-tests/src/test/resources/features`, and set the classpath to `manage-recalls-e2e-tests.test`
+
+There is a run file in the `e2e.run` directory
 
 ### Viewing the reports
 Running the above command will produce a Serenity test report in the `target/site/serenity` directory. Go take a look!

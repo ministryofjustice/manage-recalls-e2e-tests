@@ -11,6 +11,14 @@ services:
     ports:
       - '6379:6379'
 
+  gotenberg:
+    image: thecodingmachine/gotenberg:6
+    container_name: gotenberg-e2e
+    ports:
+      - "9093:3000"
+    networks:
+      - manage-recalls-e2e
+
   hmpps-auth:
     image: quay.io/hmpps/hmpps-auth:latest
     networks:
@@ -40,6 +48,7 @@ services:
     networks:
       - manage-recalls-e2e
     container_name: manage-recalls-api-e2e
+    depends_on: [gotenberg, fake-prisoner-offender-search-api]
     ports:
       - "9091:8080"
     healthcheck:
@@ -56,7 +65,7 @@ services:
     networks:
       - manage-recalls-e2e
     container_name: manage-recalls-ui-e2e
-    depends_on: [redis, hmpps-auth]
+    depends_on: [redis, hmpps-auth, manage-recalls-api]
     ports:
       - "3000:3000"
     healthcheck:
