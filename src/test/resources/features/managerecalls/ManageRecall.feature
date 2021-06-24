@@ -11,5 +11,5 @@ Feature: Manage Recalls
     Then Fred is on the Find An Offender page
     When Fred enters the NOMIS number A1234AA
     And Fred clicks Search
-    Then Fred sees a search result of '1 people found'
+    Then Fred sees a search result of '1 person found'
     And Fred sees a person entry with nomsNumber 'A1234AA' and non-empty name and DoB fields

@@ -1,0 +1,23 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="e2e tests" type="CucumberJavaRunConfigurationType" factoryName="Cucumber java">
+    <option name="FILE_PATH" value="$PROJECT_DIR$/src/test/resources/features" />
+    <option name="GLUE" value="cucumber.steps" />
+    <option name="MAIN_CLASS_NAME" value="net.serenitybdd.cucumber.cli.Main" />
+    <module name="manage-recalls-e2e-tests.test" />
+    <shortenClasspath name="NONE" />
+    <option name="WORKING_DIRECTORY" value="$MODULE_WORKING_DIR$" />
+    <extension name="net.ashald.envfile">
+      <option name="IS_ENABLED" value="false" />
+      <option name="IS_SUBST" value="false" />
+      <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+      <option name="IS_IGNORE_MISSING_FILES" value="false" />
+      <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+      <ENTRIES>
+        <ENTRY IS_ENABLED="true" PARSER="runconfig" />
+      </ENTRIES>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
