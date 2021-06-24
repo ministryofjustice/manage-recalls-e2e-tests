@@ -1,10 +1,11 @@
 package cucumber.steps;
 
 import cucumber.pages.managerecalls.LoginPage;
-import cucumber.pages.managerecalls.StartPage;
+import cucumber.pages.managerecalls.FindAnOffenderPage;
 import cucumber.pages.managerecalls.VerifyEmailPage;
 import cucumber.questions.UserIsOn;
 import io.cucumber.java.Before;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -61,7 +62,7 @@ public class NavigationSteps {
     @Given("{word} navigates to manage recall service")
     public void goToManageRecallService(String customer) {
         theActorCalled(customer).attemptsTo(
-                Open.browserOn().the(StartPage.class)
+                Open.browserOn().the(FindAnOffenderPage.class)
         );
     }
 
@@ -69,11 +70,11 @@ public class NavigationSteps {
     public void logIn(String customer) {
         theActorCalled(customer).attemptsTo(
                 Check.whether(UserIsOn.loginPage()).andIfSo(
-                        Ensure.thatTheCurrentPage().title().isEqualTo(LoginPage.TITLE),
+                        Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(LoginPage.TITLE),
                         Enter.theValue(environmentVariables.getProperty("SERENITY_USERNAME"))
                                 .into(LoginPage.USERNAME),
                         EnterPassword.theValue(environmentVariables.getProperty("SERENITY_PASSWORD")).into(LoginPage.PASSWORD),
-                        Click.on(LoginPage.SUBMIT)
+                        Click.on(LoginPage.SIGN_IN_BUTTON)
                 ),
                 Check.whether(UserIsOn.verifyEmailPage()).andIfSo(
                         Click.on(VerifyEmailPage.SKIP_FOR_NOW)
@@ -81,10 +82,48 @@ public class NavigationSteps {
         );
     }
 
-    @Then("{word} can see the start page")
+    @Then("{word} is on the Find An Offender page")
     public void onStartPage(String customer) {
         theActorCalled(customer).attemptsTo(
-                Ensure.thatTheCurrentPage().title().asAString().hasValue().isEqualTo(StartPage.TITLE)
+                Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(FindAnOffenderPage.TITLE)
+        );
+    }
+
+    @When("{word} enters the NOMIS number {word}")
+    public void entersNOMISNumber(String customer, String nomsNumber) {
+        theActorCalled(customer).attemptsTo(
+                Enter.theValue(nomsNumber).into(FindAnOffenderPage.NOMS_NUMBER_INPUT)
+        );
+    }
+
+    @And("{word} clicks Search")
+    public void clickSearchButton(String customer) {
+        theActorCalled(customer).attemptsTo(
+                Click.on(FindAnOffenderPage.SEARCH_BUTTON)
+        );
+    }
+
+    @Then("{word} sees a search result of {string}")
+    public void searchResultText(String customer, String searchResultsText) {
+        theActorCalled(customer).attemptsTo(
+                Ensure.that(FindAnOffenderPage.SEARCH_RESULT_TEXT).hasTextContent(searchResultsText)
+        );
+    }
+
+    @And("{word} sees person entries matching {string}")
+    public void matchedPersonResultsText(String customer, String personText) {
+        theActorCalled(customer).attemptsTo(
+                Ensure.that(FindAnOffenderPage.PERSON_MATCHES).hasTextContent(personText)
+        );
+    }
+
+    @And("{word} sees a person entry with nomsNumber {string} and non-empty name and DoB fields")
+    public void matchedPersonNomsNumberHasValueAndNameAndDoBFieldsAreNonEmpty(String customer, String nomsNumber) {
+        theActorCalled(customer).attemptsTo(
+                Ensure.that(FindAnOffenderPage.NOMS_NUMBER_MATCHES).hasTextContent(nomsNumber),
+                Ensure.that(FindAnOffenderPage.FIRST_NAME_MATCHES).text().isNotBlank(),
+                Ensure.that(FindAnOffenderPage.LAST_NAME_MATCHES).text().isNotBlank(),
+                Ensure.that(FindAnOffenderPage.DATE_OF_BIRTH_MATCHES).text().isNotBlank()
         );
     }
 }
