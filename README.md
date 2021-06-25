@@ -74,12 +74,13 @@ and achieves the above.
 To maintain these tests versus in-progress changes, i.e. to `manage-recalls-ui` and/or `manage-recalls-api`, 
 requires running against those local, under development, changes.  
 
-The script `start-local-services.sh` achieves this by:
-* building and starting `manage-recalls-ui` and `manage-recalls-api` from cloned source, as local siblings of this project,
-* starting remaining dependencies from docker images, and,
+The script `build.sh` achieves this by:
+* running `start-local-services.sh`
+    * building and starting `manage-recalls-ui` and `manage-recalls-api` from   cloned source, as local siblings of this project,   
+    * starting remaining dependencies from docker images, and,
 * executing the e2e tests via gradle, as above.
-
-The script `stop-local-services.sh` simply stops all the components started by `start-local-services.sh`.
+* running `stop-local-services.sh`
+    * stops all the components started by `start-local-services.sh`
 
 Having started those services any subset of these e2e tests can be run, developed etc., 
 whilst those services remain up.  In the event of issues check the log files created by the script

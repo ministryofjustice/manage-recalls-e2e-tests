@@ -31,7 +31,3 @@ curl -s -4 --retry 10 --retry-delay 1 --retry-connrefused http://localhost:8080/
 
 printf "\nChecking ${MANAGE_RECALLS_UI_NAME} is running..."
 curl -s -4 --retry 10 --retry-delay 1 --retry-connrefused http://localhost:3000/ping
-
-printf "\nRunning e2e tests..."
-./gradlew clean test
-
