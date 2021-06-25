@@ -15,6 +15,7 @@ docker compose -f $LOCAL_DOCKER_COMPOSE_FILE pull redis gotenberg hmpps-auth fak
 docker compose -f $LOCAL_DOCKER_COMPOSE_FILE up redis gotenberg hmpps-auth fake-prisoner-offender-search-api --remove-orphans -d
 
 pushd ${MANAGE_RECALLS_UI_DIR}
+npm run build
 npm run start:e2e >> "${MANAGE_RECALLS_UI_LOG_FILE}" 2>&1 &
 popd
 
