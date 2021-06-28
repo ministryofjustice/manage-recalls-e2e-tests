@@ -1,7 +1,7 @@
 package cucumber.steps;
 
-import cucumber.pages.LoginPage;
 import cucumber.pages.FindAnOffenderPage;
+import cucumber.pages.LoginPage;
 import cucumber.pages.VerifyEmailPage;
 import cucumber.questions.UserIsOn;
 import io.cucumber.java.Before;
@@ -19,6 +19,7 @@ import net.serenitybdd.screenplay.ensure.Ensure;
 import net.thucydides.core.util.EnvironmentVariables;
 import net.thucydides.core.util.SystemEnvironmentVariables;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -26,6 +27,8 @@ import java.nio.file.Paths;
 
 import static net.serenitybdd.screenplay.actors.OnStage.setTheStage;
 import static net.serenitybdd.screenplay.actors.OnStage.theActorCalled;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
 public class NavigationSteps {
 
@@ -96,6 +99,17 @@ public class NavigationSteps {
         );
     }
 
+    @When("{word} click on download revocation order link")
+    public void clickOnRevocationOrderLink(String customer) throws InterruptedException {
+        theActorCalled(customer).attemptsTo(
+                Click.on(FindAnOffenderPage.REVOCATION_ORDER_LINK).afterWaitingUntilEnabled()
+        );
+
+        Thread.sleep(3000);
+        String homeDirectory = System.getProperty("user.home");
+        assertThat(isFileDownloaded(homeDirectory + "/Downloads", "revocation-order.pdf"), equalTo(true));
+    }
+
     @And("{word} clicks Search")
     public void clickSearchButton(String customer) {
         theActorCalled(customer).attemptsTo(
@@ -125,5 +139,17 @@ public class NavigationSteps {
                 Ensure.that(FindAnOffenderPage.LAST_NAME_MATCHES).text().isNotBlank(),
                 Ensure.that(FindAnOffenderPage.DATE_OF_BIRTH_MATCHES).text().isNotBlank()
         );
+    }
+
+    public boolean isFileDownloaded(String downloadPath, String fileName) {
+        File dir = new File(downloadPath);
+        File[] dirContents = dir.listFiles();
+        for (int i = 0; i < dirContents.length; i++) {
+            if (dirContents[i].getName().equals(fileName)) {
+                dirContents[i].delete();
+                return true;
+            }
+        }
+        return false;
     }
 }
