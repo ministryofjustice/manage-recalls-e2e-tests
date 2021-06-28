@@ -59,6 +59,7 @@ services:
       - OAUTH_ENDPOINT_URL=http://hmpps-auth:8080/auth
       - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://hmpps-auth:8080/auth/.well-known/jwks.json
       - PRISONERSEARCH_ENDPOINT_URL=http://fake-prisoner-offender-search-api:8080
+      - GOTENBERG_ENDPOINT_URL=http://gotenberg:3000
 
   manage-recalls-ui:
     image: quay.io/hmpps/manage-recalls-ui:latest

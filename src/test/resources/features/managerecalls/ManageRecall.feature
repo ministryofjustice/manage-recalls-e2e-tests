@@ -5,7 +5,7 @@ Feature: Manage Recalls
     When Clive logs in
     Then Clive is on the Find An Offender page
 
-  Scenario: Search by NOMIS number
+  Scenario: Search by NOMIS number and download revocation order
     Given Fred navigates to manage recall service
     When Fred logs in
     Then Fred is on the Find An Offender page
@@ -13,3 +13,4 @@ Feature: Manage Recalls
     And Fred clicks Search
     Then Fred sees a search result of '1 person found'
     And Fred sees a person entry with nomsNumber 'A1234AA' and non-empty name and DoB fields
+    When Fred click on download revocation order link
