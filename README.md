@@ -9,6 +9,7 @@ via build/pull and start of docker images of the following:
 * manage-recalls-api
 * manage-recalls-ui
 * fake-prisoner-offender-search-api
+* gotenberg (service to generate PDFs https://thecodingmachine.github.io/gotenberg)
 
 The `fake-prisoner-offender-search-api` is a wiremock container with some stub data
 to allow the `manage-recalls-api` to search for prisoner data as if from a 
@@ -53,6 +54,9 @@ pre-defined with the required role, `MANAGE_RECALLS`.
 Team members on the project should have the appropriate role/s versus the deployed Dev instance,
 [manage-recalls dev](https://manage-recalls-dev.hmpps.service.justice.gov.uk/) but not for running
 these tests locally.
+
+### Chromedriver
+A version of [chromedriver](https://chromedriver.chromium.org/downloads) is required to run the tests.  One matching your local version of chrome is recommended.  The `chromedriver` executable needs to be on you PATH (e.g. `export PATH=~/dev/chromedriver/:$PATH`)
 
 ### Run
 

@@ -37,15 +37,18 @@ configurations.all {
 dependencies {
     implementation "ch.qos.logback:logback-classic:${logbackVersion}"
 
-
     testImplementation("net.serenity-bdd:serenity-core:${serenityVersion}")
+    constraints {
+        implementation('org.projectlombok:lombok:1.18.20') {
+            because '1.18.8 causes:  java.lang.IllegalAccessError: class lombok.javac.apt.LombokProcessor'
+        }
+    }
     testImplementation("net.serenity-bdd:serenity-junit:${serenityVersion}")
     testImplementation("net.serenity-bdd:serenity-cucumber6:${serenityVersion}")
     testImplementation("net.serenity-bdd:serenity-screenplay:${serenityVersion}")
     testImplementation("io.cucumber:cucumber-core:${cucumberVersion}")
     testImplementation("io.cucumber:cucumber-junit:${cucumberVersion}")
     testImplementation("net.serenity-bdd:serenity-ensure:${serenityVersion}")
-
 
     testImplementation("junit:junit:${junitVersion}")
     testImplementation("org.slf4j:slf4j-api:1.7.5")
