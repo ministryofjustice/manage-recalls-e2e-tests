@@ -24,11 +24,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.Callable;
 
+import static cucumber.pages.FindAnOffenderPage.DOWNLOAD_REVOCATION_ORDER_LINK;
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static net.serenitybdd.screenplay.actors.OnStage.setTheStage;
 import static net.serenitybdd.screenplay.actors.OnStage.theActorCalled;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.awaitility.Awaitility.await;
 
 public class NavigationSteps {
 
@@ -49,7 +51,7 @@ public class NavigationSteps {
         } else {
             Files.readAllLines(pathToCreds).forEach(row -> {
                 String[] keyVal = row.split("=");
-                if (keyVal.length == 2) {
+                if (keyVal.length==2) {
                     environmentVariables.setProperty("SERENITY_" + keyVal[0].toUpperCase(), keyVal[1]);
                 }
             });
@@ -99,17 +101,6 @@ public class NavigationSteps {
         );
     }
 
-    @When("{word} click on download revocation order link")
-    public void clickOnRevocationOrderLink(String customer) throws InterruptedException {
-        theActorCalled(customer).attemptsTo(
-                Click.on(FindAnOffenderPage.REVOCATION_ORDER_LINK).afterWaitingUntilEnabled()
-        );
-
-        Thread.sleep(3000);
-        String homeDirectory = System.getProperty("user.home");
-        assertThat(isFileDownloaded(homeDirectory + "/Downloads", "revocation-order.pdf"), equalTo(true));
-    }
-
     @And("{word} clicks Search")
     public void clickSearchButton(String customer) {
         theActorCalled(customer).attemptsTo(
@@ -141,15 +132,26 @@ public class NavigationSteps {
         );
     }
 
-    public boolean isFileDownloaded(String downloadPath, String fileName) {
-        File dir = new File(downloadPath);
-        File[] dirContents = dir.listFiles();
-        for (int i = 0; i < dirContents.length; i++) {
-            if (dirContents[i].getName().equals(fileName)) {
-                dirContents[i].delete();
-                return true;
-            }
+    @When("{word} clicks on the download revocation order link")
+    public void clickOnRevocationOrderLink(String customer) {
+        theActorCalled(customer).attemptsTo(
+                Click.on(DOWNLOAD_REVOCATION_ORDER_LINK)
+        );
+
+        await().atMost(5, SECONDS).until(revocationOrderIsDownloaded());
+    }
+
+    private Callable<Boolean> revocationOrderIsDownloaded() {
+        return () -> fileIsDownloaded("/tmp", "revocation-order.pdf");
+    }
+
+    public boolean fileIsDownloaded(String downloadPath, String fileName) {
+        File revocationOrder = new File(downloadPath + "/" + fileName);
+        if (revocationOrder.exists() && revocationOrder.isFile()) {
+            revocationOrder.delete();
+            return true;
+        } else {
+            return false;
         }
-        return false;
     }
 }

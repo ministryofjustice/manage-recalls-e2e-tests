@@ -18,7 +18,7 @@ public class FindAnOffenderPage extends PageObject {
     public static final Target FIRST_NAME_MATCHES = getTargetByDataQa("firstName");
     public static final Target LAST_NAME_MATCHES = getTargetByDataQa("lastName");
     public static final Target DATE_OF_BIRTH_MATCHES = getTargetByDataQa("dateOfBirth");
-    public static final Target REVOCATION_ORDER_LINK = getTargetByDataQa("generateRevocationOrderButton");
+    public static final Target DOWNLOAD_REVOCATION_ORDER_LINK = getTargetByDataQa("generateRevocationOrderButton");
 
     private static Target getTargetByDataQa(String dataQa) {
         return Target.the(dataQa + " matches").locatedBy("[data-qa='" + dataQa + "']");
