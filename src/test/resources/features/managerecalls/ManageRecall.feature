@@ -13,4 +13,4 @@ Feature: Manage Recalls
     And Fred clicks Search
     Then Fred sees a search result of '1 person found'
     And Fred sees a person entry with nomsNumber 'A1234AA' and non-empty name and DoB fields
-    When Fred click on download revocation order link
+    When Fred clicks on the download revocation order link
