@@ -138,7 +138,7 @@ public class NavigationSteps {
                 Click.on(DOWNLOAD_REVOCATION_ORDER_LINK)
         );
 
-        await().atMost(5, SECONDS).until(revocationOrderIsDownloaded());
+        await().atMost(10, SECONDS).until(revocationOrderIsDownloaded());
     }
 
     private Callable<Boolean> revocationOrderIsDownloaded() {
