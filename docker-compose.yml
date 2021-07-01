@@ -48,7 +48,7 @@ services:
     networks:
       - manage-recalls-e2e
     container_name: manage-recalls-api-e2e
-    depends_on: [gotenberg, fake-prisoner-offender-search-api]
+    depends_on: [gotenberg, fake-prisoner-offender-search-api, postgres]
     ports:
       - "9091:8080"
     healthcheck:
@@ -60,6 +60,10 @@ services:
       - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://hmpps-auth:8080/auth/.well-known/jwks.json
       - PRISONERSEARCH_ENDPOINT_URL=http://fake-prisoner-offender-search-api:8080
       - GOTENBERG_ENDPOINT_URL=http://gotenberg:3000
+      - POSTGRES_HOST=postgres:5432
+      - POSTGRES_DBNAME=manage_recalls
+      - POSTGRES_USERNAME=ppud_user
+      - POSTGRES_PASSWORD=secret
 
   manage-recalls-ui:
     image: quay.io/hmpps/manage-recalls-ui:latest
@@ -83,6 +87,16 @@ services:
       - SYSTEM_CLIENT_ID=system-client-id
       - SYSTEM_CLIENT_SECRET=system-client-secret
       - SESSION_SECRET=session-secret
+
+  postgres:
+    image: postgres:13
+    container_name: postgres_manage-recalls-e2e
+    networks:
+      - manage-recalls-e2e
+    environment:
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_USER=ppud_user
+      - POSTGRES_DB=manage_recalls
 
 networks:
   manage-recalls-e2e:
