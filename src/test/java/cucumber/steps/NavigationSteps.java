@@ -1,6 +1,7 @@
 package cucumber.steps;
 
 import cucumber.pages.FindAnOffenderPage;
+import cucumber.pages.OffenderProfilePage;
 import cucumber.pages.LoginPage;
 import cucumber.pages.VerifyEmailPage;
 import cucumber.questions.UserIsOn;
@@ -26,7 +27,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.Callable;
 
-import static cucumber.pages.FindAnOffenderPage.DOWNLOAD_REVOCATION_ORDER_LINK;
+import static cucumber.pages.FindAnOffenderPage.VIEW_PROFILE_LINK;
+import static cucumber.pages.OffenderProfilePage.DOWNLOAD_REVOCATION_ORDER_LINK;
+import static cucumber.pages.OffenderProfilePage.CREATE_RECALL_BUTTON;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static net.serenitybdd.screenplay.actors.OnStage.setTheStage;
 import static net.serenitybdd.screenplay.actors.OnStage.theActorCalled;
@@ -139,6 +142,34 @@ public class NavigationSteps {
         );
 
         await().atMost(10, SECONDS).until(revocationOrderIsDownloaded());
+    }
+
+    @When("{word} clicks on the create recall button")
+    public void clickOnCreateRecallButton(String customer) {
+        theActorCalled(customer).attemptsTo(
+                Click.on(CREATE_RECALL_BUTTON)
+        );
+    }
+
+    @When("{word} clicks on the View profile link")
+    public void clickOnViewProfileLink(String customer) {
+        theActorCalled(customer).attemptsTo(
+                Click.on(VIEW_PROFILE_LINK)
+        );
+    }
+
+    @Then("{word} is on the Offender profile page")
+    public void onOffenderProfilePage(String customer) {
+        theActorCalled(customer).attemptsTo(
+                Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(FindAnOffenderPage.TITLE)
+        );
+    }
+
+    @Then("{word} sees a recall ID of {string}")
+    public void recallIdText(String customer, String recallIdText) {
+        theActorCalled(customer).attemptsTo(
+                Ensure.that(OffenderProfilePage.RECALL_ID_MATCHES).hasTextContent(recallIdText)
+        );
     }
 
     private Callable<Boolean> revocationOrderIsDownloaded() {
