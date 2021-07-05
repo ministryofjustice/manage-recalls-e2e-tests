@@ -161,7 +161,7 @@ public class NavigationSteps {
     @Then("{word} is on the Offender profile page")
     public void onOffenderProfilePage(String customer) {
         theActorCalled(customer).attemptsTo(
-                Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(FindAnOffenderPage.TITLE)
+                Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(OffenderProfilePage.TITLE)
         );
     }
 
