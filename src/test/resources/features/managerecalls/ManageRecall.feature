@@ -17,4 +17,3 @@ Feature: Manage Recalls
     Then Fred is on the Offender profile page
     And Fred clicks on the download revocation order link
     And Fred clicks on the create recall button
-    Then Fred sees a recall ID of 'Recall ID: 123'

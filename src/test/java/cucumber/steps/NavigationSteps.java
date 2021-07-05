@@ -165,13 +165,6 @@ public class NavigationSteps {
         );
     }
 
-    @Then("{word} sees a recall ID of {string}")
-    public void recallIdText(String customer, String recallIdText) {
-        theActorCalled(customer).attemptsTo(
-                Ensure.that(OffenderProfilePage.RECALL_ID_MATCHES).hasTextContent(recallIdText)
-        );
-    }
-
     private Callable<Boolean> revocationOrderIsDownloaded() {
         return () -> fileIsDownloaded("/tmp", "revocation-order.pdf");
     }
