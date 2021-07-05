@@ -9,7 +9,7 @@ public class OffenderProfilePage extends PageObject {
 
     public static final String TITLE = "Manage Recalls - Offender profile";
 
-    public static final Target DOWNLOAD_REVOCATION_ORDER_LINK = getTargetByDataQa("generateRevocationOrderButton");
+    public static final Target DOWNLOAD_REVOCATION_ORDER_LINK = getTargetByDataQa("createRevocationOrderButton");
     public static final Target CREATE_RECALL_BUTTON = getTargetByDataQa("createRecallButton");
     public static final Target RECALL_ID_MATCHES = getTargetByDataQa("recallId");
 
