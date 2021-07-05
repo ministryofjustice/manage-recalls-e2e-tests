@@ -161,7 +161,7 @@ public class NavigationSteps {
     @Then("{word} is on the Offender profile page")
     public void onOffenderProfilePage(String customer) {
         theActorCalled(customer).attemptsTo(
-                Ensure.that(OffenderProfilePage.CREATE_RECALL_BUTTON).hasTextContent('Create recall')
+                Ensure.that(OffenderProfilePage.CREATE_RECALL_BUTTON).hasTextContent("Create recall")
         );
     }
 
