@@ -11,7 +11,7 @@ public class OffenderProfilePage extends PageObject {
 
     public static final Target DOWNLOAD_REVOCATION_ORDER_LINK = getTargetByDataQa("createRevocationOrderButton");
     public static final Target CREATE_RECALL_BUTTON = getTargetByDataQa("createRecallButton");
-    public static final Target RECALL_ID_MATCHES = getTargetByDataQa("recallId");
+    public static final Target RECALL_CONFIRMATION_MATCHES = getTargetByDataQa("recallId");
 
     private static Target getTargetByDataQa(String dataQa) {
         return Target.the(dataQa + " matches").locatedBy("[data-qa='" + dataQa + "']");

@@ -30,6 +30,7 @@ import java.util.concurrent.Callable;
 import static cucumber.pages.FindAnOffenderPage.VIEW_PROFILE_LINK;
 import static cucumber.pages.OffenderProfilePage.DOWNLOAD_REVOCATION_ORDER_LINK;
 import static cucumber.pages.OffenderProfilePage.CREATE_RECALL_BUTTON;
+import static cucumber.pages.OffenderProfilePage.RECALL_CONFIRMATION_MATCHES;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static net.serenitybdd.screenplay.actors.OnStage.setTheStage;
 import static net.serenitybdd.screenplay.actors.OnStage.theActorCalled;
@@ -148,6 +149,13 @@ public class NavigationSteps {
     public void clickOnCreateRecallButton(String customer) {
         theActorCalled(customer).attemptsTo(
                 Click.on(CREATE_RECALL_BUTTON)
+        );
+    }
+
+    @Then("{word} sees confirmation that the new recall was created")
+    public void matchedRecallCreatedText(String customer) {
+        theActorCalled(customer).attemptsTo(
+                Ensure.that(OffenderProfilePage.RECALL_CONFIRMATION_MATCHES).text().startsWith("Recall ID:")
         );
     }
 
