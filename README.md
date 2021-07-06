@@ -53,7 +53,7 @@ to the service.  See above re. valid credentials.
 
 There are two options for running the tests locally:
 
-### 1. Run against latest Docker images (including UI and API)
+### 1. Run against the latest Docker images (including UI and API)
 
 It creates the tested environment via build/pull and start of docker images of the following:
 * hmpps-auth
@@ -79,12 +79,16 @@ Note: starting particularly hmpps-auth can take several minutes; you should be a
 login once `hmpps-auth-e2e` has logged e.g. `Completed initialization`.
 
 Then, to run the tests:
+```
+./gradlew test 
+```
 
-    ./gradlew test 
+#### Running against other environments
 
-By default, this will run tests against a local environment (see above to start it).
-
-To run against another environment add `-Denvironment={dev/preprod/prod}`
+To run against another environment use:
+```
+./gradlew test -Denvironment={dev/preprod/prod}
+```
 
 ### 2. Run tests while developing UI and/or API
 
@@ -99,15 +103,14 @@ The script `build.sh` achieves this by:
   * stops all the components started by `start-local-services.sh`
 
 Having started those services any subset of these e2e tests can be run, developed etc.,
-whilst those services remain up.  In the event of issues check the log files created by the script
-for each of `manage-recalls-ui` and `manage-recalls-api`.  If necessary check that local build passes
-for both of those projects.  Potentially those builds will clash (e.g. wiremock port usage) with
-services running for these tests, which will then need to be stopped.
+whilst those services remain up.  In the event of issues check the log files created by the script for each of `manage-recalls-ui` and `manage-recalls-api`.
 
 #### Steps
 
 Clone both [manage-recalls-ui](https://github.com/ministryofjustice/manage-recalls-ui) and [manage-recalls-api](https://github.com/ministryofjustice/manage-recalls-api).
-Build both locally (see readme's for instructions).
+Build both locally (see readme's for commands). Check that the local build passes
+for both of those projects.  Potentially those builds will clash (e.g. wiremock port usage) with
+services running for these tests, which will then need to be stopped.
 
 To start the two services and run all tests:
 ```
