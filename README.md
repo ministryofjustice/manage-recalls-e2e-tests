@@ -1,9 +1,6 @@
 # manage-recalls-e2e-tests
 A suite of tests to validate end-to-end functionality (PPUD Replacement)
 
-## Overview
-This project runs "end-to-end" tests against our services.
-
 ## One-off setup
 
 ### Java
