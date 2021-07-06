@@ -8,6 +8,8 @@ This project runs "end-to-end" tests against our services.
 
 ### Java
 
+Version 16 is required:
+
 ```
 brew install openjdk@16
 ```
@@ -20,12 +22,12 @@ You can install either with Homebrew:
 brew install chromedriver
 ```
 
-The verify that it's on your path with `which chromedriver`.
+Then verify that it's on your path with `which chromedriver`.
 
-or, download [chromedriver](https://chromedriver.chromium.org/downloads). The `chromedriver` executable needs to be on you PATH (e.g. `export PATH=~/dev/chromedriver/:$PATH`)
+or, [download chromedriver](https://chromedriver.chromium.org/downloads). The `chromedriver` executable needs to be on your PATH (e.g. `export PATH=~/dev/chromedriver/:$PATH`)
 
-### Login credentials
-Credentials for the tests are loaded from file referenced
+### Store login credentials
+Credentials for the tests are loaded from a file referenced
 as `serenity.credentials` in `serenity.properties`, e.g. under your home directory
 `~/.serenity/credentials.properties`.  This should take the form:
 
@@ -34,22 +36,20 @@ USERNAME=PPUD_USER
 PASSWORD=password123456
 ```
 
-#### Credentials source
-As e2e tests including login, valid user credentials and the necessary user role are required.  
+As e2e tests include login, valid user credentials and the necessary user role are required.  
 Locally these e2e tests run against the docker container `hmpps-auth-e2e`.  As that runs with
 `SPRING_PROFILES_ACTIVE=dev` in the current latest image *only* the above `PPUD_USER` user is
 pre-defined with the required role, `MANAGE_RECALLS`.
 
 Team members on the project should have the appropriate role/s versus the deployed Dev instance,
-[manage-recalls dev](https://manage-recalls-dev.hmpps.service.justice.gov.uk/) but not for running
-these tests locally.
-
-## Running the tests
+[manage-recalls dev](https://manage-recalls-dev.hmpps.service.justice.gov.uk/) but not for running these tests locally.
 
 ### Local login
 However you run the tests (see below), you should be able to login at [manage-recalls](http://localhost:3000)
 with `PPUD_USER` / `password123456`. This user has the `MANAGE_RECALLS` role that allows access
 to the service.  See above re. valid credentials.
+
+## Running the tests
 
 There are two options for running the tests locally:
 
