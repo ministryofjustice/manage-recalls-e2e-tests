@@ -4,6 +4,7 @@ import cucumber.pages.FindAnOffenderPage;
 import cucumber.pages.OffenderProfilePage;
 import cucumber.pages.LoginPage;
 import cucumber.pages.VerifyEmailPage;
+import cucumber.pages.TodoRecallsListPage;
 import cucumber.questions.UserIsOn;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
@@ -31,6 +32,7 @@ import static cucumber.pages.FindAnOffenderPage.VIEW_PROFILE_LINK;
 import static cucumber.pages.OffenderProfilePage.DOWNLOAD_REVOCATION_ORDER_LINK;
 import static cucumber.pages.OffenderProfilePage.CREATE_RECALL_BUTTON;
 import static cucumber.pages.OffenderProfilePage.RECALL_CONFIRMATION_MATCHES;
+import static cucumber.pages.TodoRecallsListPage.FIND_SOMEONE_LINK;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static net.serenitybdd.screenplay.actors.OnStage.setTheStage;
 import static net.serenitybdd.screenplay.actors.OnStage.theActorCalled;
@@ -88,6 +90,13 @@ public class NavigationSteps {
                 Check.whether(UserIsOn.verifyEmailPage()).andIfSo(
                         Click.on(VerifyEmailPage.SKIP_FOR_NOW)
                 )
+        );
+    }
+
+    @And("{word} clicks Find someone")
+    public void clickFindSomeoneLink(String customer) {
+        theActorCalled(customer).attemptsTo(
+                Click.on(TodoRecallsListPage.FIND_SOMEONE_LINK)
         );
     }
 

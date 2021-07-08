@@ -7,7 +7,7 @@ import net.thucydides.core.pages.PageObject;
 @DefaultUrl("https://manage-recalls-dev.hmpps.service.justice.gov.uk/offender-profile")
 public class OffenderProfilePage extends PageObject {
 
-    public static final String TITLE = "Manage Recalls - Offender profile";
+    public static final String TITLE = "Manage a recall for an offender on license - Offender profile";
 
     public static final Target DOWNLOAD_REVOCATION_ORDER_LINK = getTargetByDataQa("createRevocationOrderButton");
     public static final Target CREATE_RECALL_BUTTON = getTargetByDataQa("createRecallButton");

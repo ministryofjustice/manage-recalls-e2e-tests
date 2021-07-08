@@ -3,11 +3,13 @@ Feature: Manage Recalls
   Scenario: Logging into service
     Given Clive navigates to manage recall service
     When Clive logs in
+    And Clive clicks Find someone
     Then Clive is on the Find An Offender page
 
   Scenario: Search by NOMIS number and download revocation order
     Given Fred navigates to manage recall service
     When Fred logs in
+    And Fred clicks Find someone
     Then Fred is on the Find An Offender page
     When Fred enters the NOMIS number A1234AA
     And Fred clicks Search
