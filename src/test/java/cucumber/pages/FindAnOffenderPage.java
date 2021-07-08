@@ -4,10 +4,10 @@ import net.serenitybdd.screenplay.targets.Target;
 import net.thucydides.core.annotations.DefaultUrl;
 import net.thucydides.core.pages.PageObject;
 
-@DefaultUrl("https://manage-recalls-dev.hmpps.service.justice.gov.uk/")
+@DefaultUrl("https://manage-recalls-dev.hmpps.service.justice.gov.uk/find-offender")
 public class FindAnOffenderPage extends PageObject {
 
-    public static final String TITLE = "Manage Recalls - Home";
+    public static final String TITLE = "Manage a recall for an offender on license - Home";
 
     public static final Target NOMS_NUMBER_INPUT = Target.the("nomsNumber input").locatedBy("#search-field");
     public static final Target SEARCH_BUTTON = Target.the("search button").locatedBy("[data-qa='search'][type='submit']");
