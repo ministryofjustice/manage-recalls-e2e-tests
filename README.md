@@ -23,7 +23,11 @@ Then verify that it's on your path with `which chromedriver`.
 
 or, [download chromedriver](https://chromedriver.chromium.org/downloads). The `chromedriver` executable needs to be on your PATH (e.g. `export PATH=~/dev/chromedriver/:$PATH`)
 
-### Store login credentials
+### Source for login credentials
+
+Unfortunately at present it is necessary to switch credentials between local auth and auth in the dev environment.
+
+As e2e tests include login, valid user credentials and the necessary user role are required. 
 Credentials for the tests are loaded from a file referenced
 as `serenity.credentials` in `serenity.properties`, e.g. under your home directory
 `~/.serenity/credentials.properties`.  This should take the form:
@@ -33,34 +37,57 @@ USERNAME=PPUD_USER
 PASSWORD=password123456
 ```
 
-As e2e tests include login, valid user credentials and the necessary user role are required.  
-Locally these e2e tests run against the docker container `hmpps-auth-e2e`.  As that runs with
+#### Credentials for local auth 
+When run versus local services these e2e tests run against the docker container `hmpps-auth-e2e`.  As that runs with
 `SPRING_PROFILES_ACTIVE=dev` in the current latest image *only* the above `PPUD_USER` user is
-pre-defined with the required role, `MANAGE_RECALLS`.
+pre-defined with the required role, `MANAGE_RECALLS`, and should be used.
 
-Team members on the project should have the appropriate role/s versus the deployed Dev instance,
-[manage-recalls dev](https://manage-recalls-dev.hmpps.service.justice.gov.uk/) but not for running these tests locally.
 
-### Local login
-However you run the tests (see below), you should be able to login at [manage-recalls](http://localhost:3000)
-with `PPUD_USER` / `password123456`. This user has the `MANAGE_RECALLS` role that allows access
-to the service.  See above re. valid credentials.
+#### Credentials for environment auth
+In contrast with the deployed `dev` instance of `hmpps-auth`,
+i.e. [manage-recalls dev](https://manage-recalls-dev.hmpps.service.justice.gov.uk/)
+, all team members on the project should have a personal login with the appropriate role
+but `PPUD_USER` does not.  
+
+We do also have a shared account which is valid versus `dev`:
+```USERNAME=manage-recalls-test-user@digital.justice.gov.uk```
+Ask the Dev team for the password.
 
 ## Running the tests
 
-There are two options for running the tests locally:
+There are multiple options for running these tests from your local:
 
-### 1. Run against the latest Docker images (including UI and API)
+### 1. Run against deployed services
+In this scenario the login credentials must be valid on the target environment.  Hence your `~/.serenity/credentials.properties`
+needs to reflect the same.  See above.
 
-It creates the tested environment via build/pull and start of docker images of the following:
+Given valid credentials, to run against one of our deployed environments use simply:
+```
+./gradlew test -Denvironment={dev/preprod/prod}
+```
+
+It is also necessary for any data requirements implicit in the tests to be satisfied by our dependencies as deployed,
+e.g. the `prisoner-offender-search-api`.  How that will work across environments is TBD but `dev` and `pre-prod`
+are *not* maintained by similar processes so we must expect data differences and data change over time between them.
+
+If you are updating tests versus `dev` then the above is sufficient as a basis for valid testing.
+To work versus changes _not_ yet on `dev` then service instances need to be run locally - as below.
+
+### 2. Run against the latest Docker images (including UI and API) running locally with `fake` data
+
+Note that normally these service images will also be the versions running in `dev` so, with the exception of control
+over the data visible to the tests, 1., above, is a much simpler option.
+
+With this option we create the target test environment via build/pull and start of docker images of the following:
+
 * hmpps-auth
 * redis
 * manage-recalls-api
 * manage-recalls-ui
-* fake-prisoner-offender-search-api
 * gotenberg (service to generate PDFs https://thecodingmachine.github.io/gotenberg)
+* fake-prisoner-offender-search-api
 
-The `fake-prisoner-offender-search-api` is a wiremock container with some stub data
+The `fake-prisoner-offender-search-api` is a wiremock container (defined within this project) with some stub data
 to allow the `manage-recalls-api` to search for prisoner data as if from a
 real `prisoner-offender-search` service.
 
@@ -72,26 +99,21 @@ docker compose pull
 docker compose up
 ```
 
-Note: starting particularly hmpps-auth can take several minutes; you should be able to
+Processes started with the above will log to the terminal from which docker is run.
+
+Note: starting particularly `hmpps-auth` can take several minutes; you should be able to
 login once `hmpps-auth-e2e` has logged e.g. `Completed initialization`.
 
-Then, to run the tests:
+Then, to run the tests, e.g. at a separate command prompt:
 ```
 ./gradlew test 
 ```
 
-#### Running against other environments
-
-To run against another environment use:
-```
-./gradlew test -Denvironment={dev/preprod/prod}
-```
-
-### 2. Run tests while developing UI and/or API
+### 3. Run tests while developing the UI and/or API locally
 
 To maintain these tests versus in-progress changes, i.e. to `manage-recalls-ui` and/or `manage-recalls-api`, requires running against those local, under development, changes.
 
-The script `build.sh` achieves this by:
+The script `build-local.sh` achieves this by:
 * running `start-local-services.sh`
   * building and starting `manage-recalls-ui` and `manage-recalls-api` from   cloned source, as local siblings of this project,
   * starting remaining dependencies from docker images, and,
@@ -100,11 +122,13 @@ The script `build.sh` achieves this by:
   * stops all the components started by `start-local-services.sh`
 
 Having started those services any subset of these e2e tests can be run, developed etc.,
-whilst those services remain up.  In the event of issues check the log files created by the script for each of `manage-recalls-ui` and `manage-recalls-api`.
+whilst those services remain up.  
+In the event of issues check the log files created by the script for each of `manage-recalls-ui` and `manage-recalls-api`.
 
 #### Steps
 
-Clone both [manage-recalls-ui](https://github.com/ministryofjustice/manage-recalls-ui) and [manage-recalls-api](https://github.com/ministryofjustice/manage-recalls-api).
+Clone both [manage-recalls-ui](https://github.com/ministryofjustice/manage-recalls-ui) 
+and [manage-recalls-api](https://github.com/ministryofjustice/manage-recalls-api).
 Build both locally (see readme's for commands). Check that the local build passes
 for both of those projects.  Potentially those builds will clash (e.g. wiremock port usage) with
 services running for these tests, which will then need to be stopped.
@@ -115,12 +139,20 @@ To start the two services and run all tests:
 ```
 
 ### Running tests in Intellij
-To run or debug tests within Intellij/Idea it should be sufficient, 
+To run or debug tests within IntelliJ/Idea it should be sufficient, 
 in edit of your Run Config template for `Cucumber Java`, to
-set `Main class` to `net.serenitybdd.cucumber.cli.Main`, set glue to `cucumber.steps`, set the feature path to `manage-recalls-e2e-tests/src/test/resources/features`, and set the classpath to `manage-recalls-e2e-tests.test`
+set `Main class` to `net.serenitybdd.cucumber.cli.Main`, set glue to `cucumber.steps`, 
+set the feature path to `manage-recalls-e2e-tests/src/test/resources/features`, 
+and set the classpath to `manage-recalls-e2e-tests.test`
 
 There is a run file in the `e2e.run` directory which can be opened and run via Intellij/Idea
 and achieves the above.
+
+### Local login
+However you have started the services locally, if successful you should be able to login
+and investigate the UI/service at [manage-recalls](http://localhost:3000)
+with `PPUD_USER` / `password123456`. This user has the `MANAGE_RECALLS` role that allows access
+to the service.  See above re. valid credentials for other environments.
 
 ### Viewing the reports
 Running the above command will produce a Serenity test report in the `target/site/serenity` directory. Go take a look!
