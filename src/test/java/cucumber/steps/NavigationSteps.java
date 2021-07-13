@@ -1,10 +1,6 @@
 package cucumber.steps;
 
-import cucumber.pages.FindAnOffenderPage;
-import cucumber.pages.OffenderProfilePage;
-import cucumber.pages.LoginPage;
-import cucumber.pages.VerifyEmailPage;
-import cucumber.pages.TodoRecallsListPage;
+import cucumber.pages.*;
 import cucumber.questions.UserIsOn;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
@@ -18,6 +14,7 @@ import net.serenitybdd.screenplay.actions.Open;
 import net.serenitybdd.screenplay.actors.OnlineCast;
 import net.serenitybdd.screenplay.conditions.Check;
 import net.serenitybdd.screenplay.ensure.Ensure;
+import net.serenitybdd.screenplay.targets.Target;
 import net.thucydides.core.util.EnvironmentVariables;
 import net.thucydides.core.util.SystemEnvironmentVariables;
 
@@ -29,10 +26,10 @@ import java.nio.file.Paths;
 import java.util.concurrent.Callable;
 
 import static cucumber.pages.FindAnOffenderPage.VIEW_PROFILE_LINK;
-import static cucumber.pages.OffenderProfilePage.DOWNLOAD_REVOCATION_ORDER_LINK;
 import static cucumber.pages.OffenderProfilePage.CREATE_RECALL_BUTTON;
-import static cucumber.pages.OffenderProfilePage.RECALL_CONFIRMATION_MATCHES;
+import static cucumber.pages.OffenderProfilePage.DOWNLOAD_REVOCATION_ORDER_LINK;
 import static cucumber.pages.TodoRecallsListPage.FIND_SOMEONE_LINK;
+import static cucumber.pages.TodoRecallsListPage.RECALL_LIST_TODO_LINK;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static net.serenitybdd.screenplay.actors.OnStage.setTheStage;
 import static net.serenitybdd.screenplay.actors.OnStage.theActorCalled;
@@ -95,16 +92,27 @@ public class NavigationSteps {
 
     @And("{word} clicks Find someone")
     public void clickFindSomeoneLink(String customer) {
-        theActorCalled(customer).attemptsTo(
-                Click.on(TodoRecallsListPage.FIND_SOMEONE_LINK)
-        );
+        userClicksOn(customer, FIND_SOMEONE_LINK);
+    }
+
+    @And("{word} clicks To Do")
+    public void clickRecallListToDoLink(String customer) {
+        userClicksOn(customer, RECALL_LIST_TODO_LINK);
     }
 
     @Then("{word} is on the Find An Offender page")
     public void onStartPage(String customer) {
-        theActorCalled(customer).attemptsTo(
-                Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(FindAnOffenderPage.TITLE)
-        );
+        userIsOnPageWithTitle(customer, FindAnOffenderPage.TITLE);
+    }
+
+    @Then("{word} is on the Offender profile page")
+    public void onOffenderProfilePage(String customer) {
+        userIsOnPageWithTitle(customer, OffenderProfilePage.TITLE);
+    }
+
+    @Then("{word} is on the ToDo Recalls page")
+    public void onToDoRecallsPage(String customer) {
+        userIsOnPageWithTitle(customer, TodoRecallsListPage.TITLE);
     }
 
     @When("{word} enters the NOMIS number {word}")
@@ -116,9 +124,7 @@ public class NavigationSteps {
 
     @And("{word} clicks Search")
     public void clickSearchButton(String customer) {
-        theActorCalled(customer).attemptsTo(
-                Click.on(FindAnOffenderPage.SEARCH_BUTTON)
-        );
+        userClicksOn(customer, FindAnOffenderPage.SEARCH_BUTTON);
     }
 
     @Then("{word} sees a search result of {string}")
@@ -147,22 +153,21 @@ public class NavigationSteps {
 
     @When("{word} clicks on the download revocation order link")
     public void clickOnRevocationOrderLink(String customer) {
-        theActorCalled(customer).attemptsTo(
-                Click.on(DOWNLOAD_REVOCATION_ORDER_LINK)
-        );
+        userClicksOn(customer, DOWNLOAD_REVOCATION_ORDER_LINK);
+    }
 
+    @Then("a revocation order is downloaded")
+    public void aRevocationOrderIsDownloaded() {
         await().atMost(10, SECONDS).until(revocationOrderIsDownloaded());
     }
 
     @When("{word} clicks on the create recall button")
     public void clickOnCreateRecallButton(String customer) {
-        theActorCalled(customer).attemptsTo(
-                Click.on(CREATE_RECALL_BUTTON)
-        );
+        userClicksOn(customer, CREATE_RECALL_BUTTON);
     }
 
     @Then("{word} sees confirmation that the new recall was created")
-    public void matchedRecallCreatedText(String customer) {
+    public void matchRecallCreatedText(String customer) {
         theActorCalled(customer).attemptsTo(
                 Ensure.that(OffenderProfilePage.RECALL_CONFIRMATION_MATCHES).text().startsWith("Recall ID:")
         );
@@ -170,29 +175,44 @@ public class NavigationSteps {
 
     @When("{word} clicks on the View profile link")
     public void clickOnViewProfileLink(String customer) {
+        userClicksOn(customer, VIEW_PROFILE_LINK);
+    }
+
+    @Then("{word} sees at least one View link to assess a recall")
+    public void anAssessRecallDetailsLinkIsVisible(String customer) {
         theActorCalled(customer).attemptsTo(
-                Click.on(VIEW_PROFILE_LINK)
+                Ensure.that(TodoRecallsListPage.FIRST_ASSESS_RECALL_DETAILS_LINK).hasTextContent("View")
         );
     }
 
-    @Then("{word} is on the Offender profile page")
-    public void onOffenderProfilePage(String customer) {
-        theActorCalled(customer).attemptsTo(
-                Ensure.that(OffenderProfilePage.CREATE_RECALL_BUTTON).hasTextContent("Create recall")
-        );
+    @When("{word} clicks on the first View link to assess a recall")
+    public void clickOnAssessRecallDetailsLink(String customer) {
+        userClicksOn(customer, TodoRecallsListPage.FIRST_ASSESS_RECALL_DETAILS_LINK);
+    }
+
+    @Then("{word} is on the Assess Recall page")
+    public void onAssessRecallPage(String customer) {
+        userIsOnPageWithTitle(customer, AssessRecallPage.TITLE);
     }
 
     private Callable<Boolean> revocationOrderIsDownloaded() {
         return () -> fileIsDownloaded("/tmp", "revocation-order.pdf");
     }
 
-    public boolean fileIsDownloaded(String downloadPath, String fileName) {
+    private boolean fileIsDownloaded(String downloadPath, String fileName) {
         File revocationOrder = new File(downloadPath + "/" + fileName);
-        if (revocationOrder.exists() && revocationOrder.isFile()) {
-            revocationOrder.delete();
-            return true;
-        } else {
-            return false;
-        }
+        return revocationOrder.exists() && revocationOrder.delete();
+    }
+
+    private void userIsOnPageWithTitle(String customer, String uniquePageTitle) {
+        theActorCalled(customer).attemptsTo(
+                Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(uniquePageTitle)
+        );
+    }
+
+    private void userClicksOn(String customer, Target target) {
+        theActorCalled(customer).attemptsTo(
+                Click.on(target)
+        );
     }
 }
