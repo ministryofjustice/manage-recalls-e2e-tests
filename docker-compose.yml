@@ -48,7 +48,7 @@ services:
     networks:
       - manage-recalls-e2e
     container_name: manage-recalls-api-e2e
-    depends_on: [gotenberg, fake-prisoner-offender-search-api, postgres]
+    depends_on: [gotenberg, fake-prisoner-offender-search-api, postgres, localstack]
     ports:
       - "9091:8080"
     healthcheck:
@@ -99,6 +99,18 @@ services:
       - POSTGRES_PASSWORD=secret
       - POSTGRES_USER=ppud_user
       - POSTGRES_DB=manage_recalls
+
+  localstack:
+    image: localstack/localstack
+    ports:
+      - "4566:4566"
+      - "4571:4571"
+    environment:
+      - SERVICES=s3
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - DATA_DIR=/tmp/localstack/data
+    volumes:
+      - ./stubs/s3:/tmp/localstack
 
 networks:
   manage-recalls-e2e:
