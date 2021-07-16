@@ -34,6 +34,8 @@ jobs:
             docker-compose -f docker-compose.yml -f docker-compose.ci.yml up --exit-code-from manage-recalls-e2e-tests manage-recalls-e2e-tests || {
               export exit_code=1
             }
+            docker logs mmanage-recalls-ui-e2e
+            docker logs mmanage-recalls-api-e2e
             docker cp manage-recalls-e2e-tests:/home/circleci/project/build/reports/tests/test/ test-report
             docker cp manage-recalls-e2e-tests:/home/circleci/project/target/site/serenity/ serenity-report
             exit $exit_code
