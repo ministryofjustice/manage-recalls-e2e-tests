@@ -102,19 +102,16 @@ services:
       - POSTGRES_DB=manage_recalls
 
   localstack:
-    image: localstack/localstack
-    container_name: localstack_manage-recalls-e2e
+    build: ./localstack-docker
     ports:
       - "4566:4566"
       - "4571:4571"
     networks:
       - manage-recalls-e2e
+    container_name: localstack_manage-recalls-e2e
     environment:
       - SERVICES=s3
-      - DOCKER_HOST=unix:///var/run/docker.sock
       - DATA_DIR=/tmp/localstack/data
-    volumes:
-      - ./localstack-docker/stubs/s3:/tmp/localstack
 
 networks:
   manage-recalls-e2e:

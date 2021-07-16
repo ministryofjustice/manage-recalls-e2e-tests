@@ -14,15 +14,3 @@ services:
       - manage-recalls-e2e
     container_name: manage-recalls-e2e-tests
     depends_on: [manage-recalls-ui]
-
-  localstack:
-    build: ./localstack-docker
-    ports:
-      - "4566:4566"
-      - "4571:4571"
-    networks:
-      - manage-recalls-e2e
-    container_name: localstack_manage-recalls-e2e
-    environment:
-      - SERVICES=s3
-      - DATA_DIR=/tmp/localstack/data
