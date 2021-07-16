@@ -114,7 +114,7 @@ services:
       - DOCKER_HOST=unix:///var/run/docker.sock
       - DATA_DIR=/tmp/localstack/data
     volumes:
-      - ./stubs/s3:/tmp/localstack
+      - ./localstack-docker/stubs/s3:/tmp/localstack
 
 networks:
   manage-recalls-e2e:
