@@ -9,16 +9,13 @@ services:
   manage-recalls-e2e-tests:
     build:
       dockerfile: ci-local-mode-docker/Dockerfile
-      context: .
     networks:
       - manage-recalls-e2e
     container_name: manage-recalls-e2e-tests
     depends_on: [manage-recalls-ui]
 
   localstack:
-    build:
-      dockerfile: localstack-docker/Dockerfile
-      context: .
+    build: ./localstack-docker
     ports:
       - "4566:4566"
       - "4571:4571"
