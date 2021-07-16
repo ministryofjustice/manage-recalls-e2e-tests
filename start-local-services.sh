@@ -11,8 +11,8 @@ readonly MANAGE_RECALLS_UI_LOG_FILE="/tmp/${MANAGE_RECALLS_UI_NAME}-e2e.log"
 readonly MANAGE_RECALLS_API_LOG_FILE="/tmp/${MANAGE_RECALLS_API_NAME}-e2e.log"
 readonly LOCAL_DOCKER_COMPOSE_FILE=docker-compose.yml
 
-docker compose -f $LOCAL_DOCKER_COMPOSE_FILE pull redis gotenberg hmpps-auth fake-prisoner-offender-search-api postgres
-docker compose -f $LOCAL_DOCKER_COMPOSE_FILE up redis gotenberg hmpps-auth fake-prisoner-offender-search-api postgres --remove-orphans -d
+docker compose -f $LOCAL_DOCKER_COMPOSE_FILE pull redis gotenberg hmpps-auth fake-prisoner-offender-search-api postgres localstack
+docker compose -f $LOCAL_DOCKER_COMPOSE_FILE up redis gotenberg hmpps-auth fake-prisoner-offender-search-api postgres localstack --remove-orphans -d
 
 pushd ${MANAGE_RECALLS_UI_DIR}
 npm run build

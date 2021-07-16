@@ -48,7 +48,7 @@ services:
     networks:
       - manage-recalls-e2e
     container_name: manage-recalls-api-e2e
-    depends_on: [gotenberg, fake-prisoner-offender-search-api, postgres]
+    depends_on: [gotenberg, fake-prisoner-offender-search-api, postgres, localstack]
     ports:
       - "9091:8080"
     healthcheck:
@@ -64,6 +64,7 @@ services:
       - POSTGRES_DBNAME=manage_recalls
       - POSTGRES_USERNAME=ppud_user
       - POSTGRES_PASSWORD=secret
+      - AWS_LOCAL_ENDPOINT=http://localstack:4566
 
   manage-recalls-ui:
     image: quay.io/hmpps/manage-recalls-ui:latest
@@ -99,6 +100,18 @@ services:
       - POSTGRES_PASSWORD=secret
       - POSTGRES_USER=ppud_user
       - POSTGRES_DB=manage_recalls
+
+  localstack:
+    build: ./localstack-docker
+    ports:
+      - "4566:4566"
+      - "4571:4571"
+    networks:
+      - manage-recalls-e2e
+    container_name: localstack_manage-recalls-e2e
+    environment:
+      - SERVICES=s3
+      - DATA_DIR=/tmp/localstack/data
 
 networks:
   manage-recalls-e2e:
