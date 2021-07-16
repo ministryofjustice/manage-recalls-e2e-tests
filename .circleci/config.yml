@@ -31,7 +31,7 @@ jobs:
           name: Start docker compose and run the end-to-end tests
           command: |
             set -x
-            exit_code=`docker-compose -f docker-compose.yml -f docker-compose.ci.yml up --exit-code-from manage-recalls-e2e-tests manage-recalls-e2e-tests`
+            docker-compose -f docker-compose.yml -f docker-compose.ci.yml up --exit-code-from manage-recalls-e2e-tests manage-recalls-e2e-tests || { exit_code=1; true }
             docker cp manage-recalls-e2e-tests:/home/circleci/project/build/reports/tests/test/ test-report
             docker cp manage-recalls-e2e-tests:/home/circleci/project/target/site/serenity/ serenity-report
             exit $exit_code
