@@ -9,6 +9,7 @@ services:
   manage-recalls-e2e-tests:
     build:
       dockerfile: ci-local-mode-docker/Dockerfile
+      context: .
     networks:
       - manage-recalls-e2e
     container_name: manage-recalls-e2e-tests
