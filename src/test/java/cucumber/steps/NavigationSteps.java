@@ -27,7 +27,6 @@ import java.util.concurrent.Callable;
 
 import static cucumber.pages.FindAnOffenderPage.VIEW_PROFILE_LINK;
 import static cucumber.pages.OffenderProfilePage.CREATE_RECALL_BUTTON;
-import static cucumber.pages.OffenderProfilePage.DOWNLOAD_REVOCATION_ORDER_LINK;
 import static cucumber.pages.TodoRecallsListPage.FIND_SOMEONE_LINK;
 import static cucumber.pages.TodoRecallsListPage.RECALL_LIST_TODO_LINK;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -153,7 +152,7 @@ public class NavigationSteps {
 
     @When("{word} clicks on the download revocation order link")
     public void clickOnRevocationOrderLink(String customer) {
-        userClicksOn(customer, DOWNLOAD_REVOCATION_ORDER_LINK);
+        userClicksOn(customer, AssessRecallPage.DOWNLOAD_REVOCATION_ORDER_LINK);
     }
 
     @Then("a revocation order is downloaded")
