@@ -28,20 +28,14 @@ or, [download chromedriver](https://chromedriver.chromium.org/downloads). The `c
 Unfortunately at present it is necessary to switch credentials between local auth and auth in the dev environment.
 
 As e2e tests include login, valid user credentials and the necessary user role are required. 
-Credentials for the tests are loaded from a file referenced
-as `serenity.credentials` in `serenity.properties`, e.g. under your home directory
-`~/.serenity/credentials.properties`.  This should take the form:
-
-```
-USERNAME=PPUD_USER
-PASSWORD=password123456
-```
+Credentials for the tests are loaded from environment variables "SERENITY_USERNAME" and "SERENITY_PASSWORD", 
+for local testing the code will default to the `PPUD_USER` when no env vars are specified, but if you want to run
+against dev you should add your own credentials as env vars.
 
 #### Credentials for local auth 
 When run versus local services these e2e tests run against the docker container `hmpps-auth-e2e`.  As that runs with
 `SPRING_PROFILES_ACTIVE=dev` in the current latest image *only* the above `PPUD_USER` user is
 pre-defined with the required role, `MANAGE_RECALLS`, and should be used.
-
 
 #### Credentials for environment auth
 In contrast with the deployed `dev` instance of `hmpps-auth`,
@@ -49,7 +43,7 @@ i.e. [manage-recalls dev](https://manage-recalls-dev.hmpps.service.justice.gov.u
 , all team members on the project should have a personal login with the appropriate role
 but `PPUD_USER` does not.  
 
-We do also have a shared account which is valid versus `dev`:
+We do also have a shared 'system' account which is valid versus `dev`:
 ```USERNAME=manage-recalls-test-user@digital.justice.gov.uk```
 Ask the Dev team for the password.
 
@@ -58,7 +52,7 @@ Ask the Dev team for the password.
 There are multiple options for running these tests from your local:
 
 ### 1. Run against deployed services
-In this scenario the login credentials must be valid on the target environment.  Hence your `~/.serenity/credentials.properties`
+In this scenario the login credentials must be valid on the target environment. Hence, your env vars
 needs to reflect the same.  See above.
 
 Given valid credentials, to run against one of our deployed environments use simply:
@@ -68,7 +62,7 @@ Given valid credentials, to run against one of our deployed environments use sim
 
 It is also necessary for any data requirements implicit in the tests to be satisfied by our dependencies as deployed,
 e.g. the `prisoner-offender-search-api`.  How that will work across environments is TBD but `dev` and `pre-prod`
-are *not* maintained by similar processes so we must expect data differences and data change over time between them.
+are *not* maintained by similar processes, so we must expect data differences and data change over time between them.
 
 If you are updating tests versus `dev` then the above is sufficient as a basis for valid testing.
 To work versus changes _not_ yet on `dev` then service instances need to be run locally - as below.
