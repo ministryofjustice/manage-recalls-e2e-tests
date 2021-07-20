@@ -39,26 +39,15 @@ public class NavigationSteps {
     private EnvironmentVariables environmentVariables;
 
     @Before(order = 1)
-    public void setUp() throws IOException {
+    public void setUp() {
         environmentVariables = SystemEnvironmentVariables.createEnvironmentVariables();
-        String credentialsLocation = environmentVariables.getProperty("serenity.credentials");
+        environmentVariables.setProperty("SERENITY_USERNAME", getEnvOrDefault("SERENITY_USERNAME", "PPUD_USER"));
+        environmentVariables.setProperty("SERENITY_PASSWORD", getEnvOrDefault("SERENITY_PASSWORD", "password123456"));
+    }
 
-        credentialsLocation = credentialsLocation.replaceFirst("~", System.getenv("HOME"));
-
-        Path pathToCreds = Paths.get(credentialsLocation);
-
-        if (!Files.exists(pathToCreds)) {
-            environmentVariables.setProperty("SERENITY_USERNAME", System.getenv("SERENITY_USERNAME"));
-            environmentVariables.setProperty("SERENITY_PASSWORD", System.getenv("SERENITY_PASSWORD"));
-        } else {
-            Files.readAllLines(pathToCreds).forEach(row -> {
-                String[] keyVal = row.split("=");
-                if (keyVal.length==2) {
-                    environmentVariables.setProperty("SERENITY_" + keyVal[0].toUpperCase(), keyVal[1]);
-                }
-            });
-        }
-
+    private String getEnvOrDefault(String propertyName, String defaultValue) {
+        String value = System.getenv(propertyName);
+        return value == null ? defaultValue : value;
     }
 
     @Before(order = 100)
