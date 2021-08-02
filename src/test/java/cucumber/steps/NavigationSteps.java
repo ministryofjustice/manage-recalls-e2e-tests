@@ -17,7 +17,6 @@ import net.serenitybdd.screenplay.ensure.Ensure;
 import net.serenitybdd.screenplay.targets.Target;
 import net.thucydides.core.util.EnvironmentVariables;
 import net.thucydides.core.util.SystemEnvironmentVariables;
-import net.thucydides.core.pages.components.FileToUpload;
 
 import java.io.File;
 import java.io.IOException;
@@ -180,6 +179,8 @@ public class NavigationSteps {
     @When("{word} continues from the Upload documents page")
     public void addRecallDocument(String customer) {
         userIsOnPageWithTitle(customer, UploadRecallDocumentsPage.TITLE);
+        UploadRecallDocumentsPage page = new UploadRecallDocumentsPage();
+        page.uploadFile("src/test/resources/files/test.pdf");
         userClicksOn(customer, UploadRecallDocumentsPage.CONTINUE_BUTTON);
     }
 
