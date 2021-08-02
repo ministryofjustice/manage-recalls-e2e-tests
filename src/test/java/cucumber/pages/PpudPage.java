@@ -11,4 +11,7 @@ public abstract class PpudPage extends PageObject {
         return Target.the(dataQa + " matches").locatedBy("[data-qa='" + dataQa + "']");
     }
 
+    protected static Target getTargetByInputValue(String value) {
+        return Target.the(value + " matches").locatedBy("[value='" + value + "']");
+    }
 }

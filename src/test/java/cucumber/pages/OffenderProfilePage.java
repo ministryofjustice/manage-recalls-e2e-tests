@@ -8,6 +8,5 @@ public class OffenderProfilePage extends PpudPage {
 
     public static final String TITLE = TITLE_ROOT + "Offender profile";
     public static final Target CREATE_RECALL_BUTTON = getTargetByDataQa("createRecallButton");
-    public static final Target RECALL_CONFIRMATION_MATCHES = getTargetByDataQa("recallId");
 
 }
