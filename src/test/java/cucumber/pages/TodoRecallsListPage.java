@@ -3,7 +3,7 @@ package cucumber.pages;
 import net.serenitybdd.screenplay.targets.Target;
 import net.thucydides.core.annotations.DefaultUrl;
 
-@DefaultUrl("https://manage-recalls-dev.hmpps.service.justice.gov.uk/")
+@DefaultUrl("https://manage-recalls-dev.hmpps.service.justice.gov.uk/todo")
 public class TodoRecallsListPage extends PpudPage {
 
     public static final String TITLE = TITLE_ROOT + "To do";

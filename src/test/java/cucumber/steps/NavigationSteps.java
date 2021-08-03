@@ -27,6 +27,8 @@ import java.util.concurrent.Callable;
 
 import static cucumber.pages.FindAnOffenderPage.VIEW_PROFILE_LINK;
 import static cucumber.pages.OffenderProfilePage.CREATE_RECALL_BUTTON;
+import static cucumber.pages.RecallRecommendationPage.CONTINUE_BUTTON;
+import static cucumber.pages.BookRecallPage.CONTINUE_BUTTON;
 import static cucumber.pages.TodoRecallsListPage.FIND_SOMEONE_LINK;
 import static cucumber.pages.TodoRecallsListPage.RECALL_LIST_TODO_LINK;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -78,7 +80,7 @@ public class NavigationSteps {
         );
     }
 
-    @And("{word} clicks Find someone")
+    @And("{word} clicks Find a person")
     public void clickFindSomeoneLink(String customer) {
         userClicksOn(customer, FIND_SOMEONE_LINK);
     }
@@ -88,12 +90,12 @@ public class NavigationSteps {
         userClicksOn(customer, RECALL_LIST_TODO_LINK);
     }
 
-    @Then("{word} is on the Find An Offender page")
+    @Then("{word} is on the Find a person page")
     public void onStartPage(String customer) {
         userIsOnPageWithTitle(customer, FindAnOffenderPage.TITLE);
     }
 
-    @Then("{word} is on the Offender profile page")
+    @Then("{word} is on the Person profile page")
     public void onOffenderProfilePage(String customer) {
         userIsOnPageWithTitle(customer, OffenderProfilePage.TITLE);
     }
@@ -149,28 +151,42 @@ public class NavigationSteps {
         await().atMost(10, SECONDS).until(revocationOrderIsDownloaded());
     }
 
-    @When("{word} clicks on the create recall button")
+    @When("{word} clicks on the Create recall button")
     public void clickOnCreateRecallButton(String customer) {
         userClicksOn(customer, CREATE_RECALL_BUTTON);
+    }
+
+    @Then("{word} continues from the Book a recall page")
+    public void onBookRecallPage(String customer) {
+        userIsOnPageWithTitle(customer, BookRecallPage.TITLE);
+        userClicksOn(customer, BookRecallPage.CONTINUE_BUTTON);
+    }
+
+    @When("{word} recommends a 14 day recall")
+    public void recommend14DayRecall(String customer) {
+        userIsOnPageWithTitle(customer, RecallRecommendationPage.TITLE);
+        userClicksOn(customer, RecallRecommendationPage.RECALL_LENGTH_14_DAYS);
+        userClicksOn(customer, RecallRecommendationPage.CONTINUE_BUTTON);
     }
 
     @Then("{word} sees confirmation that the new recall was created")
     public void matchRecallCreatedText(String customer) {
         theActorCalled(customer).attemptsTo(
-                Ensure.that(OffenderProfilePage.RECALL_CONFIRMATION_MATCHES).text().startsWith("Recall ID:")
+                Ensure.that(BookRecallPage.RECALL_CONFIRMATION_MATCHES).text().startsWith("Recall ID:")
         );
     }
 
-    @When("{word} clicks on the View profile link")
+    @When("{word} continues from the Upload documents page")
+    public void addRecallDocument(String customer) {
+        userIsOnPageWithTitle(customer, UploadRecallDocumentsPage.TITLE);
+//         UploadRecallDocumentsPage page = new UploadRecallDocumentsPage();
+//         page.uploadFile("src/test/resources/files/test.pdf");
+        userClicksOn(customer, UploadRecallDocumentsPage.CONTINUE_BUTTON);
+    }
+
+    @When("{word} clicks on the View link")
     public void clickOnViewProfileLink(String customer) {
         userClicksOn(customer, VIEW_PROFILE_LINK);
-    }
-
-    @Then("{word} sees at least one View link to assess a recall")
-    public void anAssessRecallDetailsLinkIsVisible(String customer) {
-        theActorCalled(customer).attemptsTo(
-                Ensure.that(TodoRecallsListPage.FIRST_ASSESS_RECALL_DETAILS_LINK).hasTextContent("View")
-        );
     }
 
     @When("{word} clicks on the first View link to assess a recall")
@@ -181,6 +197,11 @@ public class NavigationSteps {
     @Then("{word} is on the Assess Recall page")
     public void onAssessRecallPage(String customer) {
         userIsOnPageWithTitle(customer, AssessRecallPage.TITLE);
+    }
+
+    @Then("{word} confirms the recall length as 14 days")
+    public void confirmRecallLength(String customer) {
+        Ensure.that(AssessRecallPage.RECALL_LENGTH).hasTextContent("14 days");
     }
 
     private Callable<Boolean> revocationOrderIsDownloaded() {
