@@ -179,8 +179,8 @@ public class NavigationSteps {
     @When("{word} continues from the Upload documents page")
     public void addRecallDocument(String customer) {
         userIsOnPageWithTitle(customer, UploadRecallDocumentsPage.TITLE);
-        UploadRecallDocumentsPage page = new UploadRecallDocumentsPage();
-        page.uploadFile("src/test/resources/files/test.pdf");
+//         UploadRecallDocumentsPage page = new UploadRecallDocumentsPage();
+//         page.uploadFile("src/test/resources/files/test.pdf");
         userClicksOn(customer, UploadRecallDocumentsPage.CONTINUE_BUTTON);
     }
 
@@ -197,6 +197,11 @@ public class NavigationSteps {
     @Then("{word} is on the Assess Recall page")
     public void onAssessRecallPage(String customer) {
         userIsOnPageWithTitle(customer, AssessRecallPage.TITLE);
+    }
+
+    @Then("{word} confirms the recall length as 14 days")
+    public void confirmRecallLength(String customer) {
+        Ensure.that(AssessRecallPage.RECALL_LENGTH).hasTextContent("14 days");
     }
 
     private Callable<Boolean> revocationOrderIsDownloaded() {
