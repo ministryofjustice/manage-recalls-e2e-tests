@@ -7,7 +7,6 @@ import org.openqa.selenium.WebDriver;
 import net.thucydides.core.pages.components.FileToUpload;
 import org.openqa.selenium.By;
 
-@DefaultUrl("https://manage-recalls-dev.hmpps.service.justice.gov.uk/assess-recall")
 public class UploadRecallDocumentsPage extends PpudPage {
     WebElementFacade fileUpload;
     public static final String TITLE = TITLE_ROOT + "Upload documents";

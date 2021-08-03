@@ -18,6 +18,7 @@ Feature: Manage Recalls
     When Maria clicks on the download revocation order link
     Then a revocation order is downloaded
 
+#  FIXME - this should use the ID of the recall that we just created
   Scenario: Can navigate to assess a recall from the To do list
     Given Maria navigates to manage recall service
     When Maria logs in
