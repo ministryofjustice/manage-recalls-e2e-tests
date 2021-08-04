@@ -176,11 +176,12 @@ public class NavigationSteps {
         );
     }
 
-    @When("{word} continues from the Upload documents page")
+    @When("{word} uploads two documents")
     public void addRecallDocument(String customer) {
         userIsOnPageWithTitle(customer, UploadRecallDocumentsPage.TITLE);
-//         UploadRecallDocumentsPage page = new UploadRecallDocumentsPage();
-//         page.uploadFile("src/test/resources/files/test.pdf");
+        UploadRecallDocumentsPage page = new UploadRecallDocumentsPage();
+        page.uploadFile("src/test/resources/files/test.pdf", "PART_A_RECALL_REPORT");
+        page.uploadFile("src/test/resources/files/test.pdf", "LICENCE");
         userClicksOn(customer, UploadRecallDocumentsPage.CONTINUE_BUTTON);
     }
 
@@ -204,13 +205,29 @@ public class NavigationSteps {
         Ensure.that(AssessRecallPage.RECALL_LENGTH).hasTextContent("14 days");
     }
 
+    @Then("{word} downloads the documents")
+    public void downloadRecallDocument(String customer) {
+        userClicksOn(customer, AssessRecallPage.RECALL_DOCUMENT_LINK_PART_A);
+        await().atMost(10, SECONDS).until(partAIsDownloaded());
+        userClicksOn(customer, AssessRecallPage.RECALL_DOCUMENT_LINK_LICENCE);
+        await().atMost(10, SECONDS).until(licenceIsDownloaded());
+    }
+
+    private Callable<Boolean> partAIsDownloaded() {
+        return () -> fileIsDownloaded("/tmp", "part_a_recall_report.pdf");
+    }
+
+    private Callable<Boolean> licenceIsDownloaded() {
+        return () -> fileIsDownloaded("/tmp", "licence.pdf");
+    }
+
     private Callable<Boolean> revocationOrderIsDownloaded() {
         return () -> fileIsDownloaded("/tmp", "revocation-order.pdf");
     }
 
     private boolean fileIsDownloaded(String downloadPath, String fileName) {
-        File revocationOrder = new File(downloadPath + "/" + fileName);
-        return revocationOrder.exists() && revocationOrder.delete();
+        File file = new File(downloadPath + "/" + fileName);
+        return file.exists() && file.delete();
     }
 
     private void userIsOnPageWithTitle(String customer, String uniquePageTitle) {
