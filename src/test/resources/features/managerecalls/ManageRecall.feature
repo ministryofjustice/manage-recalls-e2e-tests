@@ -1,6 +1,6 @@
 Feature: Manage Recalls
 
-  Scenario: Can create then assess a recall
+  Scenario: Can create recall
     Given Maria navigates to manage recall service
     When Maria logs in
     And Maria clicks Find a person
@@ -13,17 +13,20 @@ Feature: Manage Recalls
     Then Maria continues from the Book a recall page
     And Maria recommends a 14 day recall
     And Maria uploads two documents
-    Then Maria is on the Assess Recall page
-    And Maria confirms the recall length as 14 days
+    Then Maria is on the Recall details page
+    And Maria sees the recall length is 14 days
     And Maria downloads the documents
-    When Maria clicks on the download revocation order link
-    Then a revocation order is downloaded
+    And Maria clicks Assess this recall
+    And Maria agrees with the recommended recall length of 14 days
+    Then Maria is on the assess recall confirmation page
+    And Maria downloads the revocation order
+
 
 #  FIXME - this should use the ID of the recall that we just created
-  Scenario: Can navigate to assess a recall from the To do list
+  Scenario: Can assess a recall
     Given Maria navigates to manage recall service
     When Maria logs in
     And Maria clicks To Do
     Then Maria is on the ToDo Recalls page
-    When Maria clicks on the first View link to assess a recall
-    Then Maria is on the Assess Recall page
+    When Maria clicks on the first View link to view a recall
+    Then Maria is on the Recall details page

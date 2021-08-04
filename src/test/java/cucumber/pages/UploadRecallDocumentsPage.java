@@ -10,7 +10,6 @@ import org.openqa.selenium.By;
 public class UploadRecallDocumentsPage extends PpudPage {
     WebElementFacade fileUpload;
     public static final String TITLE = TITLE_ROOT + "Upload documents";
-    public static final Target CONTINUE_BUTTON = getTargetByDataQa("continueButton");
 
 	public void uploadFile(String filePath, String doc) {
         WebDriver driver = getDriver();
