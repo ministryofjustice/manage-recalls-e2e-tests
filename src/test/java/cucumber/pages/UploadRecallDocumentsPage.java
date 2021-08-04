@@ -12,9 +12,9 @@ public class UploadRecallDocumentsPage extends PpudPage {
     public static final String TITLE = TITLE_ROOT + "Upload documents";
     public static final Target CONTINUE_BUTTON = getTargetByDataQa("continueButton");
 
-	public void uploadFile(String filePath) {
+	public void uploadFile(String filePath, String doc) {
         WebDriver driver = getDriver();
         FileToUpload fileToUpload = new FileToUpload(driver, filePath);
-        fileToUpload.fromLocalMachine().to(find(By.name("LICENCE")));
+        fileToUpload.fromLocalMachine().to(find(By.name(doc)));
     }
 }

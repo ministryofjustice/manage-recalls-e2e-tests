@@ -12,9 +12,10 @@ Feature: Manage Recalls
     And Maria clicks on the Create recall button
     Then Maria continues from the Book a recall page
     And Maria recommends a 14 day recall
-    And Maria continues from the Upload documents page
+    And Maria uploads two documents
     Then Maria is on the Assess Recall page
     And Maria confirms the recall length as 14 days
+    And Maria downloads the documents
     When Maria clicks on the download revocation order link
     Then a revocation order is downloaded
 
