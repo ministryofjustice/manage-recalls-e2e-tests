@@ -6,7 +6,6 @@ import net.thucydides.core.annotations.DefaultUrl;
 public class RecallRecommendationPage extends PpudPage {
 
     public static final String TITLE = TITLE_ROOT + "Recall recommendation";
-    public static final Target CONTINUE_BUTTON = getTargetByDataQa("addRecallTypeButton");
     public static final Target RECALL_LENGTH_14_DAYS = getTargetByInputValue("FOURTEEN_DAYS");
 
 }

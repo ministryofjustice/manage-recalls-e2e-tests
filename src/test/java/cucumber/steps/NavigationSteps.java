@@ -29,6 +29,10 @@ import static cucumber.pages.FindAnOffenderPage.VIEW_PROFILE_LINK;
 import static cucumber.pages.OffenderProfilePage.CREATE_RECALL_BUTTON;
 import static cucumber.pages.RecallRecommendationPage.CONTINUE_BUTTON;
 import static cucumber.pages.BookRecallPage.CONTINUE_BUTTON;
+import static cucumber.pages.AssessRecallRecommendationPage.CONTINUE_BUTTON;
+import static cucumber.pages.AssessRecallConfirmationPage.DOWNLOAD_REVOCATION_ORDER_LINK;
+import static cucumber.pages.RecallDetailsPage.CONTINUE_BUTTON;
+import static cucumber.pages.AssessRecallConfirmationPage.RECALL_ID;
 import static cucumber.pages.TodoRecallsListPage.FIND_SOMEONE_LINK;
 import static cucumber.pages.TodoRecallsListPage.RECALL_LIST_TODO_LINK;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -141,13 +145,9 @@ public class NavigationSteps {
         );
     }
 
-    @When("{word} clicks on the download revocation order link")
+    @When("{word} downloads the revocation order")
     public void clickOnRevocationOrderLink(String customer) {
-        userClicksOn(customer, AssessRecallPage.DOWNLOAD_REVOCATION_ORDER_LINK);
-    }
-
-    @Then("a revocation order is downloaded")
-    public void aRevocationOrderIsDownloaded() {
+        userClicksOn(customer, AssessRecallConfirmationPage.DOWNLOAD_REVOCATION_ORDER_LINK);
         await().atMost(10, SECONDS).until(revocationOrderIsDownloaded());
     }
 
@@ -190,27 +190,45 @@ public class NavigationSteps {
         userClicksOn(customer, VIEW_PROFILE_LINK);
     }
 
-    @When("{word} clicks on the first View link to assess a recall")
-    public void clickOnAssessRecallDetailsLink(String customer) {
+    @When("{word} clicks on the first View link to view a recall")
+    public void clickOnViewLink(String customer) {
         userClicksOn(customer, TodoRecallsListPage.FIRST_ASSESS_RECALL_DETAILS_LINK);
     }
 
-    @Then("{word} is on the Assess Recall page")
-    public void onAssessRecallPage(String customer) {
-        userIsOnPageWithTitle(customer, AssessRecallPage.TITLE);
+    @Then("{word} is on the Recall details page")
+    public void onRecallDetailsPage(String customer) {
+        userIsOnPageWithTitle(customer, RecallDetailsPage.TITLE);
     }
 
-    @Then("{word} confirms the recall length as 14 days")
+    @Then("{word} sees the recall length is 14 days")
     public void confirmRecallLength(String customer) {
-        Ensure.that(AssessRecallPage.RECALL_LENGTH).hasTextContent("14 days");
+        Ensure.that(RecallDetailsPage.RECALL_LENGTH).hasTextContent("14 days");
     }
 
     @Then("{word} downloads the documents")
     public void downloadRecallDocument(String customer) {
-        userClicksOn(customer, AssessRecallPage.RECALL_DOCUMENT_LINK_PART_A);
+        userClicksOn(customer, RecallDetailsPage.RECALL_DOCUMENT_LINK_PART_A);
         await().atMost(10, SECONDS).until(partAIsDownloaded());
-        userClicksOn(customer, AssessRecallPage.RECALL_DOCUMENT_LINK_LICENCE);
+        userClicksOn(customer, RecallDetailsPage.RECALL_DOCUMENT_LINK_LICENCE);
         await().atMost(10, SECONDS).until(licenceIsDownloaded());
+    }
+
+    @Then("{word} clicks Assess this recall")
+    public void clickOnAssessRecallLink(String customer) {
+        userClicksOn(customer, RecallDetailsPage.CONTINUE_BUTTON);
+    }
+
+    @When("{word} agrees with the recommended recall length of 14 days")
+    public void agreeRecommendedRecall(String customer) {
+        userIsOnPageWithTitle(customer, AssessRecallRecommendationPage.TITLE);
+        userClicksOn(customer, AssessRecallRecommendationPage.RECALL_DECISION);
+        userClicksOn(customer, AssessRecallRecommendationPage.CONTINUE_BUTTON);
+    }
+
+    @Then("{word} is on the assess recall confirmation page")
+    public void onAssessRecallConfirmationPage(String customer) {
+        userIsOnPageWithTitle(customer, AssessRecallConfirmationPage.TITLE);
+        Ensure.that(AssessRecallConfirmationPage.RECALL_ID).hasTextContent("14 days");
     }
 
     private Callable<Boolean> partAIsDownloaded() {
