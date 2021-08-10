@@ -1,6 +1,6 @@
 Feature: Manage Recalls
 
-  Scenario: Can create recall
+  Scenario: Book a recall
     Given Maria navigates to manage recall service
     When Maria logs in
     And Maria clicks Find a person
@@ -24,7 +24,7 @@ Feature: Manage Recalls
     Then a revocation order is downloaded
 
 #  FIXME - this should use the ID of the recall that we just created
-  Scenario: Can assess a recall
+  Scenario: Assess a recall
     Given Maria navigates to manage recall service
     When Maria logs in
     And Maria clicks To Do
