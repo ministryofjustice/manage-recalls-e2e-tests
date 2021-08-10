@@ -10,13 +10,16 @@ Feature: Manage Recalls
     When Maria clicks on the View link
     Then Maria is on the Person profile page
     And Maria clicks on the Create recall button
-    Then Maria continues from the Book a recall page
+    Then Maria is on the recall request received page
+    When Maria submits the date and time of the recall request received from probation service
     And Maria recommends a 14 day recall
     And Maria uploads two documents
     Then Maria is on the Assess Recall page
-    And Maria confirms the recall length as 14 days
-    And Maria downloads the documents
-    When Maria clicks on the download revocation order link
+    When Maria starts the assessment process for the recall
+    Then Maria is on the decision on recall recommendation page
+    When Maria confirms the recall length as 14 days
+    Then the recall is authorised
+    When Maria downloads revocation order which was generated
     Then a revocation order is downloaded
 
 #  FIXME - this should use the ID of the recall that we just created
