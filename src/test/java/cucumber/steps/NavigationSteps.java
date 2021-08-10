@@ -165,6 +165,21 @@ public class NavigationSteps {
         userClicksOn(customer, RecallReceivedPage.CONTINUE_BUTTON);
     }
 
+    @When("{word} submits the latest release date and releasing prison details")
+    public void submitLatestReleaseDetails(String customer) {
+        userEnters(customer, LastReleaseDetailsPage.RELEASING_PRISON, "Belmarsh");
+        userEnters(customer, RecallReceivedPage.DAY_FIELD, "10");
+        userEnters(customer, RecallReceivedPage.MONTH_FIELD, "10");
+        userEnters(customer, RecallReceivedPage.YEAR_FIELD, "2010");
+        userClicksOn(customer, RecallReceivedPage.CONTINUE_BUTTON);
+    }
+
+    @When("{word} submits the police contact details")
+    public void submitPoliceContactDetails(String customer) {
+        userEnters(customer, PoliceContactDetailsPage.LOCAL_POLICE_STATION, "Belmarsh Police Station");
+        userClicksOn(customer, RecallReceivedPage.CONTINUE_BUTTON);
+    }
+
     @Then("{word} continues from the Book a recall page")
     public void onBookRecallPage(String customer) {
         userIsOnPageWithTitle(customer, BookRecallPage.TITLE);
