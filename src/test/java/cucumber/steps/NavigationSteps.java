@@ -224,7 +224,6 @@ public class NavigationSteps {
         userIsOnPageWithTitle(customer, DecisionOnRecallRecommendationPage.TITLE);
         userClicksOn(customer, DecisionOnRecallRecommendationPage.RECALL_LENGTH_14_DAYS);
         userClicksOn(customer, DecisionOnRecallRecommendationPage.CONTINUE_BUTTON);
-      //  Ensure.that(AssessRecallPage.RECALL_LENGTH).hasTextContent("14 days");
     }
 
     @Then("the recall is authorised")
