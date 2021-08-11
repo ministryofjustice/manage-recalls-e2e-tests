@@ -157,26 +157,26 @@ public class NavigationSteps {
 
     @When("{word} submits the date and time of the recall request received from probation service")
     public void submitDateTimeOfRecallRequestReceived(String customer) {
-        userEnters(customer, RecallReceivedPage.DAY_FIELD, "10");
-        userEnters(customer, RecallReceivedPage.MONTH_FIELD, "10");
-        userEnters(customer, RecallReceivedPage.YEAR_FIELD, "2010");
-        userEnters(customer, RecallReceivedPage.HOUR_FIELD, "10");
-        userEnters(customer, RecallReceivedPage.MINUTE_FIELD, "10");
+        userEnters(customer, RecallReceivedPage.DAY_FIELD, "05");
+        userEnters(customer, RecallReceivedPage.MONTH_FIELD, "12");
+        userEnters(customer, RecallReceivedPage.YEAR_FIELD, "2020");
+        userEnters(customer, RecallReceivedPage.HOUR_FIELD, "33");
+        userEnters(customer, RecallReceivedPage.MINUTE_FIELD, "57");
         userClicksOn(customer, RecallReceivedPage.CONTINUE_BUTTON);
     }
 
     @When("{word} submits the latest release date and releasing prison details")
     public void submitLatestReleaseDetails(String customer) {
         userEnters(customer, LastReleaseDetailsPage.RELEASING_PRISON, "Belmarsh");
-        userEnters(customer, RecallReceivedPage.DAY_FIELD, "10");
-        userEnters(customer, RecallReceivedPage.MONTH_FIELD, "10");
-        userEnters(customer, RecallReceivedPage.YEAR_FIELD, "2010");
+        userEnters(customer, RecallReceivedPage.DAY_FIELD, "03");
+        userEnters(customer, RecallReceivedPage.MONTH_FIELD, "08");
+        userEnters(customer, RecallReceivedPage.YEAR_FIELD, "2020");
         userClicksOn(customer, RecallReceivedPage.CONTINUE_BUTTON);
     }
 
     @When("{word} submits the police contact details")
     public void submitPoliceContactDetails(String customer) {
-        userEnters(customer, PoliceContactDetailsPage.LOCAL_POLICE_STATION, "Belmarsh Police Station");
+        userEnters(customer, PoliceContactDetailsPage.LOCAL_POLICE_STATION, "Brentwood, Essex");
         userClicksOn(customer, RecallReceivedPage.CONTINUE_BUTTON);
     }
 
@@ -222,6 +222,12 @@ public class NavigationSteps {
     @Then("{word} is on the Recall details page")
     public void onRecallDetailsPage(String customer) {
         userIsOnPageWithTitle(customer, RecallDetailsPage.TITLE);
+        theActorCalled(customer).attemptsTo(
+                Ensure.that(RecallDetailsPage.DATE_RECALL_EMAIL_RECEIVED).text().isEqualTo("5 Dec 2020 at 15:33"),
+                Ensure.that(RecallDetailsPage.RELEASING_PRISON).text().isEqualTo("Belmarsh"),
+                Ensure.that(RecallDetailsPage.LAST_RELEASE_DATE).text().isEqualTo("3 Aug 2020"),
+                Ensure.that(RecallDetailsPage.LOCAL_POLICE_STATION).text().isEqualTo("Brentwood, Essex")
+                );
     }
 
     @When("{word} starts the assessment process for the recall")
@@ -232,6 +238,9 @@ public class NavigationSteps {
     @Then("{word} is on the decision on recall recommendation page")
     public void onDecisionOnRecallRecommendationPage(String customer) {
         userIsOnPageWithTitle(customer, DecisionOnRecallRecommendationPage.TITLE);
+        theActorCalled(customer).attemptsTo(
+                Ensure.that(DecisionOnRecallRecommendationPage.QUESTION_AROUND_RECALL_LENGTH).text().isEqualTo("Do you agree with the recommended recall length of 14 days")
+        );
     }
 
     @Then("{word} confirms the recall length as 14 days")
