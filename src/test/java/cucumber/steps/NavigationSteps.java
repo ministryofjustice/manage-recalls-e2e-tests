@@ -160,8 +160,8 @@ public class NavigationSteps {
         userEnters(customer, RecallReceivedPage.DAY_FIELD, "05");
         userEnters(customer, RecallReceivedPage.MONTH_FIELD, "12");
         userEnters(customer, RecallReceivedPage.YEAR_FIELD, "2020");
-        userEnters(customer, RecallReceivedPage.HOUR_FIELD, "33");
-        userEnters(customer, RecallReceivedPage.MINUTE_FIELD, "57");
+        userEnters(customer, RecallReceivedPage.HOUR_FIELD, "15");
+        userEnters(customer, RecallReceivedPage.MINUTE_FIELD, "33");
         userClicksOn(customer, RecallReceivedPage.CONTINUE_BUTTON);
     }
 
