@@ -222,12 +222,16 @@ public class NavigationSteps {
     @Then("{word} is on the Recall details page")
     public void onRecallDetailsPage(String customer) {
         userIsOnPageWithTitle(customer, RecallDetailsPage.TITLE);
+    }
+
+    @Then("{word} is able to see the details submitted earlier")
+    public void confirmRecallDetails(String customer) {
         theActorCalled(customer).attemptsTo(
                 Ensure.that(RecallDetailsPage.DATE_RECALL_EMAIL_RECEIVED).text().isEqualTo("5 Dec 2020 at 15:33"),
                 Ensure.that(RecallDetailsPage.RELEASING_PRISON).text().isEqualTo("Belmarsh"),
                 Ensure.that(RecallDetailsPage.LAST_RELEASE_DATE).text().isEqualTo("3 Aug 2020"),
                 Ensure.that(RecallDetailsPage.LOCAL_POLICE_STATION).text().isEqualTo("Brentwood, Essex")
-                );
+        );
     }
 
     @When("{word} starts the assessment process for the recall")
