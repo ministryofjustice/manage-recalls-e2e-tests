@@ -17,6 +17,7 @@ Feature: Manage Recalls
     And Maria uploads two documents
     Then Maria is on the Recall details page
     When Maria starts the assessment process for the recall
+    #  FIXME - UI Bug https://dsdmoj.atlassian.net/browse/PUD-379
     Then Maria is on the decision on recall recommendation page
     When Maria confirms the recall length as 14 days
     Then the recall is authorised
