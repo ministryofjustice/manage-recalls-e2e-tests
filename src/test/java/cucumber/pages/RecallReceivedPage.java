@@ -10,6 +10,5 @@ public class RecallReceivedPage extends PpudPage {
     public static final Target YEAR_FIELD = getTargetByName("year");
     public static final Target HOUR_FIELD = getTargetByName("hour");
     public static final Target MINUTE_FIELD = getTargetByName("minute");
-    public static final Target CONTINUE_BUTTON = getTargetByDataQa("continueButton");
 
 }

@@ -1,6 +1,6 @@
 Feature: Manage Recalls
 
-  Scenario: Book a recall
+  Scenario: Book and Assess a recall
     Given Maria navigates to manage recall service
     When Maria logs in
     And Maria clicks Find a person
@@ -15,21 +15,21 @@ Feature: Manage Recalls
     And Maria submits the latest release date and releasing prison details
     And Maria submits the police contact details
     And Maria uploads two documents
+    ###
+    # TODO at some point this will change to just show the confirmation screen with the recall id.
     Then Maria is on the Recall details page
     And Maria is able to see the details submitted earlier
+    And Maria downloads the documents
     When Maria starts the assessment process for the recall
-    #  FIXME - UI Bug https://dsdmoj.atlassian.net/browse/PUD-379
     Then Maria is on the decision on recall recommendation page
+    #  FIXME - UI Bug https://dsdmoj.atlassian.net/browse/PUD-379
     When Maria confirms the recall length as 14 days
     Then the recall is authorised
     When Maria downloads revocation order which was generated
     Then a revocation order is downloaded
 
-#  FIXME - this should use the ID of the recall that we just created
-  Scenario: Assess a recall
-    Given Maria navigates to manage recall service
-    When Maria logs in
-    And Maria clicks To Do
-    Then Maria is on the ToDo Recalls page
-    When Maria clicks on the first View link to view a recall
+    ### Assess flow
+    When Maria navigates to the 'To do' list
+    When Maria clicks on the View link for the booked recall
     Then Maria is on the Recall details page
+    And Maria is able to see the details submitted earlier
