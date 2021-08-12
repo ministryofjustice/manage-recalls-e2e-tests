@@ -7,6 +7,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actions.Click;
 import net.serenitybdd.screenplay.actions.Enter;
 import net.serenitybdd.screenplay.actions.EnterPassword;
@@ -15,20 +16,24 @@ import net.serenitybdd.screenplay.actors.OnlineCast;
 import net.serenitybdd.screenplay.conditions.Check;
 import net.serenitybdd.screenplay.ensure.Ensure;
 import net.serenitybdd.screenplay.targets.Target;
+import net.thucydides.core.pages.components.HtmlTable;
 import net.thucydides.core.util.EnvironmentVariables;
 import net.thucydides.core.util.SystemEnvironmentVariables;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import java.io.File;
 import java.util.concurrent.Callable;
 
 import static cucumber.pages.FindAnOffenderPage.VIEW_PROFILE_LINK;
 import static cucumber.pages.OffenderProfilePage.CREATE_RECALL_BUTTON;
-import static cucumber.pages.TodoRecallsListPage.FIND_SOMEONE_LINK;
-import static cucumber.pages.TodoRecallsListPage.RECALL_LIST_TODO_LINK;
+import static cucumber.pages.TodoRecallsListPage.*;
+import static cucumber.questions.ReadTextContent.textContent;
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static net.serenitybdd.screenplay.actors.OnStage.setTheStage;
-import static net.serenitybdd.screenplay.actors.OnStage.theActorCalled;
+import static net.serenitybdd.screenplay.actors.OnStage.*;
+import static net.thucydides.core.matchers.BeanMatchers.the;
 import static org.awaitility.Awaitility.await;
+import static org.hamcrest.Matchers.is;
 
 public class NavigationSteps {
 
@@ -79,9 +84,10 @@ public class NavigationSteps {
         userClicksOn(customer, FIND_SOMEONE_LINK);
     }
 
-    @And("{word} clicks To Do")
+    @And("{word} navigates to the 'To do' list")
     public void clickRecallListToDoLink(String customer) {
         userClicksOn(customer, RECALL_LIST_TODO_LINK);
+        userIsOnPageWithTitle(customer, TodoRecallsListPage.TITLE);
     }
 
     @Then("{word} is on the Find a person page")
@@ -92,11 +98,6 @@ public class NavigationSteps {
     @Then("{word} is on the Person profile page")
     public void onOffenderProfilePage(String customer) {
         userIsOnPageWithTitle(customer, OffenderProfilePage.TITLE);
-    }
-
-    @Then("{word} is on the ToDo Recalls page")
-    public void onToDoRecallsPage(String customer) {
-        userIsOnPageWithTitle(customer, TodoRecallsListPage.TITLE);
     }
 
     @When("{word} enters the NOMIS number {word}")
@@ -135,13 +136,9 @@ public class NavigationSteps {
         );
     }
 
-    @When("{word} downloads revocation order which was generated")
+    @Then("{word} downloads revocation order")
     public void clickOnRevocationOrderLink(String customer) {
         userClicksOn(customer, RecallAuthorisationPage.DOWNLOAD_REVOCATION_ORDER_LINK);
-    }
-
-    @Then("a revocation order is downloaded")
-    public void aRevocationOrderIsDownloaded() {
         await().atMost(10, SECONDS).until(revocationOrderIsDownloaded());
     }
 
@@ -168,15 +165,15 @@ public class NavigationSteps {
     @When("{word} submits the latest release date and releasing prison details")
     public void submitLatestReleaseDetails(String customer) {
         userEnters(customer, LastReleaseDetailsPage.RELEASING_PRISON, "Belmarsh");
-        userEnters(customer, RecallReceivedPage.DAY_FIELD, "03");
-        userEnters(customer, RecallReceivedPage.MONTH_FIELD, "08");
-        userEnters(customer, RecallReceivedPage.YEAR_FIELD, "2020");
-        userClicksOn(customer, RecallReceivedPage.CONTINUE_BUTTON);
+        userEnters(customer, LastReleaseDetailsPage.DAY_FIELD, "03");
+        userEnters(customer, LastReleaseDetailsPage.MONTH_FIELD, "08");
+        userEnters(customer, LastReleaseDetailsPage.YEAR_FIELD, "2020");
+        userClicksOn(customer, LastReleaseDetailsPage.CONTINUE_BUTTON);
     }
 
     @When("{word} submits the police contact details")
     public void submitPoliceContactDetails(String customer) {
-        userEnters(customer, PoliceContactDetailsPage.LOCAL_POLICE_STATION, "Brentwood, Essex");
+        userEnters(customer, PoliceContactDetailsPage.LOCAL_POLICE_SERVICE, "Brentwood, Essex");
         userClicksOn(customer, RecallReceivedPage.CONTINUE_BUTTON);
     }
 
@@ -184,13 +181,6 @@ public class NavigationSteps {
     public void onBookRecallPage(String customer) {
         userIsOnPageWithTitle(customer, BookRecallPage.TITLE);
         userClicksOn(customer, BookRecallPage.CONTINUE_BUTTON);
-    }
-
-    @When("{word} recommends a 14 day recall")
-    public void recommend14DayRecall(String customer) {
-        userIsOnPageWithTitle(customer, RecallRecommendationPage.TITLE);
-        userClicksOn(customer, RecallRecommendationPage.RECALL_LENGTH_14_DAYS);
-        userClicksOn(customer, RecallRecommendationPage.CONTINUE_BUTTON);
     }
 
     @Then("{word} sees confirmation that the new recall was created")
@@ -214,9 +204,16 @@ public class NavigationSteps {
         userClicksOn(customer, VIEW_PROFILE_LINK);
     }
 
-    @When("{word} clicks on the first View link to view a recall")
+    @When("{word} clicks on the View link for the recall that they have just booked")
     public void clickOnViewLink(String customer) {
-        userClicksOn(customer, TodoRecallsListPage.FIRST_ASSESS_RECALL_DETAILS_LINK);
+        Actor actor = theActorCalled(customer);
+        String recallId = actor.recall("RECALL_ID");
+        WebElement firstRow = HtmlTable.inTable(RECALLS_TABLE.resolveFor(actor))
+                .findFirstRowWhere(the("Recall ID", is(recallId)));
+
+        WebElement viewRecallLink = firstRow.findElement(By.cssSelector("[data-qa='viewRecallDetails']"));
+
+        viewRecallLink.click();
     }
 
     @Then("{word} is on the Recall details page")
@@ -255,9 +252,10 @@ public class NavigationSteps {
         userClicksOn(customer, DecisionOnRecallRecommendationPage.CONTINUE_BUTTON);
     }
 
-    @Then("the recall is authorised")
-    public void confirmRecallAuthorisation() {
-        isOnPageWithTitle(RecallAuthorisationPage.TITLE);
+    @Then("{word} can see that the recall is authorised")
+    public void confirmRecallAuthorisation(String customer) {
+        userIsOnPageWithTitle(customer, RecallAuthorisationPage.TITLE);
+        theActorCalled(customer).remember("RECALL_ID", textContent(RecallAuthorisationPage.RECALL_ID));
     }
 
     @Then("{word} downloads the documents")
@@ -267,7 +265,6 @@ public class NavigationSteps {
         userClicksOn(customer, RecallDetailsPage.RECALL_DOCUMENT_LINK_LICENCE);
         await().atMost(10, SECONDS).until(licenceIsDownloaded());
     }
-
 
     private Callable<Boolean> partAIsDownloaded() {
         return () -> fileIsDownloaded("/tmp", "part_a_recall_report.pdf");
@@ -292,9 +289,6 @@ public class NavigationSteps {
         );
     }
 
-    private void isOnPageWithTitle(String uniquePageTitle) {
-                Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(uniquePageTitle);
-    }
 
     private void userClicksOn(String customer, Target target) {
         theActorCalled(customer).attemptsTo(
