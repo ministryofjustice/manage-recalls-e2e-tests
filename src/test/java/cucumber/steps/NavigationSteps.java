@@ -204,7 +204,7 @@ public class NavigationSteps {
         userClicksOn(customer, VIEW_PROFILE_LINK);
     }
 
-    @When("{word} clicks on the View link for the booked recall")
+    @When("{word} clicks on the View link for the recall that they have just booked")
     public void clickOnViewLink(String customer) {
         Actor actor = theActorCalled(customer);
         String recallId = actor.recall("RECALL_ID");

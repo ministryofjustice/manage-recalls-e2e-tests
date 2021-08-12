@@ -26,10 +26,10 @@ Feature: Manage Recalls
     #  FIXME - UI Bug https://dsdmoj.atlassian.net/browse/PUD-379
     When Maria confirms the recall length as 14 days
     Then Maria can see that the recall is authorised
-    Then Maria downloads revocation order
+    And Maria downloads revocation order
 
     ### Assess flow
     When Maria navigates to the 'To do' list
-    When Maria clicks on the View link for the booked recall
+    When Maria clicks on the View link for the recall that they have just booked
     Then Maria is on the Recall details page
     And Maria is able to see the details submitted earlier
