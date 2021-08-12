@@ -136,13 +136,9 @@ public class NavigationSteps {
         );
     }
 
-    @When("{word} downloads revocation order which was generated")
+    @Then("{word} downloads revocation order")
     public void clickOnRevocationOrderLink(String customer) {
         userClicksOn(customer, RecallAuthorisationPage.DOWNLOAD_REVOCATION_ORDER_LINK);
-    }
-
-    @Then("a revocation order is downloaded")
-    public void aRevocationOrderIsDownloaded() {
         await().atMost(10, SECONDS).until(revocationOrderIsDownloaded());
     }
 

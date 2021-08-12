@@ -14,6 +14,7 @@ Feature: Manage Recalls
     When Maria submits the date and time of the recall request received from probation service
     And Maria submits the latest release date and releasing prison details
     And Maria submits the police contact details
+
     And Maria uploads two documents
     ###
     # TODO at some point this will change to just show the confirmation screen with the recall id.
@@ -25,8 +26,7 @@ Feature: Manage Recalls
     #  FIXME - UI Bug https://dsdmoj.atlassian.net/browse/PUD-379
     When Maria confirms the recall length as 14 days
     Then Maria can see that the recall is authorised
-    When Maria downloads revocation order which was generated
-    Then a revocation order is downloaded
+    Then Maria downloads revocation order
 
     ### Assess flow
     When Maria navigates to the 'To do' list
