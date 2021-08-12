@@ -256,10 +256,10 @@ public class NavigationSteps {
         userClicksOn(customer, DecisionOnRecallRecommendationPage.CONTINUE_BUTTON);
     }
 
-    @Then("the recall is authorised")
-    public void confirmRecallAuthorisation() {
-        isOnPageWithTitle(RecallAuthorisationPage.TITLE);
-        theActorInTheSpotlight().remember("RECALL_ID", textContent(RecallAuthorisationPage.RECALL_ID));
+    @Then("{word} can see that the recall is authorised")
+    public void confirmRecallAuthorisation(String customer) {
+        userIsOnPageWithTitle(customer, RecallAuthorisationPage.TITLE);
+        theActorCalled(customer).remember("RECALL_ID", textContent(RecallAuthorisationPage.RECALL_ID));
     }
 
     @Then("{word} downloads the documents")
@@ -269,7 +269,6 @@ public class NavigationSteps {
         userClicksOn(customer, RecallDetailsPage.RECALL_DOCUMENT_LINK_LICENCE);
         await().atMost(10, SECONDS).until(licenceIsDownloaded());
     }
-
 
     private Callable<Boolean> partAIsDownloaded() {
         return () -> fileIsDownloaded("/tmp", "part_a_recall_report.pdf");
@@ -294,9 +293,6 @@ public class NavigationSteps {
         );
     }
 
-    private void isOnPageWithTitle(String uniquePageTitle) {
-        Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(uniquePageTitle);
-    }
 
     private void userClicksOn(String customer, Target target) {
         theActorCalled(customer).attemptsTo(

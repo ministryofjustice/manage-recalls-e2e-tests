@@ -24,7 +24,7 @@ Feature: Manage Recalls
     Then Maria is on the decision on recall recommendation page
     #  FIXME - UI Bug https://dsdmoj.atlassian.net/browse/PUD-379
     When Maria confirms the recall length as 14 days
-    Then the recall is authorised
+    Then Maria can see that the recall is authorised
     When Maria downloads revocation order which was generated
     Then a revocation order is downloaded
 
