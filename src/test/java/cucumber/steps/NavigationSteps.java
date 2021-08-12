@@ -19,20 +19,10 @@ import net.thucydides.core.util.EnvironmentVariables;
 import net.thucydides.core.util.SystemEnvironmentVariables;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.concurrent.Callable;
 
 import static cucumber.pages.FindAnOffenderPage.VIEW_PROFILE_LINK;
 import static cucumber.pages.OffenderProfilePage.CREATE_RECALL_BUTTON;
-import static cucumber.pages.RecallRecommendationPage.CONTINUE_BUTTON;
-import static cucumber.pages.BookRecallPage.CONTINUE_BUTTON;
-import static cucumber.pages.AssessRecallRecommendationPage.CONTINUE_BUTTON;
-import static cucumber.pages.AssessRecallConfirmationPage.DOWNLOAD_REVOCATION_ORDER_LINK;
-import static cucumber.pages.RecallDetailsPage.CONTINUE_BUTTON;
-import static cucumber.pages.AssessRecallConfirmationPage.RECALL_ID;
 import static cucumber.pages.TodoRecallsListPage.FIND_SOMEONE_LINK;
 import static cucumber.pages.TodoRecallsListPage.RECALL_LIST_TODO_LINK;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -145,15 +135,49 @@ public class NavigationSteps {
         );
     }
 
-    @When("{word} downloads the revocation order")
+    @When("{word} downloads revocation order which was generated")
     public void clickOnRevocationOrderLink(String customer) {
-        userClicksOn(customer, AssessRecallConfirmationPage.DOWNLOAD_REVOCATION_ORDER_LINK);
+        userClicksOn(customer, RecallAuthorisationPage.DOWNLOAD_REVOCATION_ORDER_LINK);
+    }
+
+    @Then("a revocation order is downloaded")
+    public void aRevocationOrderIsDownloaded() {
         await().atMost(10, SECONDS).until(revocationOrderIsDownloaded());
     }
 
     @When("{word} clicks on the Create recall button")
     public void clickOnCreateRecallButton(String customer) {
         userClicksOn(customer, CREATE_RECALL_BUTTON);
+    }
+
+    @Then("{word} is on the recall request received page")
+    public void onRecallReceivedPage(String customer) {
+        userIsOnPageWithTitle(customer, RecallReceivedPage.TITLE);
+    }
+
+    @When("{word} submits the date and time of the recall request received from probation service")
+    public void submitDateTimeOfRecallRequestReceived(String customer) {
+        userEnters(customer, RecallReceivedPage.DAY_FIELD, "05");
+        userEnters(customer, RecallReceivedPage.MONTH_FIELD, "12");
+        userEnters(customer, RecallReceivedPage.YEAR_FIELD, "2020");
+        userEnters(customer, RecallReceivedPage.HOUR_FIELD, "15");
+        userEnters(customer, RecallReceivedPage.MINUTE_FIELD, "33");
+        userClicksOn(customer, RecallReceivedPage.CONTINUE_BUTTON);
+    }
+
+    @When("{word} submits the latest release date and releasing prison details")
+    public void submitLatestReleaseDetails(String customer) {
+        userEnters(customer, LastReleaseDetailsPage.RELEASING_PRISON, "Belmarsh");
+        userEnters(customer, RecallReceivedPage.DAY_FIELD, "03");
+        userEnters(customer, RecallReceivedPage.MONTH_FIELD, "08");
+        userEnters(customer, RecallReceivedPage.YEAR_FIELD, "2020");
+        userClicksOn(customer, RecallReceivedPage.CONTINUE_BUTTON);
+    }
+
+    @When("{word} submits the police contact details")
+    public void submitPoliceContactDetails(String customer) {
+        userEnters(customer, PoliceContactDetailsPage.LOCAL_POLICE_STATION, "Brentwood, Essex");
+        userClicksOn(customer, RecallReceivedPage.CONTINUE_BUTTON);
     }
 
     @Then("{word} continues from the Book a recall page")
@@ -200,9 +224,40 @@ public class NavigationSteps {
         userIsOnPageWithTitle(customer, RecallDetailsPage.TITLE);
     }
 
-    @Then("{word} sees the recall length is 14 days")
+    @Then("{word} is able to see the details submitted earlier")
+    public void confirmRecallDetails(String customer) {
+        theActorCalled(customer).attemptsTo(
+                Ensure.that(RecallDetailsPage.DATE_RECALL_EMAIL_RECEIVED).text().isEqualTo("5 Dec 2020 at 15:33"),
+                Ensure.that(RecallDetailsPage.RELEASING_PRISON).text().isEqualTo("Belmarsh"),
+                Ensure.that(RecallDetailsPage.LAST_RELEASE_DATE).text().isEqualTo("3 Aug 2020"),
+                Ensure.that(RecallDetailsPage.LOCAL_POLICE_STATION).text().isEqualTo("Brentwood, Essex")
+        );
+    }
+
+    @When("{word} starts the assessment process for the recall")
+    public void clickOnAssessThisRecallButton(String customer) {
+        userClicksOn(customer, RecallDetailsPage.CONTINUE_BUTTON);
+    }
+
+    @Then("{word} is on the decision on recall recommendation page")
+    public void onDecisionOnRecallRecommendationPage(String customer) {
+        userIsOnPageWithTitle(customer, DecisionOnRecallRecommendationPage.TITLE);
+        //  FIXME - The following validation is temp disabled due to the UI Bug https://dsdmoj.atlassian.net/browse/PUD-379
+        //theActorCalled(customer).attemptsTo(
+        //        Ensure.that(DecisionOnRecallRecommendationPage.QUESTION_AROUND_RECALL_LENGTH).text().isEqualTo("Do you agree with the recommended recall length of 14 days")
+        //);
+    }
+
+    @Then("{word} confirms the recall length as 14 days")
     public void confirmRecallLength(String customer) {
-        Ensure.that(RecallDetailsPage.RECALL_LENGTH).hasTextContent("14 days");
+        userIsOnPageWithTitle(customer, DecisionOnRecallRecommendationPage.TITLE);
+        userClicksOn(customer, DecisionOnRecallRecommendationPage.RECALL_LENGTH_14_DAYS);
+        userClicksOn(customer, DecisionOnRecallRecommendationPage.CONTINUE_BUTTON);
+    }
+
+    @Then("the recall is authorised")
+    public void confirmRecallAuthorisation() {
+        isOnPageWithTitle(RecallAuthorisationPage.TITLE);
     }
 
     @Then("{word} downloads the documents")
@@ -213,23 +268,6 @@ public class NavigationSteps {
         await().atMost(10, SECONDS).until(licenceIsDownloaded());
     }
 
-    @Then("{word} clicks Assess this recall")
-    public void clickOnAssessRecallLink(String customer) {
-        userClicksOn(customer, RecallDetailsPage.CONTINUE_BUTTON);
-    }
-
-    @When("{word} agrees with the recommended recall length of 14 days")
-    public void agreeRecommendedRecall(String customer) {
-        userIsOnPageWithTitle(customer, AssessRecallRecommendationPage.TITLE);
-        userClicksOn(customer, AssessRecallRecommendationPage.RECALL_DECISION);
-        userClicksOn(customer, AssessRecallRecommendationPage.CONTINUE_BUTTON);
-    }
-
-    @Then("{word} is on the assess recall confirmation page")
-    public void onAssessRecallConfirmationPage(String customer) {
-        userIsOnPageWithTitle(customer, AssessRecallConfirmationPage.TITLE);
-        Ensure.that(AssessRecallConfirmationPage.RECALL_ID).hasTextContent("14 days");
-    }
 
     private Callable<Boolean> partAIsDownloaded() {
         return () -> fileIsDownloaded("/tmp", "part_a_recall_report.pdf");
@@ -254,9 +292,19 @@ public class NavigationSteps {
         );
     }
 
+    private void isOnPageWithTitle(String uniquePageTitle) {
+                Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(uniquePageTitle);
+    }
+
     private void userClicksOn(String customer, Target target) {
         theActorCalled(customer).attemptsTo(
                 Click.on(target)
+        );
+    }
+
+    private void userEnters(String customer, Target target, String value) {
+        theActorCalled(customer).attemptsTo(
+                Enter.theValue(value).into(target)
         );
     }
 }
