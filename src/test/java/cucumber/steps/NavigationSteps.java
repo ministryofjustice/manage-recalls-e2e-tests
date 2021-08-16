@@ -8,10 +8,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import net.serenitybdd.screenplay.Actor;
-import net.serenitybdd.screenplay.actions.Click;
-import net.serenitybdd.screenplay.actions.Enter;
-import net.serenitybdd.screenplay.actions.EnterPassword;
-import net.serenitybdd.screenplay.actions.Open;
+import net.serenitybdd.screenplay.actions.*;
 import net.serenitybdd.screenplay.actors.OnlineCast;
 import net.serenitybdd.screenplay.conditions.Check;
 import net.serenitybdd.screenplay.ensure.Ensure;
@@ -30,6 +27,8 @@ import static cucumber.pages.OffenderProfilePage.CREATE_RECALL_BUTTON;
 import static cucumber.pages.TodoRecallsListPage.*;
 import static cucumber.questions.ReadTextContent.textContent;
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static net.serenitybdd.core.Serenity.sessionVariableCalled;
+import static net.serenitybdd.core.Serenity.setSessionVariable;
 import static net.serenitybdd.screenplay.actors.OnStage.*;
 import static net.thucydides.core.matchers.BeanMatchers.the;
 import static org.awaitility.Awaitility.await;
@@ -177,6 +176,21 @@ public class NavigationSteps {
         userClicksOn(customer, RecallReceivedPage.CONTINUE_BUTTON);
     }
 
+    @When("{word} submits any vulnerability and contraband related details for the offender")
+    public void submitVulnerabilityAndContrabandDetails(String customer) {
+        setSessionVariable("vulnerabilityDiversityDetail").to("offender vulnerable to bullying");
+        setSessionVariable("contrabandDetail").to("yes, the offender has smuggled drugs in the past");
+        setSessionVariable("mappaLevel").to("LEVEL_1");
+        userClicksOn(customer, VulnerabilityAndContrabandDetailsPage.YES_OPTION_FOR_VULNERABILITIES);
+        userEnters(customer, VulnerabilityAndContrabandDetailsPage.TEXT_FIELD_FOR_VULNERABILITIES, sessionVariableCalled("vulnerabilityDiversityDetail"));
+        userClicksOn(customer, VulnerabilityAndContrabandDetailsPage.YES_OPTION_FOR_CONTRABAND);
+        userEnters(customer, VulnerabilityAndContrabandDetailsPage.TEXT_FIELD_FOR_CONTRABAND, sessionVariableCalled("contrabandDetail"));
+        theActorCalled(customer).attemptsTo(
+                SelectFromOptions.byValue(sessionVariableCalled("mappaLevel")).from(VulnerabilityAndContrabandDetailsPage.SELECT_MAPPA_LEVEL)
+        );
+        userClicksOn(customer, VulnerabilityAndContrabandDetailsPage.CONTINUE_BUTTON);
+    }
+
     @Then("{word} continues from the Book a recall page")
     public void onBookRecallPage(String customer) {
         userIsOnPageWithTitle(customer, BookRecallPage.TITLE);
@@ -227,7 +241,10 @@ public class NavigationSteps {
                 Ensure.that(RecallDetailsPage.DATE_RECALL_EMAIL_RECEIVED).text().isEqualTo("5 Dec 2020 at 15:33"),
                 Ensure.that(RecallDetailsPage.RELEASING_PRISON).text().isEqualTo("Belmarsh"),
                 Ensure.that(RecallDetailsPage.LAST_RELEASE_DATE).text().isEqualTo("3 Aug 2020"),
-                Ensure.that(RecallDetailsPage.LOCAL_POLICE_STATION).text().isEqualTo("Brentwood, Essex")
+                Ensure.that(RecallDetailsPage.LOCAL_POLICE_STATION).text().isEqualTo("Brentwood, Essex"),
+                Ensure.that(RecallDetailsPage.VULNERABILITY_DIVERSITY_DETAIL).text().isEqualTo(sessionVariableCalled("vulnerabilityDiversityDetail")),
+                Ensure.that(RecallDetailsPage.CONTRABAND_DETAIL).text().isEqualTo(sessionVariableCalled("contrabandDetail")),
+                Ensure.that(RecallDetailsPage.MAPPA_LEVEL).text().isEqualTo(sessionVariableCalled("mappaLevel"))
         );
     }
 
@@ -260,10 +277,10 @@ public class NavigationSteps {
 
     @Then("{word} downloads the documents")
     public void downloadRecallDocument(String customer) {
-        userClicksOn(customer, RecallDetailsPage.RECALL_DOCUMENT_LINK_PART_A);
-        await().atMost(10, SECONDS).until(partAIsDownloaded());
-        userClicksOn(customer, RecallDetailsPage.RECALL_DOCUMENT_LINK_LICENCE);
-        await().atMost(10, SECONDS).until(licenceIsDownloaded());
+         userClicksOn(customer, RecallDetailsPage.RECALL_DOCUMENT_LINK_PART_A);
+         await().atMost(10, SECONDS).until(partAIsDownloaded());
+         userClicksOn(customer, RecallDetailsPage.RECALL_DOCUMENT_LINK_LICENCE);
+         await().atMost(10, SECONDS).until(licenceIsDownloaded());
     }
 
     private Callable<Boolean> partAIsDownloaded() {

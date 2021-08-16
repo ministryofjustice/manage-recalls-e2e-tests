@@ -14,7 +14,7 @@ Feature: Manage Recalls
     When Maria submits the date and time of the recall request received from probation service
     And Maria submits the latest release date and releasing prison details
     And Maria submits the police contact details
-
+    And Maria submits any vulnerability and contraband related details for the offender
     And Maria uploads two documents
     ###
     # TODO at some point this will change to just show the confirmation screen with the recall id.
