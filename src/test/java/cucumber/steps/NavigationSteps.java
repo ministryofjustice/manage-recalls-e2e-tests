@@ -161,12 +161,26 @@ public class NavigationSteps {
         userClicksOn(customer, RecallReceivedPage.CONTINUE_BUTTON);
     }
 
-    @When("{word} submits the latest release date and releasing prison details")
+    @When("{word} submits the sentence, offence and release details")
     public void submitLatestReleaseDetails(String customer) {
-        userEnters(customer, LastReleaseDetailsPage.RELEASING_PRISON, "Belmarsh");
-        userEnters(customer, LastReleaseDetailsPage.DAY_FIELD, "03");
-        userEnters(customer, LastReleaseDetailsPage.MONTH_FIELD, "08");
-        userEnters(customer, LastReleaseDetailsPage.YEAR_FIELD, "2020");
+        userEnters(customer, LastReleaseDetailsPage.dateDayInput("sentenceDate"), "03");
+        userEnters(customer, LastReleaseDetailsPage.dateMonthInput("sentenceDate"), "08");
+        userEnters(customer, LastReleaseDetailsPage.dateYearInput("sentenceDate"), "2020");
+        userEnters(customer, LastReleaseDetailsPage.dateDayInput("licenceExpiryDate"), "12");
+        userEnters(customer, LastReleaseDetailsPage.dateMonthInput("licenceExpiryDate"), "10");
+        userEnters(customer, LastReleaseDetailsPage.dateYearInput("licenceExpiryDate"), "2021");
+        userEnters(customer, LastReleaseDetailsPage.dateDayInput("sentenceExpiryDate"), "03");
+        userEnters(customer, LastReleaseDetailsPage.dateMonthInput("sentenceExpiryDate"), "11");
+        userEnters(customer, LastReleaseDetailsPage.dateYearInput("sentenceExpiryDate"), "2021");
+        userEnters(customer, LastReleaseDetailsPage.getTargetByName("sentencingCourt"), "Manchester Crown Court");
+        userEnters(customer, LastReleaseDetailsPage.getTargetByName("indexOffence"), "Burglary");
+        userEnters(customer, LastReleaseDetailsPage.getTargetByName("lastReleasePrison"), "Belmarsh");
+        userEnters(customer, LastReleaseDetailsPage.dateDayInput("lastReleaseDate"), "15");
+        userEnters(customer, LastReleaseDetailsPage.dateMonthInput("lastReleaseDate"), "03");
+        userEnters(customer, LastReleaseDetailsPage.dateYearInput("lastReleaseDate"), "2021");
+        userEnters(customer, LastReleaseDetailsPage.dateDayInput("conditionalReleaseDate"), "24");
+        userEnters(customer, LastReleaseDetailsPage.dateMonthInput("conditionalReleaseDate"), "06");
+        userEnters(customer, LastReleaseDetailsPage.dateYearInput("conditionalReleaseDate"), "2022");
         userClicksOn(customer, LastReleaseDetailsPage.CONTINUE_BUTTON);
     }
 
@@ -238,13 +252,20 @@ public class NavigationSteps {
     @Then("{word} is able to see the details submitted earlier")
     public void confirmRecallDetails(String customer) {
         theActorCalled(customer).attemptsTo(
+                // Recall
                 Ensure.that(RecallDetailsPage.DATE_RECALL_EMAIL_RECEIVED).text().isEqualTo("5 Dec 2020 at 15:33"),
-                Ensure.that(RecallDetailsPage.RELEASING_PRISON).text().isEqualTo("Belmarsh"),
-                Ensure.that(RecallDetailsPage.LAST_RELEASE_DATE).text().isEqualTo("3 Aug 2020"),
                 Ensure.that(RecallDetailsPage.LOCAL_POLICE_STATION).text().isEqualTo("Brentwood, Essex"),
+                // Issues and needs
                 Ensure.that(RecallDetailsPage.VULNERABILITY_DIVERSITY_DETAIL).text().isEqualTo(sessionVariableCalled("vulnerabilityDiversityDetail")),
                 Ensure.that(RecallDetailsPage.CONTRABAND_DETAIL).text().isEqualTo(sessionVariableCalled("contrabandDetail")),
-                Ensure.that(RecallDetailsPage.MAPPA_LEVEL).text().isEqualTo(sessionVariableCalled("mappaLevel"))
+                Ensure.that(RecallDetailsPage.MAPPA_LEVEL).text().isEqualTo("Level 1"),
+                // Sentence, offence and release details
+                Ensure.that(RecallDetailsPage.getTargetByDataQa("sentenceDate")).text().isEqualTo("3 Aug 2020"),
+                Ensure.that(RecallDetailsPage.getTargetByDataQa("sentenceExpiryDate")).text().isEqualTo("3 Nov 2021"),
+                Ensure.that(RecallDetailsPage.getTargetByDataQa("licenceExpiryDate")).text().isEqualTo("12 Oct 2021"),
+                Ensure.that(RecallDetailsPage.getTargetByDataQa("conditionalReleaseDate")).text().isEqualTo("24 Jun 2022"),
+                Ensure.that(RecallDetailsPage.getTargetByDataQa("lastReleasePrison")).text().isEqualTo("Belmarsh"),
+                Ensure.that(RecallDetailsPage.getTargetByDataQa("lastReleaseDate")).text().isEqualTo("15 Mar 2021")
         );
     }
 

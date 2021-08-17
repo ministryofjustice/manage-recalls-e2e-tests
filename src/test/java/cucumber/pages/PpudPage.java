@@ -8,7 +8,7 @@ public abstract class PpudPage extends PageObject {
 
     public static Target CONTINUE_BUTTON = getTargetByDataQa("continueButton");
 
-    protected static Target getTargetByDataQa(String dataQa) {
+    public static Target getTargetByDataQa(String dataQa) {
         return Target.the(dataQa + " matches").locatedBy("[data-qa='" + dataQa + "']");
     }
 
@@ -16,7 +16,17 @@ public abstract class PpudPage extends PageObject {
         return Target.the(value + " matches").locatedBy("[value='" + value + "']");
     }
 
-    protected static Target getTargetByName(String name) {
+    public static Target getTargetByName(String name) {
         return Target.the(name + " matches").locatedBy("[name='" + name + "']");
+    }
+
+    public static Target dateYearInput(String fieldsetName) {
+        return Target.the(fieldsetName + " matches").locatedBy("[name='" + fieldsetName + "Year']");
+    }
+    public static Target dateMonthInput(String fieldsetName) {
+        return Target.the(fieldsetName + " matches").locatedBy("[name='" + fieldsetName + "Month']");
+    }
+    public static Target dateDayInput(String fieldsetName) {
+        return Target.the(fieldsetName + " matches").locatedBy("[name='" + fieldsetName + "Day']");
     }
 }
