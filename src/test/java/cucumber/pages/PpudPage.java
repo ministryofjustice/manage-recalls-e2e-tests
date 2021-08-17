@@ -2,6 +2,7 @@ package cucumber.pages;
 
 import net.serenitybdd.screenplay.targets.Target;
 import net.thucydides.core.pages.PageObject;
+import org.openqa.selenium.By;
 
 public abstract class PpudPage extends PageObject {
     protected static final String TITLE_ROOT = "Manage a recall for an offender on licence - ";
@@ -17,16 +18,18 @@ public abstract class PpudPage extends PageObject {
     }
 
     public static Target getTargetByName(String name) {
-        return Target.the(name + " matches").locatedBy("[name='" + name + "']");
+        return Target.the(name + " matches").located(By.name(name));
     }
 
     public static Target dateYearInput(String fieldsetName) {
-        return Target.the(fieldsetName + " matches").locatedBy("[name='" + fieldsetName + "Year']");
+        return Target.the(fieldsetName + " matches").located(By.name(fieldsetName + "Year"));
     }
+
     public static Target dateMonthInput(String fieldsetName) {
-        return Target.the(fieldsetName + " matches").locatedBy("[name='" + fieldsetName + "Month']");
+        return Target.the(fieldsetName + " matches").located(By.name(fieldsetName + "Month"));
     }
+
     public static Target dateDayInput(String fieldsetName) {
-        return Target.the(fieldsetName + " matches").locatedBy("[name='" + fieldsetName + "Day']");
+        return Target.the(fieldsetName + " matches").located(By.name(fieldsetName + "Day"));
     }
 }
