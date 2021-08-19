@@ -12,7 +12,7 @@ Feature: Manage Recalls
     And Maria clicks on the Create recall button
     Then Maria is on the recall request received page
     When Maria submits the date and time of the recall request received from probation service
-    And Maria submits the latest release date and releasing prison details
+    And Maria submits the sentence, offence and release details
     And Maria submits the police contact details
     And Maria submits any vulnerability and contraband related details for the offender
     And Maria uploads two documents

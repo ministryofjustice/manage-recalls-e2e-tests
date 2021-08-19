@@ -6,8 +6,6 @@ public class RecallDetailsPage extends PpudPage {
 
     public static final String TITLE = TITLE_ROOT + "Assess a recall";
     public static final Target DATE_RECALL_EMAIL_RECEIVED = getTargetByDataQa("recallEmailReceivedDateTime");
-    public static final Target RELEASING_PRISON = getTargetByDataQa("lastReleasePrison");
-    public static final Target LAST_RELEASE_DATE = getTargetByDataQa("lastReleaseDateTime");
     public static final Target LOCAL_POLICE_STATION = getTargetByDataQa("localPoliceService");
     public static final Target VULNERABILITY_DIVERSITY_DETAIL = getTargetByDataQa("vulnerabilityDiversityDetail");
     public static final Target CONTRABAND_DETAIL = getTargetByDataQa("contrabandDetail");
