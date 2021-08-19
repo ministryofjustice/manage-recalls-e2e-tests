@@ -175,6 +175,7 @@ public class NavigationSteps {
         userEnters(customer, LastReleaseDetailsPage.getTargetByName("sentenceLengthYears"), "3");
         userEnters(customer, LastReleaseDetailsPage.getTargetByName("sentenceLengthMonths"), "2");
         userEnters(customer, LastReleaseDetailsPage.getTargetByName("sentencingCourt"), "Manchester Crown Court");
+        userEnters(customer, LastReleaseDetailsPage.getTargetByName("bookingNumber"), "A123456");
         userEnters(customer, LastReleaseDetailsPage.getTargetByName("indexOffence"), "Burglary");
         userEnters(customer, LastReleaseDetailsPage.getTargetByName("lastReleasePrison"), "Belmarsh");
         userEnters(customer, LastReleaseDetailsPage.dateDayInput("lastReleaseDate"), "15");
@@ -269,6 +270,7 @@ public class NavigationSteps {
                 Ensure.that(RecallDetailsPage.getTargetByDataQa("lastReleasePrison")).text().isEqualTo("Belmarsh"),
                 Ensure.that(RecallDetailsPage.getTargetByDataQa("lastReleaseDate")).text().isEqualTo("15 Mar 2021"),
                 Ensure.that(RecallDetailsPage.getTargetByDataQa("sentenceLength")).text().isEqualTo("3 years 2 months")
+                Ensure.that(RecallDetailsPage.getTargetByDataQa("bookingNumber")).text().isEqualTo("A123456")
         );
     }
 
