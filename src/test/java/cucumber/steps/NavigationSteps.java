@@ -213,14 +213,14 @@ public class NavigationSteps {
         setSessionVariable("probationOfficerName").to("John Smith");
         setSessionVariable("probationOfficerPhoneNumber").to("07775825221");
         setSessionVariable("probationOfficerEmail").to("john.smith@digital.justice.gov.uk");
-        setSessionVariable("probationDivision").to("London");
+        setSessionVariable("probationDivision").to("LONDON");
         setSessionVariable("asstChiefOfficerName").to("Jonny Thorn");
 
         theActorCalled(customer).attemptsTo(
                 Enter.theValue(sessionVariableCalled("probationOfficerName")).into(ProbationDetailsPage.PROBATION_OFFICER_NAME_FIELD),
-                Enter.theValue(sessionVariableCalled("probationOfficerPhoneNumber")).into(ProbationDetailsPage.PROBATION_OFFICER_PHONE_NO_FIELD),
                 Enter.theValue(sessionVariableCalled("probationOfficerEmail")).into(ProbationDetailsPage.PROBATION_OFFICER_EMAIL_FIELD),
-                Enter.theValue(sessionVariableCalled("probationDivision")).into(ProbationDetailsPage.PROBATION_DIVISION_FIELD),
+                Enter.theValue(sessionVariableCalled("probationOfficerPhoneNumber")).into(ProbationDetailsPage.PROBATION_OFFICER_PHONE_NO_FIELD),
+                SelectFromOptions.byValue(sessionVariableCalled("probationDivision")).from(ProbationDetailsPage.PROBATION_DIVISION_DROPDOWN),
                 Enter.theValue(sessionVariableCalled("asstChiefOfficerName")).into(ProbationDetailsPage.ASSISTANT_CHIEF_OFFICER_NAME_FIELD),
                 Click.on(PpudPage.CONTINUE_BUTTON)
         );
