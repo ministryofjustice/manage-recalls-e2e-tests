@@ -172,6 +172,8 @@ public class NavigationSteps {
         userEnters(customer, LastReleaseDetailsPage.dateDayInput("sentenceExpiryDate"), "03");
         userEnters(customer, LastReleaseDetailsPage.dateMonthInput("sentenceExpiryDate"), "11");
         userEnters(customer, LastReleaseDetailsPage.dateYearInput("sentenceExpiryDate"), "2021");
+        userEnters(customer, LastReleaseDetailsPage.getTargetByName("sentenceLengthYears"), "3");
+        userEnters(customer, LastReleaseDetailsPage.getTargetByName("sentenceLengthMonths"), "2");
         userEnters(customer, LastReleaseDetailsPage.getTargetByName("sentencingCourt"), "Manchester Crown Court");
         userEnters(customer, LastReleaseDetailsPage.getTargetByName("indexOffence"), "Burglary");
         userEnters(customer, LastReleaseDetailsPage.getTargetByName("lastReleasePrison"), "Belmarsh");
@@ -265,7 +267,8 @@ public class NavigationSteps {
                 Ensure.that(RecallDetailsPage.getTargetByDataQa("licenceExpiryDate")).text().isEqualTo("12 Oct 2021"),
                 Ensure.that(RecallDetailsPage.getTargetByDataQa("conditionalReleaseDate")).text().isEqualTo("24 Jun 2022"),
                 Ensure.that(RecallDetailsPage.getTargetByDataQa("lastReleasePrison")).text().isEqualTo("Belmarsh"),
-                Ensure.that(RecallDetailsPage.getTargetByDataQa("lastReleaseDate")).text().isEqualTo("15 Mar 2021")
+                Ensure.that(RecallDetailsPage.getTargetByDataQa("lastReleaseDate")).text().isEqualTo("15 Mar 2021"),
+                Ensure.that(RecallDetailsPage.getTargetByDataQa("sentenceLength")).text().isEqualTo("3 years 2 months")
         );
     }
 
