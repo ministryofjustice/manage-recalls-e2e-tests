@@ -15,7 +15,6 @@ public class RecallDetailsPage extends PpudPage {
     public static final Target PROBATION_OFFICER_EMAIL = getTargetByDataQa("probationOfficerEmail");
     public static final Target PROBATION_DIVISION = getTargetByDataQa("probationDivision");
     public static final Target ASSISTANT_CHIEF_OFFICER_NAME = getTargetByDataQa("authorisingAssistantChiefOfficer");
-
     public static final Target RECALL_DOCUMENT_LINK_PART_A = getTargetByDataQa("uploadedDocument-PART_A_RECALL_REPORT");
     public static final Target RECALL_DOCUMENT_LINK_LICENCE = getTargetByDataQa("uploadedDocument-LICENCE");
 }
