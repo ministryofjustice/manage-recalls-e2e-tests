@@ -216,14 +216,14 @@ public class NavigationSteps {
         setSessionVariable("probationDivision").to("LONDON");
         setSessionVariable("asstChiefOfficerName").to("Jonny Thorn");
 
+        userEnters(customer, ProbationDetailsPage.PROBATION_OFFICER_NAME_FIELD, sessionVariableCalled("probationOfficerName"));
+        userEnters(customer, ProbationDetailsPage.PROBATION_OFFICER_EMAIL_FIELD, sessionVariableCalled("probationOfficerEmail"));
+        userEnters(customer, ProbationDetailsPage.PROBATION_OFFICER_PHONE_NO_FIELD, sessionVariableCalled("probationOfficerPhoneNumber"));
         theActorCalled(customer).attemptsTo(
-                Enter.theValue(sessionVariableCalled("probationOfficerName")).into(ProbationDetailsPage.PROBATION_OFFICER_NAME_FIELD),
-                Enter.theValue(sessionVariableCalled("probationOfficerEmail")).into(ProbationDetailsPage.PROBATION_OFFICER_EMAIL_FIELD),
-                Enter.theValue(sessionVariableCalled("probationOfficerPhoneNumber")).into(ProbationDetailsPage.PROBATION_OFFICER_PHONE_NO_FIELD),
-                SelectFromOptions.byValue(sessionVariableCalled("probationDivision")).from(ProbationDetailsPage.PROBATION_DIVISION_DROPDOWN),
-                Enter.theValue(sessionVariableCalled("asstChiefOfficerName")).into(ProbationDetailsPage.ASSISTANT_CHIEF_OFFICER_NAME_FIELD),
-                Click.on(PpudPage.CONTINUE_BUTTON)
+                SelectFromOptions.byValue(sessionVariableCalled("probationDivision")).from(ProbationDetailsPage.PROBATION_DIVISION_DROPDOWN)
         );
+        userEnters(customer, ProbationDetailsPage.ASSISTANT_CHIEF_OFFICER_NAME_FIELD, sessionVariableCalled("asstChiefOfficerName"));
+        userClicksOn(customer, ProbationDetailsPage.CONTINUE_BUTTON);
     }
 
     @Then("{word} continues from the Book a recall page")
@@ -293,7 +293,7 @@ public class NavigationSteps {
                 Ensure.that(RecallDetailsPage.PROBATION_OFFICER_NAME).text().isEqualTo(sessionVariableCalled("probationOfficerName")),
                 Ensure.that(RecallDetailsPage.PROBATION_OFFICER_PHONE_NO).text().isEqualTo(sessionVariableCalled("probationOfficerPhoneNumber")),
                 Ensure.that(RecallDetailsPage.PROBATION_OFFICER_EMAIL).text().isEqualTo(sessionVariableCalled("probationOfficerEmail")),
-                Ensure.that(RecallDetailsPage.PROBATION_DIVISION).text().isEqualTo(sessionVariableCalled("probationOfficerEmail")),
+                Ensure.that(RecallDetailsPage.PROBATION_DIVISION).text().isEqualTo(sessionVariableCalled("probationDivision")),
                 Ensure.that(RecallDetailsPage.ASSISTANT_CHIEF_OFFICER_NAME).text().isEqualTo(sessionVariableCalled("asstChiefOfficerName"))
         );
     }
