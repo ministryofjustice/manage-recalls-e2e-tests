@@ -15,6 +15,7 @@ Feature: Manage Recalls
     And Maria submits the sentence, offence and release details
     And Maria submits the police contact details
     And Maria submits any vulnerability and contraband related details for the offender
+    And Maria submits the probation officer details
     And Maria uploads two documents
     ###
     # TODO at some point this will change to just show the confirmation screen with the recall id.

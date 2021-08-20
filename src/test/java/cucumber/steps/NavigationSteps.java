@@ -208,6 +208,24 @@ public class NavigationSteps {
         userClicksOn(customer, VulnerabilityAndContrabandDetailsPage.CONTINUE_BUTTON);
     }
 
+    @When("{word} submits the probation officer details")
+    public void submitProbationOfficerDetails(String customer){
+        setSessionVariable("probationOfficerName").to("John Smith");
+        setSessionVariable("probationOfficerPhoneNumber").to("07775825221");
+        setSessionVariable("probationOfficerEmail").to("john.smith@digital.justice.gov.uk");
+        setSessionVariable("probationDivision").to("London");
+        setSessionVariable("asstChiefOfficerName").to("Jonny Thorn");
+
+        theActorCalled(customer).attemptsTo(
+                Enter.theValue(sessionVariableCalled("probationOfficerName")).into(ProbationDetailsPage.PROBATION_OFFICER_NAME_FIELD),
+                Enter.theValue(sessionVariableCalled("probationOfficerPhoneNumber")).into(ProbationDetailsPage.PROBATION_OFFICER_PHONE_NO_FIELD),
+                Enter.theValue(sessionVariableCalled("probationOfficerEmail")).into(ProbationDetailsPage.PROBATION_OFFICER_EMAIL_FIELD),
+                Enter.theValue(sessionVariableCalled("probationDivision")).into(ProbationDetailsPage.PROBATION_DIVISION_FIELD),
+                Enter.theValue(sessionVariableCalled("asstChiefOfficerName")).into(ProbationDetailsPage.ASSISTANT_CHIEF_OFFICER_NAME_FIELD),
+                Click.on(PpudPage.CONTINUE_BUTTON)
+        );
+    }
+
     @Then("{word} continues from the Book a recall page")
     public void onBookRecallPage(String customer) {
         userIsOnPageWithTitle(customer, BookRecallPage.TITLE);
@@ -269,8 +287,14 @@ public class NavigationSteps {
                 Ensure.that(RecallDetailsPage.getTargetByDataQa("conditionalReleaseDate")).text().isEqualTo("24 Jun 2022"),
                 Ensure.that(RecallDetailsPage.getTargetByDataQa("lastReleasePrison")).text().isEqualTo("Belmarsh"),
                 Ensure.that(RecallDetailsPage.getTargetByDataQa("lastReleaseDate")).text().isEqualTo("15 Mar 2021"),
-                Ensure.that(RecallDetailsPage.getTargetByDataQa("sentenceLength")).text().isEqualTo("3 years 2 months")
-                Ensure.that(RecallDetailsPage.getTargetByDataQa("bookingNumber")).text().isEqualTo("A123456")
+                Ensure.that(RecallDetailsPage.getTargetByDataQa("sentenceLength")).text().isEqualTo("3 years 2 months"),
+                Ensure.that(RecallDetailsPage.getTargetByDataQa("bookingNumber")).text().isEqualTo("A123456"),
+                // Probation details
+                Ensure.that(RecallDetailsPage.PROBATION_OFFICER_NAME).text().isEqualTo(sessionVariableCalled("probationOfficerName")),
+                Ensure.that(RecallDetailsPage.PROBATION_OFFICER_PHONE_NO).text().isEqualTo(sessionVariableCalled("probationOfficerPhoneNumber")),
+                Ensure.that(RecallDetailsPage.PROBATION_OFFICER_EMAIL).text().isEqualTo(sessionVariableCalled("probationOfficerEmail")),
+                Ensure.that(RecallDetailsPage.PROBATION_DIVISION).text().isEqualTo(sessionVariableCalled("probationOfficerEmail")),
+                Ensure.that(RecallDetailsPage.ASSISTANT_CHIEF_OFFICER_NAME).text().isEqualTo(sessionVariableCalled("asstChiefOfficerName"))
         );
     }
 
