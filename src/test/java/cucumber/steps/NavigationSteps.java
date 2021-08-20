@@ -175,6 +175,7 @@ public class NavigationSteps {
         userEnters(customer, LastReleaseDetailsPage.getTargetByName("sentenceLengthYears"), "3");
         userEnters(customer, LastReleaseDetailsPage.getTargetByName("sentenceLengthMonths"), "2");
         userEnters(customer, LastReleaseDetailsPage.getTargetByName("sentencingCourt"), "Manchester Crown Court");
+        userEnters(customer, LastReleaseDetailsPage.getTargetByName("bookingNumber"), "A123456");
         userEnters(customer, LastReleaseDetailsPage.getTargetByName("indexOffence"), "Burglary");
         userEnters(customer, LastReleaseDetailsPage.getTargetByName("lastReleasePrison"), "Belmarsh");
         userEnters(customer, LastReleaseDetailsPage.dateDayInput("lastReleaseDate"), "15");
@@ -205,6 +206,24 @@ public class NavigationSteps {
                 SelectFromOptions.byValue(sessionVariableCalled("mappaLevel")).from(VulnerabilityAndContrabandDetailsPage.SELECT_MAPPA_LEVEL)
         );
         userClicksOn(customer, VulnerabilityAndContrabandDetailsPage.CONTINUE_BUTTON);
+    }
+
+    @When("{word} submits the probation officer details")
+    public void submitProbationOfficerDetails(String customer){
+        setSessionVariable("probationOfficerName").to("John Smith");
+        setSessionVariable("probationOfficerPhoneNumber").to("07775825221");
+        setSessionVariable("probationOfficerEmail").to("john.smith@digital.justice.gov.uk");
+        setSessionVariable("probationDivision").to("LONDON");
+        setSessionVariable("asstChiefOfficerName").to("Jonny Thorn");
+
+        userEnters(customer, ProbationDetailsPage.PROBATION_OFFICER_NAME_FIELD, sessionVariableCalled("probationOfficerName"));
+        userEnters(customer, ProbationDetailsPage.PROBATION_OFFICER_EMAIL_FIELD, sessionVariableCalled("probationOfficerEmail"));
+        userEnters(customer, ProbationDetailsPage.PROBATION_OFFICER_PHONE_NO_FIELD, sessionVariableCalled("probationOfficerPhoneNumber"));
+        theActorCalled(customer).attemptsTo(
+                SelectFromOptions.byValue(sessionVariableCalled("probationDivision")).from(ProbationDetailsPage.PROBATION_DIVISION_DROPDOWN)
+        );
+        userEnters(customer, ProbationDetailsPage.ASSISTANT_CHIEF_OFFICER_NAME_FIELD, sessionVariableCalled("asstChiefOfficerName"));
+        userClicksOn(customer, ProbationDetailsPage.CONTINUE_BUTTON);
     }
 
     @Then("{word} continues from the Book a recall page")
@@ -268,7 +287,14 @@ public class NavigationSteps {
                 Ensure.that(RecallDetailsPage.getTargetByDataQa("conditionalReleaseDate")).text().isEqualTo("24 Jun 2022"),
                 Ensure.that(RecallDetailsPage.getTargetByDataQa("lastReleasePrison")).text().isEqualTo("Belmarsh"),
                 Ensure.that(RecallDetailsPage.getTargetByDataQa("lastReleaseDate")).text().isEqualTo("15 Mar 2021"),
-                Ensure.that(RecallDetailsPage.getTargetByDataQa("sentenceLength")).text().isEqualTo("3 years 2 months")
+                Ensure.that(RecallDetailsPage.getTargetByDataQa("sentenceLength")).text().isEqualTo("3 years 2 months"),
+                Ensure.that(RecallDetailsPage.getTargetByDataQa("bookingNumber")).text().isEqualTo("A123456"),
+                // Probation details
+                Ensure.that(RecallDetailsPage.PROBATION_OFFICER_NAME).text().isEqualTo(sessionVariableCalled("probationOfficerName")),
+                Ensure.that(RecallDetailsPage.PROBATION_OFFICER_PHONE_NO).text().isEqualTo(sessionVariableCalled("probationOfficerPhoneNumber")),
+                Ensure.that(RecallDetailsPage.PROBATION_OFFICER_EMAIL).text().isEqualTo(sessionVariableCalled("probationOfficerEmail")),
+                Ensure.that(RecallDetailsPage.PROBATION_DIVISION).text().isEqualTo(sessionVariableCalled("probationDivision")),
+                Ensure.that(RecallDetailsPage.ASSISTANT_CHIEF_OFFICER_NAME).text().isEqualTo(sessionVariableCalled("asstChiefOfficerName"))
         );
     }
 
