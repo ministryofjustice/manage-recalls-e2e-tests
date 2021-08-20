@@ -7,9 +7,7 @@ Feature: Manage Recalls
     Then Maria is on the Find a person page
     When Maria enters the NOMIS number A1234AA
     And Maria clicks Search
-    When Maria clicks on the View link
-    Then Maria is on the Person profile page
-    And Maria clicks on the Create recall button
+    When Maria clicks on the Book a recall link
     Then Maria is on the recall request received page
     When Maria submits the date and time of the recall request received from probation service
     And Maria submits the sentence, offence and release details

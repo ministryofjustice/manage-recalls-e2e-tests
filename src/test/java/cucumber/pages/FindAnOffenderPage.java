@@ -17,6 +17,6 @@ public class FindAnOffenderPage extends PpudPage {
     public static final Target FIRST_NAME_MATCHES = getTargetByDataQa("firstName");
     public static final Target LAST_NAME_MATCHES = getTargetByDataQa("lastName");
     public static final Target DATE_OF_BIRTH_MATCHES = getTargetByDataQa("dateOfBirth");
-    public static final Target VIEW_PROFILE_LINK = getTargetByDataQa("viewProfileButton");
+    public static final Target BOOK_RECALL_LINK = getTargetByDataQa("bookRecallButton");
 
 }

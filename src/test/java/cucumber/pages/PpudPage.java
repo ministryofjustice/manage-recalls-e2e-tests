@@ -5,7 +5,7 @@ import net.thucydides.core.pages.PageObject;
 import org.openqa.selenium.By;
 
 public abstract class PpudPage extends PageObject {
-    protected static final String TITLE_ROOT = "Manage a recall for an offender on licence - ";
+    protected static final String TITLE_ROOT = "Manage a recall - ";
 
     public static Target CONTINUE_BUTTON = getTargetByDataQa("continueButton");
 
