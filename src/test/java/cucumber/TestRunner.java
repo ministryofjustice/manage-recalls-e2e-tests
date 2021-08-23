@@ -11,10 +11,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-@RunWith(CucumberWithSerenity.class)
-@CucumberOptions(
-        features = "src/test/resources/features",
-        glue = "cucumber.steps")
+//@RunWith(CucumberWithSerenity.class)
+//@CucumberOptions(
+//        features = "src/test/resources/features",
+//        glue = "cucumber.steps")
 public class TestRunner {
 
 }

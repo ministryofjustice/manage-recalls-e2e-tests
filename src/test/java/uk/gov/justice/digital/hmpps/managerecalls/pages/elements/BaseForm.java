@@ -1,4 +1,4 @@
-package uk.gov.justice.digital.managerecalls.forms;
+package uk.gov.justice.digital.hmpps.managerecalls.pages.elements;
 
 import net.serenitybdd.screenplay.targets.Target;
 import org.openqa.selenium.By;
@@ -7,7 +7,7 @@ public abstract class BaseForm {
 
     protected static final String TITLE_ROOT = "Manage a recall for an offender on licence - ";
 
-    public static By CONTINUE_BUTTON = By.xpath("[data-qa='viewProfileButton'][class='govuk-link']");
+    public static By CONTINUE_BUTTON = By.xpath("//*[@data-qa='continueButton']");
 
     protected static Target getTargetByDataQa(String dataQa) {
         return Target.the(dataQa + " matches").locatedBy("[data-qa='" + dataQa + "']");

@@ -1,4 +1,4 @@
-package uk.gov.justice.digital.managerecalls.tasks;
+package uk.gov.justice.digital.hmpps.managerecalls.pages.tasks;
 
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;

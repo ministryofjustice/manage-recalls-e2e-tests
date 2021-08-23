@@ -1,4 +1,4 @@
-package uk.gov.justice.digital.managerecalls;
+package uk.gov.justice.digital.hmpps.managerecalls;
 
 import io.cucumber.junit.CucumberOptions;
 import net.serenitybdd.cucumber.CucumberWithSerenity;
