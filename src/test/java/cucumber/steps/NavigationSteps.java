@@ -129,7 +129,7 @@ public class NavigationSteps {
         );
     }
 
-    @Then("{word} downloads revocation order")
+    @Then("{word} downloads the revocation order")
     public void clickOnRevocationOrderLink(String customer) {
         userClicksOn(customer, RecallAuthorisationPage.DOWNLOAD_REVOCATION_ORDER_LINK);
         await().atMost(10, SECONDS).until(revocationOrderIsDownloaded());
@@ -202,29 +202,22 @@ public class NavigationSteps {
         setSessionVariable("probationOfficerName").to("John Smith");
         setSessionVariable("probationOfficerPhoneNumber").to("07775825221");
         setSessionVariable("probationOfficerEmail").to("john.smith@digital.justice.gov.uk");
-        setSessionVariable("probationDivision").to("LONDON");
+        setSessionVariable("probationDivision").to("London");
         setSessionVariable("asstChiefOfficerName").to("Jonny Thorn");
         userEnters(customer, ProbationDetailsPage.PROBATION_OFFICER_NAME_FIELD, sessionVariableCalled("probationOfficerName"));
         userEnters(customer, ProbationDetailsPage.PROBATION_OFFICER_EMAIL_FIELD, sessionVariableCalled("probationOfficerEmail"));
         userEnters(customer, ProbationDetailsPage.PROBATION_OFFICER_PHONE_NO_FIELD, sessionVariableCalled("probationOfficerPhoneNumber"));
                 theActorCalled(customer).attemptsTo(
-        SelectFromOptions.byValue(sessionVariableCalled("probationDivision")).from(ProbationDetailsPage.PROBATION_DIVISION_DROPDOWN)
+        SelectFromOptions.byVisibleText(sessionVariableCalled("probationDivision")).from(ProbationDetailsPage.PROBATION_DIVISION_DROPDOWN)
         );
         userEnters(customer, ProbationDetailsPage.ASSISTANT_CHIEF_OFFICER_NAME_FIELD, sessionVariableCalled("asstChiefOfficerName"));
         userClicksOn(customer, VulnerabilityAndContrabandDetailsPage.CONTINUE_BUTTON);
     }
 
-    @Then("{word} continues from the Book a recall page")
-    public void onBookRecallPage(String customer) {
-        userIsOnPageWithTitle(customer, BookRecallPage.TITLE);
-        userClicksOn(customer, BookRecallPage.CONTINUE_BUTTON);
-    }
-
-    @Then("{word} sees confirmation that the new recall was created")
+    @Then("{word} sees confirmation that the new recall was booked")
     public void matchRecallCreatedText(String customer) {
-        theActorCalled(customer).attemptsTo(
-                Ensure.that(BookRecallPage.RECALL_CONFIRMATION_MATCHES).text().startsWith("Recall ID:")
-        );
+        userIsOnPageWithTitle(customer, BookRecallConfirmationPage.TITLE);
+        theActorCalled(customer).remember("RECALL_ID", textContent(RecallAuthorisationPage.RECALL_ID));
     }
 
     @When("{word} uploads two documents")
@@ -241,16 +234,11 @@ public class NavigationSteps {
         userClicksOn(customer, BOOK_RECALL_LINK);
     }
 
-    @When("{word} clicks on the View link for the recall that they have just booked")
+    @When("{word} clicks on the Assess link for the recall that they have just booked")
     public void clickOnViewLink(String customer) {
         Actor actor = theActorCalled(customer);
         String recallId = actor.recall("RECALL_ID");
-        WebElement firstRow = HtmlTable.inTable(RECALLS_TABLE.resolveFor(actor))
-                .findFirstRowWhere(the("Recall ID", is(recallId)));
-
-        WebElement viewRecallLink = firstRow.findElement(By.cssSelector("[data-qa='viewRecallDetails']"));
-
-        viewRecallLink.click();
+        userClicksOn(customer, TodoRecallsListPage.getTargetByDataQa("assess-recall-" + recallId));
     }
 
     @Then("{word} is on the Recall details page")
