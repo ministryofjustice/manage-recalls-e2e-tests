@@ -22,8 +22,7 @@ import org.openqa.selenium.WebElement;
 import java.io.File;
 import java.util.concurrent.Callable;
 
-import static cucumber.pages.FindAnOffenderPage.VIEW_PROFILE_LINK;
-import static cucumber.pages.OffenderProfilePage.CREATE_RECALL_BUTTON;
+import static cucumber.pages.FindAnOffenderPage.BOOK_RECALL_LINK;
 import static cucumber.pages.TodoRecallsListPage.*;
 import static cucumber.questions.ReadTextContent.textContent;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -94,11 +93,6 @@ public class NavigationSteps {
         userIsOnPageWithTitle(customer, FindAnOffenderPage.TITLE);
     }
 
-    @Then("{word} is on the Person profile page")
-    public void onOffenderProfilePage(String customer) {
-        userIsOnPageWithTitle(customer, OffenderProfilePage.TITLE);
-    }
-
     @When("{word} enters the NOMIS number {word}")
     public void entersNOMISNumber(String customer, String nomsNumber) {
         theActorCalled(customer).attemptsTo(
@@ -139,11 +133,6 @@ public class NavigationSteps {
     public void clickOnRevocationOrderLink(String customer) {
         userClicksOn(customer, RecallAuthorisationPage.DOWNLOAD_REVOCATION_ORDER_LINK);
         await().atMost(10, SECONDS).until(revocationOrderIsDownloaded());
-    }
-
-    @When("{word} clicks on the Create recall button")
-    public void clickOnCreateRecallButton(String customer) {
-        userClicksOn(customer, CREATE_RECALL_BUTTON);
     }
 
     @Then("{word} is on the recall request received page")
@@ -215,15 +204,14 @@ public class NavigationSteps {
         setSessionVariable("probationOfficerEmail").to("john.smith@digital.justice.gov.uk");
         setSessionVariable("probationDivision").to("LONDON");
         setSessionVariable("asstChiefOfficerName").to("Jonny Thorn");
-
         userEnters(customer, ProbationDetailsPage.PROBATION_OFFICER_NAME_FIELD, sessionVariableCalled("probationOfficerName"));
         userEnters(customer, ProbationDetailsPage.PROBATION_OFFICER_EMAIL_FIELD, sessionVariableCalled("probationOfficerEmail"));
         userEnters(customer, ProbationDetailsPage.PROBATION_OFFICER_PHONE_NO_FIELD, sessionVariableCalled("probationOfficerPhoneNumber"));
-        theActorCalled(customer).attemptsTo(
-                SelectFromOptions.byValue(sessionVariableCalled("probationDivision")).from(ProbationDetailsPage.PROBATION_DIVISION_DROPDOWN)
+                theActorCalled(customer).attemptsTo(
+        SelectFromOptions.byValue(sessionVariableCalled("probationDivision")).from(ProbationDetailsPage.PROBATION_DIVISION_DROPDOWN)
         );
         userEnters(customer, ProbationDetailsPage.ASSISTANT_CHIEF_OFFICER_NAME_FIELD, sessionVariableCalled("asstChiefOfficerName"));
-        userClicksOn(customer, ProbationDetailsPage.CONTINUE_BUTTON);
+        userClicksOn(customer, VulnerabilityAndContrabandDetailsPage.CONTINUE_BUTTON);
     }
 
     @Then("{word} continues from the Book a recall page")
@@ -248,9 +236,9 @@ public class NavigationSteps {
         userClicksOn(customer, UploadRecallDocumentsPage.CONTINUE_BUTTON);
     }
 
-    @When("{word} clicks on the View link")
+    @When("{word} clicks on the Book a recall link")
     public void clickOnViewProfileLink(String customer) {
-        userClicksOn(customer, VIEW_PROFILE_LINK);
+        userClicksOn(customer, BOOK_RECALL_LINK);
     }
 
     @When("{word} clicks on the View link for the recall that they have just booked")
