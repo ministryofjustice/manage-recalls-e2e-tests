@@ -178,7 +178,7 @@ public class NavigationSteps {
 
     @When("{word} submits the police contact details")
     public void submitPoliceContactDetails(String customer) {
-        userEnters(customer, PoliceContactDetailsPage.LOCAL_POLICE_SERVICE, "Brentwood, Essex");
+        userEnters(customer, PoliceContactDetailsPage.LOCAL_POLICE_FORCE, "Essex");
         userClicksOn(customer, RecallReceivedPage.CONTINUE_BUTTON);
     }
 
@@ -251,7 +251,7 @@ public class NavigationSteps {
         theActorCalled(customer).attemptsTo(
                 // Recall
                 Ensure.that(RecallDetailsPage.DATE_RECALL_EMAIL_RECEIVED).text().isEqualTo("5 Dec 2020 at 15:33"),
-                Ensure.that(RecallDetailsPage.LOCAL_POLICE_STATION).text().isEqualTo("Brentwood, Essex"),
+                Ensure.that(RecallDetailsPage.LOCAL_POLICE_STATION).text().isEqualTo("Essex"),
                 // Issues and needs
                 Ensure.that(RecallDetailsPage.VULNERABILITY_DIVERSITY_DETAIL).text().isEqualTo(sessionVariableCalled("vulnerabilityDiversityDetail")),
                 Ensure.that(RecallDetailsPage.CONTRABAND_DETAIL).text().isEqualTo(sessionVariableCalled("contrabandDetail")),
