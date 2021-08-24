@@ -26,5 +26,6 @@ Feature: Manage Recalls
     When Maria starts the assessment process for the recall
     Then Maria is on the decision on recall recommendation page
     When Maria confirms the recall length as 14 days
+    Then Maria submits the current prison details
     Then Maria can see that the recall is authorised
     And Maria downloads the revocation order

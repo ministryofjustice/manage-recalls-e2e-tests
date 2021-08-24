@@ -288,6 +288,14 @@ public class NavigationSteps {
         //);
     }
 
+    @Then("{word} submits the current prison details")
+    public void submitCurrentPrison(String customer) {
+        theActorCalled(customer).attemptsTo(
+            SelectFromOptions.byVisibleText("Exeter (HMP)").from(AssessCurrentPrisonPage.CURRENT_PRISON)
+        );
+        userClicksOn(customer, AssessCurrentPrisonPage.CONTINUE_BUTTON);
+    }
+
     @Then("{word} confirms the recall length as 14 days")
     public void confirmRecallLength(String customer) {
         userIsOnPageWithTitle(customer, DecisionOnRecallRecommendationPage.TITLE);
