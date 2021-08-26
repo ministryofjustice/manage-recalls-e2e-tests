@@ -22,6 +22,11 @@ Feature: Manage Recalls
     And Maria downloads the documents
     When Maria starts the assessment process for the recall
     When Maria confirms the recall length of 28 days
-    Then Maria submits the current prison details
+    And Maria submits the licence breach details
+    And Maria submits the current prison details
     Then Maria can see that the recall is authorised
     And Maria downloads the revocation order
+    ### confirm the details captured during the recall assessment journey are displayed
+    When Maria navigates to the 'To do' list
+    When Maria clicks on the Assess link for the recall that they have just booked
+    Then Maria is able to see the details submitted earlier during assessment
