@@ -279,8 +279,9 @@ public class NavigationSteps {
 
     @Then("{word} submits the current prison details")
     public void submitCurrentPrison(String customer) {
+        setSessionVariable("currentPrison").to("Exeter (HMP)");
         theActorCalled(customer).attemptsTo(
-                SelectFromOptions.byVisibleText("Exeter (HMP)").from(AssessCurrentPrisonPage.CURRENT_PRISON),
+                SelectFromOptions.byVisibleText(sessionVariableCalled("currentPrison")).from(AssessCurrentPrisonPage.CURRENT_PRISON),
                 Click.on( AssessCurrentPrisonPage.CONTINUE_BUTTON)
         );
     }
@@ -297,6 +298,15 @@ public class NavigationSteps {
         userClicksOn(customer, RecallDetailsPage.RECALL_DOCUMENT_LINK_LICENCE);
         await().atMost(10, SECONDS).until(licenceIsDownloaded());
     }
+
+    @Then("{word} is able to see the details submitted earlier during assessment")
+    public void confirmRecallDetailsCapturedDuringAssessment(String customer) {
+        theActorCalled(customer).attemptsTo(
+                Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(RecallDetailsPage.TITLE),
+                Ensure.that(RecallDetailsPage.CURRENT_PRISON).text().isEqualTo(sessionVariableCalled("currentPrison"))
+        );
+    }
+
 
     private Callable<Boolean> partAIsDownloaded() {
         return () -> fileIsDownloaded("/tmp", "part_a_recall_report.pdf");

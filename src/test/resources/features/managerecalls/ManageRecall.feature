@@ -25,3 +25,7 @@ Feature: Manage Recalls
     Then Maria submits the current prison details
     Then Maria can see that the recall is authorised
     And Maria downloads the revocation order
+    ### confirm the details captured during the recall assessment journey are displayed
+    When Maria navigates to the 'To do' list
+    When Maria clicks on the Assess link for the recall that they have just booked
+    Then Maria is able to see the details submitted earlier during assessment
