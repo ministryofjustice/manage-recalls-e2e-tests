@@ -277,11 +277,21 @@ public class NavigationSteps {
         );
     }
 
-    @Then("{word} submits the current prison details")
-    public void submitCurrentPrison(String customer) {
-        setSessionVariable("currentPrison").to("Exeter (HMP)");
+    @And("{word} submits the licence breach details")
+    public void submitLicenceBreach(String customer) {
         theActorCalled(customer).attemptsTo(
-                SelectFromOptions.byVisibleText(sessionVariableCalled("currentPrison")).from(AssessCurrentPrisonPage.CURRENT_PRISON),
+                Enter.theValue("Licence condition 1(a) has been breached").into(AssessLicenceBreachPage.LICENCE_CONDITION_BREACHED_TEXT_BOX),
+                Click.on(AssessLicenceBreachPage.REASON_FOR_RECALL_CHECKBOX_OPTION_ONE),
+                Click.on(AssessLicenceBreachPage.REASON_FOR_RECALL_CHECKBOX_OPTION_OTHER),
+                Enter.theValue("other reason for recall").into(AssessLicenceBreachPage.OTHER_REASON_FOR_RECALL_TEXT_BOX),
+                Click.on(AssessLicenceBreachPage.CONTINUE_BUTTON)
+        );
+    }
+
+    @And("{word} submits the current prison details")
+    public void submitCurrentPrison(String customer) {
+        theActorCalled(customer).attemptsTo(
+                SelectFromOptions.byVisibleText("Exeter (HMP)").from(AssessCurrentPrisonPage.CURRENT_PRISON),
                 Click.on( AssessCurrentPrisonPage.CONTINUE_BUTTON)
         );
     }
@@ -303,7 +313,12 @@ public class NavigationSteps {
     public void confirmRecallDetailsCapturedDuringAssessment(String customer) {
         theActorCalled(customer).attemptsTo(
                 Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(RecallDetailsPage.TITLE),
-                Ensure.that(RecallDetailsPage.CURRENT_PRISON).text().isEqualTo(sessionVariableCalled("currentPrison"))
+                Ensure.that(RecallDetailsPage.LICENCE_CONDITIONS_BREACHED).text().isEqualTo("Licence condition 1(a) has been breached"),
+                Ensure.that(RecallDetailsPage.REASON_FOR_RECALL_OPTION_ONE).text().isEqualTo("Breach of exclusion zone"),
+                Ensure.that(RecallDetailsPage.REASON_FOR_RECALL_OPTION_OTHER).text().isEqualTo("Other"),
+                Ensure.that(RecallDetailsPage.OTHER_REASON_FOR_RECALL_TEXT).text().isEqualTo("other reason for recall")
+             //   Not implemented yet
+             //   Ensure.that(RecallDetailsPage.CURRENT_PRISON).text().isEqualTo("Exeter (HMP)")
         );
     }
 

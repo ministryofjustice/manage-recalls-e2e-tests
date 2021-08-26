@@ -17,6 +17,10 @@ public class RecallDetailsPage extends PpudPage {
     public static final Target ASSISTANT_CHIEF_OFFICER_NAME = getTargetByDataQa("authorisingAssistantChiefOfficer");
     public static final Target RECALL_DOCUMENT_LINK_PART_A = getTargetByDataQa("uploadedDocument-PART_A_RECALL_REPORT");
     public static final Target RECALL_DOCUMENT_LINK_LICENCE = getTargetByDataQa("uploadedDocument-LICENCE");
+    public static final Target LICENCE_CONDITIONS_BREACHED = getTargetByDataQa("licenceConditionsBreached");
+    public static final Target REASON_FOR_RECALL_OPTION_ONE = getTargetByDataQa("reasonsForRecall-BREACH_EXCLUSION_ZONE");
+    public static final Target REASON_FOR_RECALL_OPTION_OTHER = getTargetByDataQa("reasonsForRecall-OTHER");
+    public static final Target OTHER_REASON_FOR_RECALL_TEXT = getTargetByDataQa("reasonsForRecallOtherDetail");
     public static final Target CURRENT_PRISON = getTargetByDataQa("currentPrison");
 
 }
