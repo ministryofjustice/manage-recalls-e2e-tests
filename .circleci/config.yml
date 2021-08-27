@@ -5,9 +5,12 @@ orbs:
   browser-tools: circleci/browser-tools@1.1.3
 
 parameters:
-  only_run_dev_check:
+  only_run_deploy_check:
     type: boolean
     default: false
+  e2e_environment:
+    type: string
+    default: dev
 
 executors:
   local-docker:
@@ -54,7 +57,7 @@ jobs:
           name: Stop docker containers
           command: docker-compose stop
 
-  dev-check:
+  deploy-check:
     docker:
       - image: cimg/openjdk:16.0.0-browsers
         environment:
@@ -65,24 +68,24 @@ jobs:
       - browser-tools/install-chromedriver
       - checkout
       - run:
-          name: "Run Gradle tests dev"
-          command: ./gradlew test -Denvironment=dev  -Dchrome.switches=--headless
+          name: "Run Gradle tests [<<pipeline.parameters.e2e_environment>>]"
+          command: ./gradlew test -Denvironment=<<pipeline.parameters.e2e_environment>> -Dchrome.switches=--headless
       - store_artifacts:
           path: build/reports/tests/test
-          destination: dev-test-summary
+          destination: deploy-test-summary
       - store_artifacts:
           path: target/site/serenity/
-          destination: dev-serenity-report
+          destination: deploy-serenity-report
 
 workflows:
   version: 2
   dev_and_local:
     when:
-      not: << pipeline.parameters.only_run_dev_check >>
+      not: << pipeline.parameters.only_run_deploy_check >>
     jobs:
       - local-check
-      - dev-check
-  dev_only:
-    when: << pipeline.parameters.only_run_dev_check >>
+      - deploy-check
+  deploy_only:
+    when: << pipeline.parameters.only_run_deploy_check >>
     jobs:
-      - dev-check
+      - deploy-check
