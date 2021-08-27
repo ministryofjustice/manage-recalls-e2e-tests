@@ -7,6 +7,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import net.serenitybdd.core.environment.EnvironmentSpecificConfiguration;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actions.*;
 import net.serenitybdd.screenplay.actors.OnlineCast;
@@ -20,12 +21,13 @@ import java.io.File;
 import java.util.concurrent.Callable;
 
 import static cucumber.pages.FindAnOffenderPage.BOOK_RECALL_LINK;
-import static cucumber.pages.TodoRecallsListPage.*;
+import static cucumber.pages.TodoRecallsListPage.FIND_SOMEONE_LINK;
 import static cucumber.questions.ReadTextContent.textContent;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static net.serenitybdd.core.Serenity.sessionVariableCalled;
 import static net.serenitybdd.core.Serenity.setSessionVariable;
-import static net.serenitybdd.screenplay.actors.OnStage.*;
+import static net.serenitybdd.screenplay.actors.OnStage.setTheStage;
+import static net.serenitybdd.screenplay.actors.OnStage.theActorCalled;
 import static org.awaitility.Awaitility.await;
 
 public class NavigationSteps {
@@ -72,28 +74,17 @@ public class NavigationSteps {
         );
     }
 
-    @And("{word} clicks Find a person")
-    public void clickFindSomeoneLink(String customer) {
-        userClicksOn(customer, FIND_SOMEONE_LINK);
-    }
-
-    @And("{word} navigates to the 'To do' list")
-    public void clickRecallListToDoLink(String customer) {
-        userClicksOn(customer, RECALL_LIST_TODO_LINK);
-        userIsOnPageWithTitle(customer, TodoRecallsListPage.TITLE);
-    }
-
-    @When("{word} enters the NOMIS number {word}")
-    public void entersNOMISNumber(String customer, String nomsNumber) {
+    @When("{word} searches for the environment specific NOMS number")
+    public void entersNOMSNumber(String customer) {
+        String nomsNumber = EnvironmentSpecificConfiguration.from(environmentVariables)
+                .getProperty("noms.number");
+        setSessionVariable("nomsNumber").to(nomsNumber);
         theActorCalled(customer).attemptsTo(
+                Click.on(FIND_SOMEONE_LINK),
                 Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(FindAnOffenderPage.TITLE),
-                Enter.theValue(nomsNumber).into(FindAnOffenderPage.NOMS_NUMBER_INPUT)
+                Enter.theValue(nomsNumber).into(FindAnOffenderPage.NOMS_NUMBER_INPUT),
+                Click.on(FindAnOffenderPage.SEARCH_BUTTON)
         );
-    }
-
-    @And("{word} clicks Search")
-    public void clickSearchButton(String customer) {
-        userClicksOn(customer, FindAnOffenderPage.SEARCH_BUTTON);
     }
 
     @Then("{word} sees a search result of {string}")
@@ -107,16 +98,6 @@ public class NavigationSteps {
     public void matchedPersonResultsText(String customer, String personText) {
         theActorCalled(customer).attemptsTo(
                 Ensure.that(FindAnOffenderPage.PERSON_MATCHES).hasTextContent(personText)
-        );
-    }
-
-    @And("{word} sees a person entry with nomsNumber {string} and non-empty name and DoB fields")
-    public void matchedPersonNomsNumberHasValueAndNameAndDoBFieldsAreNonEmpty(String customer, String nomsNumber) {
-        theActorCalled(customer).attemptsTo(
-                Ensure.that(FindAnOffenderPage.NOMS_NUMBER_MATCHES).hasTextContent(nomsNumber),
-                Ensure.that(FindAnOffenderPage.FIRST_NAME_MATCHES).text().isNotBlank(),
-                Ensure.that(FindAnOffenderPage.LAST_NAME_MATCHES).text().isNotBlank(),
-                Ensure.that(FindAnOffenderPage.DATE_OF_BIRTH_MATCHES).text().isNotBlank()
         );
     }
 
@@ -142,27 +123,27 @@ public class NavigationSteps {
     @When("{word} submits the sentence, offence and release details")
     public void submitLatestReleaseDetails(String customer) {
         theActorCalled(customer).attemptsTo(
-                Enter.theValue( "03").into(LastReleaseDetailsPage.dateDayInput("sentenceDate")),
-                Enter.theValue( "08").into(LastReleaseDetailsPage.dateMonthInput("sentenceDate")),
-                Enter.theValue( "2020").into(LastReleaseDetailsPage.dateYearInput("sentenceDate")),
-                Enter.theValue( "12").into(LastReleaseDetailsPage.dateDayInput("licenceExpiryDate")),
-                Enter.theValue( "10").into(LastReleaseDetailsPage.dateMonthInput("licenceExpiryDate")),
-                Enter.theValue( "2021").into(LastReleaseDetailsPage.dateYearInput("licenceExpiryDate")),
-                Enter.theValue( "03").into(LastReleaseDetailsPage.dateDayInput("sentenceExpiryDate")),
-                Enter.theValue( "11").into(LastReleaseDetailsPage.dateMonthInput("sentenceExpiryDate")),
-                Enter.theValue( "2021").into(LastReleaseDetailsPage.dateYearInput("sentenceExpiryDate")),
-                Enter.theValue( "3").into(LastReleaseDetailsPage.getTargetByName("sentenceLengthYears")),
-                Enter.theValue( "2").into(LastReleaseDetailsPage.getTargetByName("sentenceLengthMonths")),
-                Enter.theValue( "Manchester Crown Court").into(LastReleaseDetailsPage.getTargetByName("sentencingCourt")),
-                Enter.theValue( "A123456").into(LastReleaseDetailsPage.getTargetByName("bookingNumber")),
-                Enter.theValue( "Burglary").into(LastReleaseDetailsPage.getTargetByName("indexOffence")),
-                Enter.theValue( "Belmarsh").into(LastReleaseDetailsPage.getTargetByName("lastReleasePrison")),
-                Enter.theValue( "15").into(LastReleaseDetailsPage.dateDayInput("lastReleaseDate")),
-                Enter.theValue( "03").into(LastReleaseDetailsPage.dateMonthInput("lastReleaseDate")),
-                Enter.theValue( "2021").into(LastReleaseDetailsPage.dateYearInput("lastReleaseDate")),
-                Enter.theValue( "24").into(LastReleaseDetailsPage.dateDayInput("conditionalReleaseDate")),
-                Enter.theValue( "06").into(LastReleaseDetailsPage.dateMonthInput("conditionalReleaseDate")),
-                Enter.theValue( "2022").into(LastReleaseDetailsPage.dateYearInput("conditionalReleaseDate")),
+                Enter.theValue("03").into(LastReleaseDetailsPage.dateDayInput("sentenceDate")),
+                Enter.theValue("08").into(LastReleaseDetailsPage.dateMonthInput("sentenceDate")),
+                Enter.theValue("2020").into(LastReleaseDetailsPage.dateYearInput("sentenceDate")),
+                Enter.theValue("12").into(LastReleaseDetailsPage.dateDayInput("licenceExpiryDate")),
+                Enter.theValue("10").into(LastReleaseDetailsPage.dateMonthInput("licenceExpiryDate")),
+                Enter.theValue("2021").into(LastReleaseDetailsPage.dateYearInput("licenceExpiryDate")),
+                Enter.theValue("03").into(LastReleaseDetailsPage.dateDayInput("sentenceExpiryDate")),
+                Enter.theValue("11").into(LastReleaseDetailsPage.dateMonthInput("sentenceExpiryDate")),
+                Enter.theValue("2021").into(LastReleaseDetailsPage.dateYearInput("sentenceExpiryDate")),
+                Enter.theValue("3").into(LastReleaseDetailsPage.getTargetByName("sentenceLengthYears")),
+                Enter.theValue("2").into(LastReleaseDetailsPage.getTargetByName("sentenceLengthMonths")),
+                Enter.theValue("Manchester Crown Court").into(LastReleaseDetailsPage.getTargetByName("sentencingCourt")),
+                Enter.theValue("A123456").into(LastReleaseDetailsPage.getTargetByName("bookingNumber")),
+                Enter.theValue("Burglary").into(LastReleaseDetailsPage.getTargetByName("indexOffence")),
+                Enter.theValue("Belmarsh").into(LastReleaseDetailsPage.getTargetByName("lastReleasePrison")),
+                Enter.theValue("15").into(LastReleaseDetailsPage.dateDayInput("lastReleaseDate")),
+                Enter.theValue("03").into(LastReleaseDetailsPage.dateMonthInput("lastReleaseDate")),
+                Enter.theValue("2021").into(LastReleaseDetailsPage.dateYearInput("lastReleaseDate")),
+                Enter.theValue("24").into(LastReleaseDetailsPage.dateDayInput("conditionalReleaseDate")),
+                Enter.theValue("06").into(LastReleaseDetailsPage.dateMonthInput("conditionalReleaseDate")),
+                Enter.theValue("2022").into(LastReleaseDetailsPage.dateYearInput("conditionalReleaseDate")),
                 Click.on(LastReleaseDetailsPage.CONTINUE_BUTTON)
         );
     }
@@ -221,20 +202,32 @@ public class NavigationSteps {
     }
 
     @When("{word} clicks on the Book a recall link")
-    public void clickOnViewProfileLink(String customer) {
+    public void clickOnBookRecallLink(String customer) {
         userClicksOn(customer, BOOK_RECALL_LINK);
     }
 
-    @When("{word} clicks on the Assess link for the recall that they have just booked")
-    public void clickOnViewLink(String customer) {
+    @When("{word} begins to assess the recall that they have just booked")
+    public void assessRecall(String customer) {
         Actor actor = theActorCalled(customer);
         String recallId = actor.recall("RECALL_ID");
-        userClicksOn(customer, TodoRecallsListPage.getTargetByDataQa("assess-recall-" + recallId));
+
+        theActorCalled(customer).attemptsTo(
+                Click.on(TodoRecallsListPage.RECALL_LIST_TODO_LINK),
+                Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(TodoRecallsListPage.TITLE),
+                Click.on(TodoRecallsListPage.getTargetByDataQa("assess-recall-" + recallId))
+        );
     }
 
-    @Then("{word} is able to see the details submitted earlier")
-    public void confirmRecallDetails(String customer) {
+    @Then("{word} is able to see the details captured during booking")
+    public void confirmDetailsCapturedDuringBooking(String customer) {
         theActorCalled(customer).attemptsTo(
+
+                // User details
+                Ensure.that(FindAnOffenderPage.NOMS_NUMBER_MATCHES).text().isEqualTo(sessionVariableCalled("nomsNumber")),
+                Ensure.that(FindAnOffenderPage.FIRST_NAME_MATCHES).text().isNotBlank(),
+                Ensure.that(FindAnOffenderPage.LAST_NAME_MATCHES).text().isNotBlank(),
+                Ensure.that(FindAnOffenderPage.DATE_OF_BIRTH_MATCHES).text().isNotBlank(),
+
                 Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(RecallDetailsPage.TITLE),
                 // Recall
                 Ensure.that(RecallDetailsPage.DATE_RECALL_EMAIL_RECEIVED).text().isEqualTo("5 Dec 2020 at 15:33"),
@@ -292,9 +285,10 @@ public class NavigationSteps {
     public void submitCurrentPrison(String customer) {
         theActorCalled(customer).attemptsTo(
                 SelectFromOptions.byVisibleText("Exeter (HMP)").from(AssessCurrentPrisonPage.CURRENT_PRISON),
-                Click.on( AssessCurrentPrisonPage.CONTINUE_BUTTON)
+                Click.on(AssessCurrentPrisonPage.CONTINUE_BUTTON)
         );
     }
+
     @Then("{word} can see that the recall is authorised")
     public void confirmRecallAuthorisation(String customer) {
         userIsOnPageWithTitle(customer, RecallAuthorisationPage.TITLE);
@@ -309,7 +303,7 @@ public class NavigationSteps {
         await().atMost(10, SECONDS).until(licenceIsDownloaded());
     }
 
-    @Then("{word} is able to see the details submitted earlier during assessment")
+    @Then("{word} is able to see the details captured during assessment")
     public void confirmRecallDetailsCapturedDuringAssessment(String customer) {
         theActorCalled(customer).attemptsTo(
                 Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(RecallDetailsPage.TITLE),
@@ -317,8 +311,8 @@ public class NavigationSteps {
                 Ensure.that(RecallDetailsPage.REASON_FOR_RECALL_OPTION_ONE).text().isEqualTo("Breach of exclusion zone"),
                 Ensure.that(RecallDetailsPage.REASON_FOR_RECALL_OPTION_OTHER).text().isEqualTo("Other"),
                 Ensure.that(RecallDetailsPage.OTHER_REASON_FOR_RECALL_TEXT).text().isEqualTo("other reason for recall")
-             //   Not implemented yet
-             //   Ensure.that(RecallDetailsPage.CURRENT_PRISON).text().isEqualTo("Exeter (HMP)")
+                //   Not implemented yet
+                //   Ensure.that(RecallDetailsPage.CURRENT_PRISON).text().isEqualTo("Exeter (HMP)")
         );
     }
 
