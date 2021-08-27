@@ -19,7 +19,7 @@ public class RecallDetailsPage extends PpudPage {
     public static final Target RECALL_DOCUMENT_LINK_LICENCE = getTargetByDataQa("uploadedDocument-LICENCE");
 
     public static final Target AGREE_WITH_RECALL_RECOMMENDATION = getTargetByDataQa("agreeWithRecall");
-    public static final Target AGREE_WITH_RECALL_RECOMMENDATION_ADDITIONAL_TEXT = getTargetByDataQa("agreeWithRecallDetailYes");
+    public static final Target AGREE_WITH_RECALL_RECOMMENDATION_ADDITIONAL_TEXT = getTargetByDataQa("agreeWithRecallDetail");
     public static final Target LICENCE_CONDITIONS_BREACHED = getTargetByDataQa("licenceConditionsBreached");
     public static final Target REASON_FOR_RECALL_OPTION_ONE = getTargetByDataQa("reasonsForRecall-BREACH_EXCLUSION_ZONE");
     public static final Target REASON_FOR_RECALL_OPTION_OTHER = getTargetByDataQa("reasonsForRecall-OTHER");
