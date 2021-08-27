@@ -53,7 +53,7 @@ There are multiple options for running these tests from your local:
 
 ### 1. Run against deployed services
 In this scenario the login credentials must be valid on the target environment. Hence, your env vars
-needs to reflect the same.  See above.
+needs to reflect the same.  See above. Also, need to add a valid noms number if running against preprod/prod. Use `NOMS_NUMBER=X1234YZ`.
 
 Given valid credentials, to run against one of our deployed environments use simply:
 ```

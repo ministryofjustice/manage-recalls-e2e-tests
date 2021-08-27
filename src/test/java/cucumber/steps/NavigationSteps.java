@@ -33,12 +33,16 @@ import static org.awaitility.Awaitility.await;
 public class NavigationSteps {
 
     private EnvironmentVariables environmentVariables;
+    private static final String NOMS_NUMBER = "nomsNumber";
 
     @Before(order = 1)
     public void setUp() {
         environmentVariables = SystemEnvironmentVariables.createEnvironmentVariables();
         environmentVariables.setProperty("SERENITY_USERNAME", getEnvOrDefault("SERENITY_USERNAME", "PPUD_USER"));
         environmentVariables.setProperty("SERENITY_PASSWORD", getEnvOrDefault("SERENITY_PASSWORD", "password123456"));
+
+        String nomsNumber = getEnvOrDefault("NOMS_NUMBER", "A1234AA");
+        setSessionVariable(NOMS_NUMBER).to(nomsNumber);
     }
 
     private String getEnvOrDefault(String propertyName, String defaultValue) {
@@ -63,8 +67,7 @@ public class NavigationSteps {
         theActorCalled(customer).attemptsTo(
                 Check.whether(UserIsOn.loginPage()).andIfSo(
                         Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(LoginPage.TITLE),
-                        Enter.theValue(environmentVariables.getProperty("SERENITY_USERNAME"))
-                                .into(LoginPage.USERNAME),
+                        Enter.theValue(environmentVariables.getProperty("SERENITY_USERNAME")).into(LoginPage.USERNAME),
                         EnterPassword.theValue(environmentVariables.getProperty("SERENITY_PASSWORD")).into(LoginPage.PASSWORD),
                         Click.on(LoginPage.SIGN_IN_BUTTON)
                 ),
@@ -76,9 +79,7 @@ public class NavigationSteps {
 
     @When("{word} searches for the environment specific NOMS number")
     public void entersNOMSNumber(String customer) {
-        String nomsNumber = EnvironmentSpecificConfiguration.from(environmentVariables)
-                .getProperty("noms.number");
-        setSessionVariable("nomsNumber").to(nomsNumber);
+        String nomsNumber = sessionVariableCalled(NOMS_NUMBER);
         theActorCalled(customer).attemptsTo(
                 Click.on(FIND_SOMEONE_LINK),
                 Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(FindAnOffenderPage.TITLE),
@@ -223,7 +224,7 @@ public class NavigationSteps {
         theActorCalled(customer).attemptsTo(
 
                 // User details
-                Ensure.that(FindAnOffenderPage.NOMS_NUMBER_MATCHES).text().isEqualTo(sessionVariableCalled("nomsNumber")),
+                Ensure.that(FindAnOffenderPage.NOMS_NUMBER_MATCHES).text().isEqualTo(sessionVariableCalled(NOMS_NUMBER)),
                 Ensure.that(FindAnOffenderPage.FIRST_NAME_MATCHES).text().isNotBlank(),
                 Ensure.that(FindAnOffenderPage.LAST_NAME_MATCHES).text().isNotBlank(),
                 Ensure.that(FindAnOffenderPage.DATE_OF_BIRTH_MATCHES).text().isNotBlank(),
