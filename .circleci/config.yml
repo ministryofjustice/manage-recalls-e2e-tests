@@ -61,8 +61,8 @@ jobs:
     docker:
       - image: cimg/openjdk:16.0.0-browsers
         environment:
-          SERENITY_USERNAME: $SERENITY_USERNAME
-          SERENITY_PASSWORD: $SERENITY_PASSWORD
+          SERENITY_USERNAME: $SERENITY_USERNAME_<<pipeline.parameters.e2e_environment>>
+          SERENITY_PASSWORD: $SERENITY_PASSWORD_<<pipeline.parameters.e2e_environment>>
     steps:
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
