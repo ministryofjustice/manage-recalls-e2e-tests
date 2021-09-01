@@ -89,9 +89,8 @@ workflows:
 
   build_docker:
     jobs:
+      - build-docker-approval:
+          type: approval
       - hmpps/build_docker:
+          requires: [build-docker-approval]
           dockerfile_dir: circle-ci-browser-docker
-#          filters:
-#            branches:
-#              only:
-#                - main
