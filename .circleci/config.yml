@@ -63,6 +63,7 @@ jobs:
           SERENITY_USERNAME: $SERENITY_USERNAME_<<pipeline.parameters.e2e_environment>>
           SERENITY_PASSWORD: $SERENITY_PASSWORD_<<pipeline.parameters.e2e_environment>>
     steps:
+      - run: rm -rf /user/circleci/project/*
       - checkout
       - run:
           name: "Run Gradle tests [<<pipeline.parameters.e2e_environment>>]"
