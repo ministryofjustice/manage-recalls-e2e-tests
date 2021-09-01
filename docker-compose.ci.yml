@@ -6,11 +6,11 @@ services:
       - INGRESS_URL=http://manage-recalls-ui:3000
       - HMPPS_AUTH_EXTERNAL_URL=http://hmpps-auth:8080/auth
 
-  manage-recalls-e2e-tests:
+  manage-recalls-e2e-test-runner:
     build:
       dockerfile: ci-local-mode-docker/Dockerfile
       context: .
     networks:
       - manage-recalls-e2e
-    container_name: manage-recalls-e2e-tests
+    container_name: manage-recalls-e2e-test-runner
     depends_on: [manage-recalls-ui]
