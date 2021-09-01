@@ -136,7 +136,7 @@ public class NavigationSteps {
                 Enter.theValue("A123456").into(LastReleaseDetailsPage.getTargetByName("bookingNumber")),
                 Enter.theValue("Burglary").into(LastReleaseDetailsPage.getTargetByName("indexOffence")),
                 Enter.theValue("As").into(LastReleaseDetailsPage.RELEASING_PRISON_AUTOCOMPLETE_FIELD),
-                Click.on(LastReleaseDetailsPage.RELEASING_PRISON_ASHFIELD),
+                Click.on(LastReleaseDetailsPage.getTargetForReleasingPrison("Ashfield (HMP)")),
                 Enter.theValue("15").into(LastReleaseDetailsPage.dateDayInput("lastReleaseDate")),
                 Enter.theValue("03").into(LastReleaseDetailsPage.dateMonthInput("lastReleaseDate")),
                 Enter.theValue("2021").into(LastReleaseDetailsPage.dateYearInput("lastReleaseDate")),
@@ -285,9 +285,8 @@ public class NavigationSteps {
     @And("{word} submits the current prison details")
     public void submitCurrentPrison(String customer) {
         theActorCalled(customer).attemptsTo(
-             //   SelectFromOptions.byVisibleText("Exeter (HMP)").from(AssessCurrentPrisonPage.CURRENT_PRISON),
-                Enter.theValue("Be").into(AssessCurrentPrisonPage.CURRENT_PRISON_AUTOCOMPLETE_FIELD),
-                Click.on(AssessCurrentPrisonPage.CURRENT_PRISON_ASHFIELD),
+                Enter.theValue("As").into(AssessCurrentPrisonPage.CURRENT_PRISON_AUTOCOMPLETE_FIELD),
+                Click.on(AssessCurrentPrisonPage.getTargetForCurrentPrison("Ashfield (HMP)")),
                 Click.on(AssessCurrentPrisonPage.CONTINUE_BUTTON)
         );
     }

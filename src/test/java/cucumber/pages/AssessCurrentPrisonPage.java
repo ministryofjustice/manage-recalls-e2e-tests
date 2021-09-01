@@ -6,7 +6,9 @@ import net.serenitybdd.screenplay.targets.Target;
 public class AssessCurrentPrisonPage extends PpudPage {
 
     public static final Target CURRENT_PRISON_AUTOCOMPLETE_FIELD = Target.the("current prison dropdown field").located(By.id("currentPrison"));
-    public static final Target CURRENT_PRISON_ASHFIELD = Target.the("current prison, Ashfield (HMP)").located(By.id("currentPrison__option--0"));
 
+    public static Target getTargetForCurrentPrison(String prison){
+        return Target.the("current prison, Ashfield (HMP)").located(By.xpath("//ul[@id=\"currentPrison__listbox\"]/li[contains(text(), \"" + prison +"\")]"));
+    }
 
 }
