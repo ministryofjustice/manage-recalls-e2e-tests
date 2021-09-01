@@ -2,7 +2,6 @@ version: 2.1
 
 orbs:
   hmpps: ministryofjustice/hmpps@3.2
-  browser-tools: circleci/browser-tools@1.2.1
 
 parameters:
   only_run_deploy_check:
@@ -59,13 +58,11 @@ jobs:
 
   deploy-check:
     docker:
-      - image: cimg/openjdk:16.0.0-browsers
+      - image: quay.io/hmpps/manage-recalls-e2e-tests:latest
         environment:
           SERENITY_USERNAME: $SERENITY_USERNAME_<<pipeline.parameters.e2e_environment>>
           SERENITY_PASSWORD: $SERENITY_PASSWORD_<<pipeline.parameters.e2e_environment>>
     steps:
-      - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
       - checkout
       - run:
           name: "Run Gradle tests [<<pipeline.parameters.e2e_environment>>]"
@@ -89,3 +86,12 @@ workflows:
     when: << pipeline.parameters.only_run_deploy_check >>
     jobs:
       - deploy-check
+
+  build_docker:
+    jobs:
+      - hmpps/build_docker:
+          dockerfile_dir: circle-ci-browser-docker
+#          filters:
+#            branches:
+#              only:
+#                - main
