@@ -26,5 +26,10 @@ public class RecallDetailsPage extends PpudPage {
     public static final Target OTHER_REASON_FOR_RECALL_TEXT = getTargetByDataQa("reasonsForRecallOtherDetail");
     public static final Target CURRENT_PRISON = getTargetByDataQa("currentPrison");
 
+    public static final Target ADDITIONAL_LICENCE_CONDITIONS = getTargetByDataQa("additionalLicenceConditions");
+    public static final Target MORE_DETAILS_FOR_ADDITIONAL_LICENCE_CONDITIONS_TEXT = getTargetByDataQa("reasonsForRecallOtherDetail");
+    public static final Target DIFFERENT_NOMIS_NUMBER = getTargetByDataQa("differentNomsNumber");
+    public static final Target MORE_DETAILS_FOR_DIFFERENT_NOMIS_NUMBER_TEXT = getTargetByDataQa("reasonsForRecallOtherDetail");
+
 
 }
