@@ -90,6 +90,8 @@ workflows:
       - deploy-check
 
   build_docker:
+    when:
+      not: << pipeline.parameters.only_run_deploy_check >>
     jobs:
       - build-docker-approval:
           type: approval
