@@ -2,7 +2,6 @@ version: 2.1
 
 orbs:
   hmpps: ministryofjustice/hmpps@3.2
-  browser-tools: circleci/browser-tools@1.1.3
 
 parameters:
   only_run_deploy_check:
@@ -28,21 +27,22 @@ jobs:
       - run:
           name: Build and pull docker containers
           command: |
-            docker-compose -f docker-compose.yml -f docker-compose.ci.yml build
+            docker pull quay.io/hmpps/manage-recalls-e2e-tests:latest
+            docker-compose -f docker-compose.yml -f docker-compose.ci.yml build --no-cache
             docker-compose -f docker-compose.yml -f docker-compose.ci.yml pull
       - run:
           name: Start docker compose and run the end-to-end tests
           command: |
             set -x
-            docker-compose -f docker-compose.yml -f docker-compose.ci.yml up --exit-code-from manage-recalls-e2e-tests manage-recalls-e2e-tests || {
+            docker-compose -f docker-compose.yml -f docker-compose.ci.yml up --exit-code-from manage-recalls-e2e-test-runner manage-recalls-e2e-test-runner || {
               export exit_code=1
             }
             mkdir logs
             docker logs manage-recalls-ui-e2e > logs/manage-recalls-ui.log
             docker logs manage-recalls-api-e2e > logs/manage-recalls-api.log
             docker logs localstack_manage-recalls-e2e > logs/localstack_manage-recalls-e2e.log
-            docker cp manage-recalls-e2e-tests:/home/circleci/project/build/reports/tests/test/ test-report
-            docker cp manage-recalls-e2e-tests:/home/circleci/project/target/site/serenity/ serenity-report
+            docker cp manage-recalls-e2e-test-runner:/home/circleci/project/build/reports/tests/test/ test-report
+            docker cp manage-recalls-e2e-test-runner:/home/circleci/project/target/site/serenity/ serenity-report
             exit $exit_code
       - store_artifacts:
           path: logs
@@ -59,13 +59,11 @@ jobs:
 
   deploy-check:
     docker:
-      - image: cimg/openjdk:16.0.0-browsers
+      - image: quay.io/hmpps/manage-recalls-e2e-tests:latest
         environment:
-          SERENITY_USERNAME: $SERENITY_USERNAME
-          SERENITY_PASSWORD: $SERENITY_PASSWORD
+          SERENITY_USERNAME: $SERENITY_USERNAME_<<pipeline.parameters.e2e_environment>>
+          SERENITY_PASSWORD: $SERENITY_PASSWORD_<<pipeline.parameters.e2e_environment>>
     steps:
-      - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
       - checkout
       - run:
           name: "Run Gradle tests [<<pipeline.parameters.e2e_environment>>]"
@@ -89,3 +87,11 @@ workflows:
     when: << pipeline.parameters.only_run_deploy_check >>
     jobs:
       - deploy-check
+
+  build_docker:
+    jobs:
+      - build-docker-approval:
+          type: approval
+      - hmpps/build_docker:
+          requires: [build-docker-approval]
+          dockerfile_dir: circle-ci-browser-docker
