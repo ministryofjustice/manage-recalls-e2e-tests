@@ -27,8 +27,8 @@ jobs:
       - run:
           name: Build and pull docker containers
           command: |
-            docker-compose -f docker-compose.yml -f docker-compose.ci.yml pull manage-recalls-e2e-tests
-            docker-compose -f docker-compose.yml -f docker-compose.ci.yml build
+            docker pull quay.io/hmpps/manage-recalls-e2e-tests:latest
+            docker-compose -f docker-compose.yml -f docker-compose.ci.yml build --no-cache
             docker-compose -f docker-compose.yml -f docker-compose.ci.yml pull
       - run:
           name: Start docker compose and run the end-to-end tests
