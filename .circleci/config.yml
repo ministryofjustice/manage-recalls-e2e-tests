@@ -64,7 +64,7 @@ jobs:
       - checkout
       - run:
           name: "Run Gradle tests [<<pipeline.parameters.e2e_environment>>]"
-          command: SERENITY_USERNAME=${SERENITY_USERNAME_<<pipeline.parameters.e2e_environment>>} ./gradlew test -Denvironment=<<pipeline.parameters.e2e_environment>> -Dchrome.switches=--headless
+          command: SERENITY_USERNAME=${SERENITY_USERNAME_<<pipeline.parameters.e2e_environment>>} SERENITY_PASSWORD=${SERENITY_PASSWORD_<<pipeline.parameters.e2e_environment>>}  ./gradlew test -Denvironment=<<pipeline.parameters.e2e_environment>> -Dchrome.switches=--headless
       - store_artifacts:
           path: build/reports/tests/test
           destination: deploy-test-summary
