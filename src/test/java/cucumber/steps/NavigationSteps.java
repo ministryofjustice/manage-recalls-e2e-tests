@@ -217,6 +217,18 @@ public class NavigationSteps {
         );
     }
 
+    @When("{word} navigates to the recall to create a dossier")
+    public void createDossier(String customer) {
+        Actor actor = theActorCalled(customer);
+        String recallId = actor.recall("RECALL_ID");
+
+        theActorCalled(customer).attemptsTo(
+                Click.on(TodoRecallsListPage.RECALL_LIST_TODO_LINK),
+                Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(TodoRecallsListPage.TITLE),
+                Click.on(TodoRecallsListPage.getTargetByDataQa("create-dossier-" + recallId))
+        );
+    }
+
     @Then("{word} is able to see the details captured during booking")
     public void confirmDetailsCapturedDuringBooking(String customer) {
         theActorCalled(customer).attemptsTo(
@@ -240,8 +252,7 @@ public class NavigationSteps {
                 Ensure.that(RecallDetailsPage.getTargetByDataQa("sentenceExpiryDate")).text().isEqualTo("3 Nov 2021"),
                 Ensure.that(RecallDetailsPage.getTargetByDataQa("licenceExpiryDate")).text().isEqualTo("12 Oct 2021"),
                 Ensure.that(RecallDetailsPage.getTargetByDataQa("conditionalReleaseDate")).text().isEqualTo("24 Jun 2022"),
-              // Temporarily disabled as the implementation is not correct
-              //  Ensure.that(RecallDetailsPage.getTargetByDataQa("lastReleasePrison")).text().isEqualTo("Ashfield (HMP)"),
+                Ensure.that(RecallDetailsPage.getTargetByDataQa("lastReleasePrison")).text().isEqualTo("Ashfield (HMP)"),
                 Ensure.that(RecallDetailsPage.getTargetByDataQa("lastReleaseDate")).text().isEqualTo("15 Mar 2021"),
                 Ensure.that(RecallDetailsPage.getTargetByDataQa("sentenceLength")).text().isEqualTo("3 years 2 months"),
                 Ensure.that(RecallDetailsPage.getTargetByDataQa("recallLength")).text().isEqualTo("28 days"),
@@ -314,12 +325,52 @@ public class NavigationSteps {
                 Ensure.that(RecallDetailsPage.LICENCE_CONDITIONS_BREACHED).text().isEqualTo("Licence condition 1(a) has been breached"),
                 Ensure.that(RecallDetailsPage.REASON_FOR_RECALL_OPTION_ONE).text().isEqualTo("Breach of exclusion zone"),
                 Ensure.that(RecallDetailsPage.REASON_FOR_RECALL_OPTION_OTHER).text().isEqualTo("Other"),
-                Ensure.that(RecallDetailsPage.OTHER_REASON_FOR_RECALL_TEXT).text().isEqualTo("other reason for recall")
-                // Temporarily disabled as the implementation is not correct
-                // Ensure.that(RecallDetailsPage.CURRENT_PRISON).text().isEqualTo("Ashfield (HMP)")
+                Ensure.that(RecallDetailsPage.OTHER_REASON_FOR_RECALL_TEXT).text().isEqualTo("other reason for recall"),
+                Ensure.that(RecallDetailsPage.CURRENT_PRISON).text().isEqualTo("Ashfield (HMP)")
         );
     }
 
+    @And("{word} submits the information for the prison letter")
+    public void submitInfoForPrisonLetter(String customer) {
+        theActorCalled(customer).attemptsTo(
+                Click.on(CreateDossierAddInfoForPrisonLetterPage.ADDITIONAL_LICENCE_CONDITIONS_RADIO_BUTTON),
+                Enter.theValue("Licence condition 14(a)").into(CreateDossierAddInfoForPrisonLetterPage.MORE_DETAILS_FOR_ADDITIONAL_LICENCE_CONDITIONS_TEXT_BOX),
+                Click.on(CreateDossierAddInfoForPrisonLetterPage.DIFFERENT_NOMIS_NUMBER_RADIO_BUTTON),
+                Enter.theValue("A4321AA").into(CreateDossierAddInfoForPrisonLetterPage.MORE_DETAILS_FOR_DIFFERENT_NOMIS_NUMBER_TEXT_BOX),
+                Click.on(CreateDossierAddInfoForPrisonLetterPage.CONTINUE_BUTTON)
+        );
+    }
+
+    @Then("{word} gets a confirmation that the dossier creation is complete")
+    public void confirmDossierCreation(String customer) {
+        userIsOnPageWithTitle(customer, DossierCreationConfirmationPage.TITLE);
+        theActorCalled(customer).remember("RECALL_ID", textContent(DossierCreationConfirmationPage.RECALL_ID));
+    }
+
+    @Then("{word} is able to see the details captured during dossier creation")
+    public void confirmDetailsCapturedDuringDossierCreation(String customer) {
+        theActorCalled(customer).attemptsTo(
+                Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(RecallDetailsPage.TITLE),
+                Ensure.that(RecallDetailsPage.ADDITIONAL_LICENCE_CONDITIONS).text().isEqualTo("Yes"),
+                //Temp disabled as not implemented yet
+                //Ensure.that(RecallDetailsPage.MORE_DETAILS_FOR_ADDITIONAL_LICENCE_CONDITIONS_TEXT).text().isEqualTo("Licence condition 14(a)"),
+                Ensure.that(RecallDetailsPage.DIFFERENT_NOMIS_NUMBER).text().isEqualTo("Yes")
+                //Temp disabled as not implemented yet
+                //Ensure.that(RecallDetailsPage.MORE_DETAILS_FOR_DIFFERENT_NOMIS_NUMBER_TEXT).text().isEqualTo("A4321AA")
+        );
+    }
+
+    @When("{word} navigates to view the details captured during dossier creation")
+    public void viewDossierCreationDetails(String customer) {
+        Actor actor = theActorCalled(customer);
+        String recallId = actor.recall("RECALL_ID");
+
+        theActorCalled(customer).attemptsTo(
+                Click.on(TodoRecallsListPage.RECALL_LIST_TODO_LINK),
+                Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(TodoRecallsListPage.TITLE),
+                Click.on(TodoRecallsListPage.getTargetByDataQa("assess-recall-" + recallId))
+        );
+    }
 
     private Callable<Boolean> partAIsDownloaded() {
         return () -> fileIsDownloaded("/tmp", "part_a_recall_report.pdf");
