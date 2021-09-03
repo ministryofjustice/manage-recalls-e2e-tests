@@ -38,6 +38,8 @@ public class NavigationSteps {
         environmentVariables = SystemEnvironmentVariables.createEnvironmentVariables();
         environmentVariables.setProperty("SERENITY_USERNAME", getEnvOrDefault("SERENITY_USERNAME", "PPUD_USER"));
         environmentVariables.setProperty("SERENITY_PASSWORD", getEnvOrDefault("SERENITY_PASSWORD", "password123456"));
+//        environmentVariables.setProperty("SERENITY_USERNAME", getEnvOrDefault("SERENITY_USERNAME", "shahnaaz.rahamatullah@digital.justice.gov.uk"));
+//        environmentVariables.setProperty("SERENITY_PASSWORD", getEnvOrDefault("SERENITY_PASSWORD", "FunnyBones12"));
         String nomsNumber = getEnvOrDefault("NOMS_NUMBER", "A1234AA");
         setSessionVariable(NOMS_NUMBER).to(nomsNumber);
     }
@@ -302,6 +304,19 @@ public class NavigationSteps {
         );
     }
 
+    @And("{word} records the issuance of recall notification")
+    public void recordsIssuanceOfRecallNotification(String customer) {
+        theActorCalled(customer).attemptsTo(
+                Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(RecordIssuanceOfRecallNotificationPage.TITLE),
+                Click.on(RecordIssuanceOfRecallNotificationPage.CONFIRM_RECALL_NOTIFICATION_EMAIL_SENT_CHECKBOX),
+                Enter.theValue("05").into(RecordIssuanceOfRecallNotificationPage.DAY_FIELD),
+                Enter.theValue("12").into(RecordIssuanceOfRecallNotificationPage.MONTH_FIELD),
+                Enter.theValue("2020").into(RecordIssuanceOfRecallNotificationPage.YEAR_FIELD),
+                Enter.theValue("15").into(RecordIssuanceOfRecallNotificationPage.HOUR_FIELD),
+                Enter.theValue("33").into(RecordIssuanceOfRecallNotificationPage.MINUTE_FIELD),
+                Click.on(RecordIssuanceOfRecallNotificationPage.CONTINUE_BUTTON)
+        );
+    }
     @Then("{word} can see that the recall is authorised")
     public void confirmRecallAuthorisation(String customer) {
         userIsOnPageWithTitle(customer, RecallAuthorisationPage.TITLE);
@@ -352,11 +367,9 @@ public class NavigationSteps {
         theActorCalled(customer).attemptsTo(
                 Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(RecallDetailsPage.TITLE),
                 Ensure.that(RecallDetailsPage.ADDITIONAL_LICENCE_CONDITIONS).text().isEqualTo("Yes"),
-                //Temp disabled as not implemented yet
-                //Ensure.that(RecallDetailsPage.MORE_DETAILS_FOR_ADDITIONAL_LICENCE_CONDITIONS_TEXT).text().isEqualTo("Licence condition 14(a)"),
-                Ensure.that(RecallDetailsPage.DIFFERENT_NOMIS_NUMBER).text().isEqualTo("Yes")
-                //Temp disabled as not implemented yet
-                //Ensure.that(RecallDetailsPage.MORE_DETAILS_FOR_DIFFERENT_NOMIS_NUMBER_TEXT).text().isEqualTo("A4321AA")
+                Ensure.that(RecallDetailsPage.MORE_DETAILS_FOR_ADDITIONAL_LICENCE_CONDITIONS_TEXT).text().isEqualTo("Licence condition 14(a)"),
+                Ensure.that(RecallDetailsPage.DIFFERENT_NOMIS_NUMBER).text().isEqualTo("Yes"),
+                Ensure.that(RecallDetailsPage.MORE_DETAILS_FOR_DIFFERENT_NOMIS_NUMBER_TEXT).text().isEqualTo("A4321AA")
         );
     }
 

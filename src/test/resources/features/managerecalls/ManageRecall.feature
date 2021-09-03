@@ -21,6 +21,7 @@ Feature: Manage Recalls
     When Maria confirms the recall length of 28 days
     And Maria submits the licence breach details
     And Maria submits the current prison details
+    And Maria records the issuance of recall notification
     Then Maria can see that the recall is authorised
     And Maria downloads the revocation order
     ### confirm the details captured during the recall assessment journey are displayed
