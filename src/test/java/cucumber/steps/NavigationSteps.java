@@ -38,6 +38,8 @@ public class NavigationSteps {
         environmentVariables = SystemEnvironmentVariables.createEnvironmentVariables();
         environmentVariables.setProperty("SERENITY_USERNAME", getEnvOrDefault("SERENITY_USERNAME", "PPUD_USER"));
         environmentVariables.setProperty("SERENITY_PASSWORD", getEnvOrDefault("SERENITY_PASSWORD", "password123456"));
+//        environmentVariables.setProperty("SERENITY_USERNAME", getEnvOrDefault("SERENITY_USERNAME", "shahnaaz.rahamatullah@digital.justice.gov.uk"));
+//        environmentVariables.setProperty("SERENITY_PASSWORD", getEnvOrDefault("SERENITY_PASSWORD", "FunnyBones12"));
         String nomsNumber = getEnvOrDefault("NOMS_NUMBER", "A1234AA");
         setSessionVariable(NOMS_NUMBER).to(nomsNumber);
     }
