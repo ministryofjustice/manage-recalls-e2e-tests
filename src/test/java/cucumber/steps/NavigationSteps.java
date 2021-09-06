@@ -241,7 +241,7 @@ public class NavigationSteps {
 
                 Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(RecallDetailsPage.TITLE),
                 // Recall
-                Ensure.that(RecallDetailsPage.DATE_RECALL_EMAIL_RECEIVED).text().isEqualTo("5 Dec 2020 at 15:33"),
+                Ensure.that(RecallDetailsPage.DATE_RECALL_EMAIL_RECEIVED).text().isEqualTo("5 December 2020 at 15:33"),
                 Ensure.that(RecallDetailsPage.LOCAL_POLICE_STATION).text().isEqualTo("Essex"),
                 // Issues and needs
                 Ensure.that(RecallDetailsPage.VULNERABILITY_DIVERSITY_DETAIL).text().isEqualTo(sessionVariableCalled("vulnerabilityDiversityDetail")),
