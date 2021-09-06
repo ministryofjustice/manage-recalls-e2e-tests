@@ -15,6 +15,7 @@ import net.serenitybdd.screenplay.ensure.Ensure;
 import net.serenitybdd.screenplay.targets.Target;
 import net.thucydides.core.util.EnvironmentVariables;
 import net.thucydides.core.util.SystemEnvironmentVariables;
+
 import java.io.File;
 import java.util.concurrent.Callable;
 
@@ -351,6 +352,18 @@ public class NavigationSteps {
                 Click.on(CreateDossierAddInfoForPrisonLetterPage.DIFFERENT_NOMIS_NUMBER_RADIO_BUTTON),
                 Enter.theValue("A4321AA").into(CreateDossierAddInfoForPrisonLetterPage.MORE_DETAILS_FOR_DIFFERENT_NOMIS_NUMBER_TEXT_BOX),
                 Click.on(CreateDossierAddInfoForPrisonLetterPage.CONTINUE_BUTTON)
+        );
+    }
+
+    @Then("{word} can download the dossier")
+    public void canDownloadTheDossier(String customer) {
+        userIsOnPageWithTitle(customer, DossierDownloadPage.TITLE);
+    }
+
+    @When("{word} has reviewed the dossier")
+    public void hasReviewedTheDossier(String customer) {
+        theActorCalled(customer).attemptsTo(
+                Click.on(DossierDownloadPage.CONTINUE_BUTTON)
         );
     }
 

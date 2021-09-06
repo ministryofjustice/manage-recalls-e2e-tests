@@ -30,6 +30,8 @@ Feature: Manage Recalls
     ### create a dossier
     When Maria navigates to the recall to create a dossier
     And Maria submits the information for the prison letter
-    And Maria gets a confirmation that the dossier creation is complete
+    Then Maria can download the dossier
+    When Maria has reviewed the dossier
+    Then Maria gets a confirmation that the dossier creation is complete
     And Maria navigates to view the details captured during dossier creation
     Then Maria is able to see the details captured during dossier creation
