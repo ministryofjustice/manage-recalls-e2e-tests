@@ -16,14 +16,14 @@ import net.serenitybdd.screenplay.targets.Target;
 import net.thucydides.core.util.EnvironmentVariables;
 import net.thucydides.core.util.SystemEnvironmentVariables;
 import java.io.File;
+import java.nio.file.Path;
 import java.util.concurrent.Callable;
 
 import static cucumber.pages.FindAnOffenderPage.BOOK_RECALL_LINK;
 import static cucumber.pages.TodoRecallsListPage.FIND_SOMEONE_LINK;
 import static cucumber.questions.ReadTextContent.textContent;
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static net.serenitybdd.core.Serenity.sessionVariableCalled;
-import static net.serenitybdd.core.Serenity.setSessionVariable;
+import static net.serenitybdd.core.Serenity.*;
 import static net.serenitybdd.screenplay.actors.OnStage.setTheStage;
 import static net.serenitybdd.screenplay.actors.OnStage.theActorCalled;
 import static org.awaitility.Awaitility.await;
@@ -38,6 +38,7 @@ public class NavigationSteps {
         environmentVariables = SystemEnvironmentVariables.createEnvironmentVariables();
         environmentVariables.setProperty("SERENITY_USERNAME", getEnvOrDefault("SERENITY_USERNAME", "PPUD_USER"));
         environmentVariables.setProperty("SERENITY_PASSWORD", getEnvOrDefault("SERENITY_PASSWORD", "password123456"));
+
         String nomsNumber = getEnvOrDefault("NOMS_NUMBER", "A1234AA");
         setSessionVariable(NOMS_NUMBER).to(nomsNumber);
     }
@@ -241,7 +242,7 @@ public class NavigationSteps {
 
                 Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(RecallDetailsPage.TITLE),
                 // Recall
-                Ensure.that(RecallDetailsPage.DATE_RECALL_EMAIL_RECEIVED).text().isEqualTo("5 Dec 2020 at 15:33"),
+                Ensure.that(RecallDetailsPage.DATE_RECALL_EMAIL_RECEIVED).text().isEqualTo("5 December 2020 at 15:33"),
                 Ensure.that(RecallDetailsPage.LOCAL_POLICE_STATION).text().isEqualTo("Essex"),
                 // Issues and needs
                 Ensure.that(RecallDetailsPage.VULNERABILITY_DIVERSITY_DETAIL).text().isEqualTo(sessionVariableCalled("vulnerabilityDiversityDetail")),
@@ -312,8 +313,8 @@ public class NavigationSteps {
                 Enter.theValue("2020").into(RecordIssuanceOfRecallNotificationPage.YEAR_FIELD),
                 Enter.theValue("15").into(RecordIssuanceOfRecallNotificationPage.HOUR_FIELD),
                 Enter.theValue("33").into(RecordIssuanceOfRecallNotificationPage.MINUTE_FIELD),
-                Click.on(RecordIssuanceOfRecallNotificationPage.CONTINUE_BUTTON)
-        );
+                Upload.theFile(Path.of("src/test/resources/files/jon.msg")).to(RecordIssuanceOfRecallNotificationPage.UPLOAD_FILE),
+                Click.on(RecordIssuanceOfRecallNotificationPage.CONTINUE_BUTTON));
     }
     @Then("{word} can see that the recall is authorised")
     public void confirmRecallAuthorisation(String customer) {
@@ -322,7 +323,7 @@ public class NavigationSteps {
     }
 
     @Then("{word} downloads the documents")
-    public void downloadRecallDocument(String customer) {
+    public void downloadRecallDocument(String customer){
         userClicksOn(customer, RecallDetailsPage.RECALL_DOCUMENT_LINK_PART_A);
         await().atMost(10, SECONDS).until(partAIsDownloaded());
         userClicksOn(customer, RecallDetailsPage.RECALL_DOCUMENT_LINK_LICENCE);
@@ -350,6 +351,14 @@ public class NavigationSteps {
                 Enter.theValue("Licence condition 14(a)").into(CreateDossierAddInfoForPrisonLetterPage.MORE_DETAILS_FOR_ADDITIONAL_LICENCE_CONDITIONS_TEXT_BOX),
                 Click.on(CreateDossierAddInfoForPrisonLetterPage.DIFFERENT_NOMIS_NUMBER_RADIO_BUTTON),
                 Enter.theValue("A4321AA").into(CreateDossierAddInfoForPrisonLetterPage.MORE_DETAILS_FOR_DIFFERENT_NOMIS_NUMBER_TEXT_BOX),
+                Click.on(CreateDossierAddInfoForPrisonLetterPage.CONTINUE_BUTTON)
+        );
+    }
+
+    @And("{word} downloads the dossier and the letter")
+    public void downloadDossierAndLetter(String customer) {
+        theActorCalled(customer).attemptsTo(
+                Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(CreateDossierDownloadDossierAndLetterPage.TITLE),
                 Click.on(CreateDossierAddInfoForPrisonLetterPage.CONTINUE_BUTTON)
         );
     }
