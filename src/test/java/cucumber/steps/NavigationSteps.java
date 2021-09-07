@@ -313,7 +313,7 @@ public class NavigationSteps {
                 Enter.theValue("2020").into(RecordIssuanceOfRecallNotificationPage.YEAR_FIELD),
                 Enter.theValue("15").into(RecordIssuanceOfRecallNotificationPage.HOUR_FIELD),
                 Enter.theValue("33").into(RecordIssuanceOfRecallNotificationPage.MINUTE_FIELD),
-                Upload.theFile(Path.of("src/test/resources/files/jon.msg")).to(RecordIssuanceOfRecallNotificationPage.UPLOAD_FILE),
+                Upload.theFile(Path.of("src/test/resources/files/email.msg")).to(RecordIssuanceOfRecallNotificationPage.UPLOAD_FILE),
                 Click.on(RecordIssuanceOfRecallNotificationPage.CONTINUE_BUTTON));
     }
     @Then("{word} can see that the recall is authorised")
@@ -330,20 +330,37 @@ public class NavigationSteps {
         await().atMost(10, SECONDS).until(licenceIsDownloaded());
     }
 
-    @Then("{word} is able to see the details captured during assessment")
-    public void confirmRecallDetailsCapturedDuringAssessment(String customer) {
+    @Then("{word} navigates to view the details captured during assessment")
+    public void navigateToViewRecallAssessmentDetails(String customer){
+        Actor actor = theActorCalled(customer);
+        new AssessRecallDetailsPage().getAssessRecallDetailsPage(environmentVariables, sessionVariableCalled(NOMS_NUMBER), actor.recall("RECALL_ID"));
         theActorCalled(customer).attemptsTo(
-                Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(RecallDetailsPage.TITLE),
-                Ensure.that(RecallDetailsPage.AGREE_WITH_RECALL_RECOMMENDATION).text().isEqualTo("Yes"),
-                Ensure.that(RecallDetailsPage.AGREE_WITH_RECALL_RECOMMENDATION_ADDITIONAL_TEXT).text().isEqualTo("yes, agree with the fixed term recall"),
-                Ensure.that(RecallDetailsPage.LICENCE_CONDITIONS_BREACHED).text().isEqualTo("Licence condition 1(a) has been breached"),
-                Ensure.that(RecallDetailsPage.REASON_FOR_RECALL_OPTION_ONE).text().isEqualTo("Breach of exclusion zone"),
-                Ensure.that(RecallDetailsPage.REASON_FOR_RECALL_OPTION_OTHER).text().isEqualTo("Other"),
-                Ensure.that(RecallDetailsPage.OTHER_REASON_FOR_RECALL_TEXT).text().isEqualTo("other reason for recall"),
-                Ensure.that(RecallDetailsPage.CURRENT_PRISON).text().isEqualTo("Ashfield (HMP)")
+                Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(AssessRecallDetailsPage.TITLE)
         );
     }
 
+    @Then("{word} is able to see the details captured during assessment")
+    public void confirmRecallDetailsCapturedDuringAssessment(String customer) {
+        theActorCalled(customer).attemptsTo(
+                Ensure.that(AssessRecallDetailsPage.AGREE_WITH_RECALL_RECOMMENDATION).text().isEqualTo("Yes"),
+                Ensure.that(AssessRecallDetailsPage.AGREE_WITH_RECALL_RECOMMENDATION_ADDITIONAL_TEXT).text().isEqualTo("yes, agree with the fixed term recall"),
+                Ensure.that(AssessRecallDetailsPage.LICENCE_CONDITIONS_BREACHED).text().isEqualTo("Licence condition 1(a) has been breached"),
+                Ensure.that(AssessRecallDetailsPage.REASON_FOR_RECALL_OPTION_ONE).text().isEqualTo("Breach of exclusion zone"),
+                Ensure.that(AssessRecallDetailsPage.REASON_FOR_RECALL_OPTION_OTHER).text().isEqualTo("Other"),
+                Ensure.that(AssessRecallDetailsPage.OTHER_REASON_FOR_RECALL_TEXT).text().isEqualTo("other reason for recall"),
+                Ensure.that(AssessRecallDetailsPage.CURRENT_PRISON).text().isEqualTo("Ashfield (HMP)"),
+                Ensure.that(AssessRecallDetailsPage.DATETIME_RECALL_NOTIFICATION_EMAIL_SENT).text().isEqualTo("5 December 2020 at 15:33"),
+                Ensure.that(AssessRecallDetailsPage.UPLOADED_RECALL_NOTIFICATION_EMAIL_LINK).text().isEqualTo("email.msg")
+        );
+    }
+
+    @Then("{word} can download the email")
+    public void downloadEmail(String customer) {
+        theActorCalled(customer).attemptsTo(
+                Click.on(AssessRecallDetailsPage.UPLOADED_RECALL_NOTIFICATION_EMAIL_LINK)
+        );
+        await().atMost(10, SECONDS).until(recallNotificationEmailIsDownloaded());
+    }
     @And("{word} submits the information for the prison letter")
     public void submitInfoForPrisonLetter(String customer) {
         theActorCalled(customer).attemptsTo(
@@ -372,23 +389,19 @@ public class NavigationSteps {
     @Then("{word} is able to see the details captured during dossier creation")
     public void confirmDetailsCapturedDuringDossierCreation(String customer) {
         theActorCalled(customer).attemptsTo(
-                Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(RecallDetailsPage.TITLE),
-                Ensure.that(RecallDetailsPage.ADDITIONAL_LICENCE_CONDITIONS).text().isEqualTo("Yes"),
-                Ensure.that(RecallDetailsPage.MORE_DETAILS_FOR_ADDITIONAL_LICENCE_CONDITIONS_TEXT).text().isEqualTo("Licence condition 14(a)"),
-                Ensure.that(RecallDetailsPage.DIFFERENT_NOMIS_NUMBER).text().isEqualTo("Yes"),
-                Ensure.that(RecallDetailsPage.MORE_DETAILS_FOR_DIFFERENT_NOMIS_NUMBER_TEXT).text().isEqualTo("A4321AA")
+                Ensure.that(CreateDossierRecallDetailsPage.ADDITIONAL_LICENCE_CONDITIONS).text().isEqualTo("Yes"),
+                Ensure.that(CreateDossierRecallDetailsPage.MORE_DETAILS_FOR_ADDITIONAL_LICENCE_CONDITIONS_TEXT).text().isEqualTo("Licence condition 14(a)"),
+                Ensure.that(CreateDossierRecallDetailsPage.DIFFERENT_NOMIS_NUMBER).text().isEqualTo("Yes"),
+                Ensure.that(CreateDossierRecallDetailsPage.MORE_DETAILS_FOR_DIFFERENT_NOMIS_NUMBER_TEXT).text().isEqualTo("A4321AA")
         );
     }
 
     @When("{word} navigates to view the details captured during dossier creation")
     public void viewDossierCreationDetails(String customer) {
         Actor actor = theActorCalled(customer);
-        String recallId = actor.recall("RECALL_ID");
-
+        new CreateDossierRecallDetailsPage().getCreateDossierRecallDetailsPage(environmentVariables, sessionVariableCalled(NOMS_NUMBER), actor.recall("RECALL_ID"));
         theActorCalled(customer).attemptsTo(
-                Click.on(TodoRecallsListPage.RECALL_LIST_TODO_LINK),
-                Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(TodoRecallsListPage.TITLE),
-                Click.on(TodoRecallsListPage.getTargetByDataQa("assess-recall-" + recallId))
+                Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(CreateDossierRecallDetailsPage.TITLE)
         );
     }
 
@@ -402,6 +415,10 @@ public class NavigationSteps {
 
     private Callable<Boolean> revocationOrderIsDownloaded() {
         return () -> fileIsDownloaded("/tmp", "revocation-order.pdf");
+    }
+
+    private Callable<Boolean> recallNotificationEmailIsDownloaded() {
+        return () -> fileIsDownloaded("/tmp", "email.msg");
     }
 
     private boolean fileIsDownloaded(String downloadPath, String fileName) {

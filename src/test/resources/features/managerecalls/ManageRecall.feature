@@ -16,6 +16,7 @@ Feature: Manage Recalls
     ### Assess the recall
     When Maria begins to assess the recall that they have just booked
     Then Maria is able to see the details captured during booking
+    # Temp disabled - to be fixed as part of seperate jira ticket
     # And Maria downloads the documents
     When Maria starts the assessment process for the recall
     When Maria confirms the recall length of 28 days
@@ -25,14 +26,13 @@ Feature: Manage Recalls
     Then Maria can see that the recall is authorised
     And Maria downloads the revocation order
     ### confirm the details captured during the recall assessment journey are displayed
-    # Temporarily disabled the following assertions as recalls details page has to be navigated directly and will be covered as part of different jira ticket
-    # When Maria begins to assess the recall that they have just booked
-    # Then Maria is able to see the details captured during assessment
+    When Maria navigates to view the details captured during assessment
+    Then Maria is able to see the details captured during assessment
+    And Maria can download the email
     ### create a dossier
     When Maria navigates to the recall to create a dossier
     And Maria submits the information for the prison letter
     And Maria downloads the dossier and the letter
     And Maria gets a confirmation that the dossier creation is complete
-    # Temporarily disabled the following assertions as recalls details page has to be navigated directly and will be covered as part of different jira ticket
-    # And Maria navigates to view the details captured during dossier creation
-    # Then Maria is able to see the details captured during dossier creation
+    And Maria navigates to view the details captured during dossier creation
+    Then Maria is able to see the details captured during dossier creation
