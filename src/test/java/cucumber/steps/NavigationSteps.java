@@ -100,10 +100,12 @@ public class NavigationSteps {
         );
     }
 
-    @Then("{word} downloads the revocation order")
-    public void clickOnRevocationOrderLink(String customer) {
-        userClicksOn(customer, RecallAuthorisationPage.DOWNLOAD_REVOCATION_ORDER_LINK);
-        await().atMost(10, SECONDS).until(revocationOrderIsDownloaded());
+    @Then("{word} downloads the recall notification")
+    public void clickOnRecallNotificationLink(String customer) {
+        theActorCalled(customer).attemptsTo(
+            Click.on(RecallNotificationDownloadPage.DOWNLOAD_RECALL_NOTIFICATION_LINK),
+            Click.on(RecallNotificationDownloadPage.CONTINUE_BUTTON)
+        );
     }
 
     @When("{word} submits the date and time of the recall request received from probation service")
@@ -325,9 +327,9 @@ public class NavigationSteps {
     @Then("{word} downloads the documents")
     public void downloadRecallDocument(String customer){
         userClicksOn(customer, RecallDetailsPage.RECALL_DOCUMENT_LINK_PART_A);
-        await().atMost(10, SECONDS).until(partAIsDownloaded());
+        //await().atMost(10, SECONDS).until(partAIsDownloaded());
         userClicksOn(customer, RecallDetailsPage.RECALL_DOCUMENT_LINK_LICENCE);
-        await().atMost(10, SECONDS).until(licenceIsDownloaded());
+        //await().atMost(10, SECONDS).until(licenceIsDownloaded());
     }
 
     @Then("{word} navigates to view the details captured during assessment")
@@ -372,8 +374,16 @@ public class NavigationSteps {
         );
     }
 
-    @And("{word} downloads the dossier and the letter")
-    public void downloadDossierAndLetter(String customer) {
+    @Then("{word} can download the dossier")
+    public void canDownloadTheDossier(String customer) {
+        userIsOnPageWithTitle(customer, CreateDossierDownloadDossierAndLetterPage.TITLE);
+        theActorCalled(customer).attemptsTo(
+            Click.on(CreateDossierDownloadDossierAndLetterPage.DOWNLOAD_DOSSIER_LINK)
+        );
+    }
+
+    @When("{word} has reviewed the dossier")
+    public void hasReviewedTheDossier(String customer) {
         theActorCalled(customer).attemptsTo(
                 Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(CreateDossierDownloadDossierAndLetterPage.TITLE),
                 Click.on(CreateDossierAddInfoForPrisonLetterPage.CONTINUE_BUTTON)
