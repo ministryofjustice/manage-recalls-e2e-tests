@@ -374,6 +374,20 @@ public class NavigationSteps {
         );
     }
 
+    @And("{word} has checked and created the reasons for recall document")
+    public void checkCreateReasonsRecallDoc(String customer) {
+        userIsOnPageWithTitle(customer, CreateDossierCheckReasonsDocPage.TITLE);
+        theActorCalled(customer).attemptsTo(
+            Ensure.that(CreateDossierCheckReasonsDocPage.NAME).text().isEqualTo("Robert Larsen"),
+            Ensure.that(CreateDossierCheckReasonsDocPage.NOMS_NUMBER).text().isEqualTo(sessionVariableCalled(NOMS_NUMBER)),
+            Ensure.that(CreateDossierCheckReasonsDocPage.BOOKING_NUMBER).text().isEqualTo("A123456"),
+            Ensure.that(CreateDossierCheckReasonsDocPage.LICENCE_CONDITIONS_BREACHED).text().isEqualTo("Licence condition 1(a) has been breached"),
+            Ensure.that(CreateDossierCheckReasonsDocPage.RECALL_TYPE).text().isEqualTo("Fixed term"),
+            Ensure.that(CreateDossierCheckReasonsDocPage.RECALL_LENGTH).text().isEqualTo("28 days"),
+            Click.on(CreateDossierCheckReasonsDocPage.CONTINUE_BUTTON)
+        );
+    }
+
     @Then("{word} can open the dossier")
     public void canDownloadTheDossier(String customer) {
         userIsOnPageWithTitle(customer, CreateDossierDownloadDossierAndLetterPage.TITLE);
