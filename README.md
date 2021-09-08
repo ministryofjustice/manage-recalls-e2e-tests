@@ -107,7 +107,7 @@ Then, to run the tests, e.g. at a separate command prompt:
 
 To maintain these tests versus in-progress changes, i.e. to `manage-recalls-ui` and/or `manage-recalls-api`, requires running against those local, under development, changes.
 
-The script `build-local.sh` achieves this by:
+The script `build.sh` achieves this by:
 * running `start-local-services.sh`
   * building and starting `manage-recalls-ui` and `manage-recalls-api` from   cloned source, as local siblings of this project,
   * starting remaining dependencies from docker images, and,
