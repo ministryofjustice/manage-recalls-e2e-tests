@@ -218,6 +218,7 @@ public class NavigationSteps {
         theActorCalled(customer).attemptsTo(
                 Click.on(TodoRecallsListPage.RECALL_LIST_TODO_LINK),
                 Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(TodoRecallsListPage.TITLE),
+                Ensure.that(TodoRecallsListPage.getTargetByDataQa("continue-booking-" + recallId)).isNotDisplayed(),
                 Click.on(TodoRecallsListPage.getTargetByDataQa("assess-recall-" + recallId))
         );
     }
@@ -230,6 +231,7 @@ public class NavigationSteps {
         theActorCalled(customer).attemptsTo(
                 Click.on(TodoRecallsListPage.RECALL_LIST_TODO_LINK),
                 Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(TodoRecallsListPage.TITLE),
+                Ensure.that(TodoRecallsListPage.getTargetByDataQa("assess-recall-" + recallId)).isNotDisplayed(),
                 Click.on(TodoRecallsListPage.getTargetByDataQa("create-dossier-" + recallId))
         );
     }
