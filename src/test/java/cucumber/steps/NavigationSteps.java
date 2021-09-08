@@ -378,7 +378,6 @@ public class NavigationSteps {
     public void checkCreateReasonsRecallDoc(String customer) {
         userIsOnPageWithTitle(customer, CreateDossierCheckReasonsDocPage.TITLE);
         theActorCalled(customer).attemptsTo(
-            Ensure.that(CreateDossierCheckReasonsDocPage.NAME).text().isEqualTo("Robert Larsen"),
             Ensure.that(CreateDossierCheckReasonsDocPage.NOMS_NUMBER).text().isEqualTo(sessionVariableCalled(NOMS_NUMBER)),
             Ensure.that(CreateDossierCheckReasonsDocPage.BOOKING_NUMBER).text().isEqualTo("A123456"),
             Ensure.that(CreateDossierCheckReasonsDocPage.LICENCE_CONDITIONS_BREACHED).text().isEqualTo("Licence condition 1(a) has been breached"),
