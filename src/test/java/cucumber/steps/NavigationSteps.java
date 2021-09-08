@@ -18,6 +18,7 @@ import net.thucydides.core.util.SystemEnvironmentVariables;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.concurrent.Callable;
+import java.util.ArrayList;
 
 import static cucumber.pages.FindAnOffenderPage.BOOK_RECALL_LINK;
 import static cucumber.pages.TodoRecallsListPage.FIND_SOMEONE_LINK;
@@ -27,6 +28,7 @@ import static net.serenitybdd.core.Serenity.*;
 import static net.serenitybdd.screenplay.actors.OnStage.setTheStage;
 import static net.serenitybdd.screenplay.actors.OnStage.theActorCalled;
 import static org.awaitility.Awaitility.await;
+import org.openqa.selenium.WebDriver;
 
 public class NavigationSteps {
 
@@ -100,10 +102,10 @@ public class NavigationSteps {
         );
     }
 
-    @Then("{word} downloads the recall notification")
+    @Then("{word} opens the recall notification")
     public void clickOnRecallNotificationLink(String customer) {
+        openDocumentInTab(customer, RecallNotificationDownloadPage.DOWNLOAD_RECALL_NOTIFICATION_LINK);
         theActorCalled(customer).attemptsTo(
-            Click.on(RecallNotificationDownloadPage.DOWNLOAD_RECALL_NOTIFICATION_LINK),
             Click.on(RecallNotificationDownloadPage.CONTINUE_BUTTON)
         );
     }
@@ -324,12 +326,10 @@ public class NavigationSteps {
         theActorCalled(customer).remember("RECALL_ID", textContent(RecallAuthorisationPage.RECALL_ID));
     }
 
-    @Then("{word} downloads the documents")
+    @Then("{word} opens the documents")
     public void downloadRecallDocument(String customer){
-        userClicksOn(customer, RecallDetailsPage.RECALL_DOCUMENT_LINK_PART_A);
-        //await().atMost(10, SECONDS).until(partAIsDownloaded());
-        userClicksOn(customer, RecallDetailsPage.RECALL_DOCUMENT_LINK_LICENCE);
-        //await().atMost(10, SECONDS).until(licenceIsDownloaded());
+        openDocumentInTab(customer, RecallDetailsPage.RECALL_DOCUMENT_LINK_PART_A);
+        openDocumentInTab(customer, RecallDetailsPage.RECALL_DOCUMENT_LINK_LICENCE);
     }
 
     @Then("{word} navigates to view the details captured during assessment")
@@ -374,12 +374,10 @@ public class NavigationSteps {
         );
     }
 
-    @Then("{word} can download the dossier")
+    @Then("{word} can open the dossier")
     public void canDownloadTheDossier(String customer) {
         userIsOnPageWithTitle(customer, CreateDossierDownloadDossierAndLetterPage.TITLE);
-        theActorCalled(customer).attemptsTo(
-            Click.on(CreateDossierDownloadDossierAndLetterPage.DOWNLOAD_DOSSIER_LINK)
-        );
+        openDocumentInTab(customer, CreateDossierDownloadDossierAndLetterPage.DOWNLOAD_DOSSIER_LINK);
     }
 
     @When("{word} has reviewed the dossier")
@@ -434,6 +432,20 @@ public class NavigationSteps {
     private boolean fileIsDownloaded(String downloadPath, String fileName) {
         File file = new File(downloadPath + "/" + fileName);
         return file.exists() && file.delete();
+    }
+
+    private void openDocumentInTab(String customer, Target link) {
+        userClicksOn(customer, link);
+        Actor actor = theActorCalled(customer);
+        String linkHref = link.resolveFor(actor).getAttribute("href");
+        WebDriver driver = getDriver();
+        String oldTab = driver.getWindowHandle();
+        ArrayList<String> newTab = new ArrayList<String>(driver.getWindowHandles());
+        newTab.remove(oldTab);
+        driver.switchTo().window(newTab.get(0));
+        Ensure.thatTheCurrentPage().currentUrl().hasValue().isEqualTo(linkHref);
+        driver.close();
+        driver.switchTo().window(oldTab);
     }
 
     private void userIsOnPageWithTitle(String customer, String uniquePageTitle) {

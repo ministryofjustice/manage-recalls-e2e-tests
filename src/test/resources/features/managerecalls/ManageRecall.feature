@@ -16,12 +16,12 @@ Feature: Manage Recalls
     ### Assess the recall
     When Maria begins to assess the recall that they have just booked
     Then Maria is able to see the details captured during booking
-    And Maria downloads the documents
+    And Maria opens the documents
     When Maria starts the assessment process for the recall
     When Maria confirms the recall length of 28 days
     And Maria submits the licence breach details
     And Maria submits the current prison details
-    And Maria downloads the recall notification
+    And Maria opens the recall notification
     And Maria records the issuance of recall notification
     Then Maria can see that the recall is authorised
     ### confirm the details captured during the recall assessment journey are displayed
@@ -31,7 +31,7 @@ Feature: Manage Recalls
     ### create a dossier
     When Maria navigates to the recall to create a dossier
     And Maria submits the information for the prison letter
-    Then Maria can download the dossier
+    Then Maria can open the dossier
     When Maria has reviewed the dossier
     Then Maria gets a confirmation that the dossier creation is complete
     And Maria navigates to view the details captured during dossier creation
