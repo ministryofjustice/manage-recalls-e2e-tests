@@ -403,6 +403,19 @@ public class NavigationSteps {
         );
     }
 
+    @When("{word} records that the dossier was emailed")
+    public void hasEmailedTheDossier(String customer) {
+        theActorCalled(customer).attemptsTo(
+                Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(CreateDossierConfirmEmailedPage.TITLE),
+                Click.on(CreateDossierConfirmEmailedPage.CONFIRM_DOSSIER_EMAIL_SENT_CHECKBOX),
+                Enter.theValue("05").into(CreateDossierConfirmEmailedPage.DAY_FIELD),
+                Enter.theValue("12").into(CreateDossierConfirmEmailedPage.MONTH_FIELD),
+                Enter.theValue("2020").into(CreateDossierConfirmEmailedPage.YEAR_FIELD),
+                Upload.theFile(Path.of("src/test/resources/files/email.msg")).to(CreateDossierConfirmEmailedPage.UPLOAD_FILE),
+                Click.on(CreateDossierConfirmEmailedPage.CONTINUE_BUTTON)
+        );
+    }
+
     @Then("{word} gets a confirmation that the dossier creation is complete")
     public void confirmDossierCreation(String customer) {
         userIsOnPageWithTitle(customer, DossierCreationConfirmationPage.TITLE);
@@ -415,8 +428,18 @@ public class NavigationSteps {
                 Ensure.that(CreateDossierRecallDetailsPage.ADDITIONAL_LICENCE_CONDITIONS).text().isEqualTo("Yes"),
                 Ensure.that(CreateDossierRecallDetailsPage.MORE_DETAILS_FOR_ADDITIONAL_LICENCE_CONDITIONS_TEXT).text().isEqualTo("Licence condition 14(a)"),
                 Ensure.that(CreateDossierRecallDetailsPage.DIFFERENT_NOMIS_NUMBER).text().isEqualTo("Yes"),
-                Ensure.that(CreateDossierRecallDetailsPage.MORE_DETAILS_FOR_DIFFERENT_NOMIS_NUMBER_TEXT).text().isEqualTo("A4321AA")
+                Ensure.that(CreateDossierRecallDetailsPage.MORE_DETAILS_FOR_DIFFERENT_NOMIS_NUMBER_TEXT).text().isEqualTo("A4321AA"),
+                Ensure.that(CreateDossierRecallDetailsPage.DATE_DOSSIER_EMAIL_SENT).text().isEqualTo("5 Dec 2020"),
+                Ensure.that(CreateDossierRecallDetailsPage.UPLOADED_DOSSIER_EMAIL_LINK).text().isEqualTo("email.msg")
         );
+    }
+
+    @Then("{word} can download the dossier email")
+    public void downloadDossierEmail(String customer) {
+        theActorCalled(customer).attemptsTo(
+                Click.on(CreateDossierRecallDetailsPage.UPLOADED_DOSSIER_EMAIL_LINK)
+        );
+        await().atMost(10, SECONDS).until(recallDossierEmailIsDownloaded());
     }
 
     @When("{word} navigates to view the details captured during dossier creation")
@@ -441,6 +464,10 @@ public class NavigationSteps {
     }
 
     private Callable<Boolean> recallNotificationEmailIsDownloaded() {
+        return () -> fileIsDownloaded("/tmp", "email.msg");
+    }
+
+    private Callable<Boolean> recallDossierEmailIsDownloaded() {
         return () -> fileIsDownloaded("/tmp", "email.msg");
     }
 
