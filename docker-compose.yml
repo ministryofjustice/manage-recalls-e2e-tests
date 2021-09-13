@@ -33,7 +33,7 @@ services:
       - DELIUS_ENABLED=false
 
   fake-prisoner-offender-search-api:
-    build: ./fake-prisoner-offender-search-api
+    image: quay.io/hmpps/ppud-fake-prisoner-offender-search-api:latest
     networks:
       - manage-recalls-e2e
     container_name: fake-prisoner-offender-search-api-e2e
