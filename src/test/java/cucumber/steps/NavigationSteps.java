@@ -110,6 +110,15 @@ public class NavigationSteps {
         );
     }
 
+    @When("{word} enters the pre-convictions name")
+    public void enterPreConsMainName(String customer) {
+        theActorCalled(customer).attemptsTo(
+                Click.on(RecallPreConsNamePage.HAS_OTHER_PRE_CONS_NAME_OPTION),
+                Enter.theValue("Wayne Holt").into(RecallPreConsNamePage.OTHER_PRE_CONS_NAME),
+                Click.on(RecallPreConsNamePage.CONTINUE_BUTTON)
+        );
+    }
+
     @When("{word} submits the date and time of the recall request received from probation service")
     public void submitDateTimeOfRecallRequestReceived(String customer) {
         theActorCalled(customer).attemptsTo(
@@ -242,8 +251,8 @@ public class NavigationSteps {
 
                 // User details
                 Ensure.that(FindAnOffenderPage.NOMS_NUMBER_MATCHES).text().isEqualTo(sessionVariableCalled(NOMS_NUMBER)),
-                Ensure.that(FindAnOffenderPage.FIRST_NAME_MATCHES).text().isNotBlank(),
-                Ensure.that(FindAnOffenderPage.LAST_NAME_MATCHES).text().isNotBlank(),
+                Ensure.that(RecallDetailsPage.NAME).text().isNotBlank(),
+                Ensure.that(RecallDetailsPage.PRE_CONS_NAME).text().isNotBlank(),
                 Ensure.that(FindAnOffenderPage.DATE_OF_BIRTH_MATCHES).text().isNotBlank(),
 
                 Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(RecallDetailsPage.TITLE),
