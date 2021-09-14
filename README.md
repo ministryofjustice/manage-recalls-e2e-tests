@@ -151,3 +151,8 @@ to the service.  See above re. valid credentials for other environments.
 ### Viewing the reports
 Running the above command will produce a Serenity test report in the `target/site/serenity` directory. Go take a look!
 
+## Autofill form filler chrome extension
+The `autofill-extension-import.csv` file in the repo root can be imported into the Autofill chrome extension
+
+[Extension download](https://chrome.google.com/webstore/detail/autofill/nlmmgnhgdeffjkdckmikfpnddkbbfkkk)
+[Autofill import CSV page](chrome-extension://nlmmgnhgdeffjkdckmikfpnddkbbfkkk/options.html#importexport)
