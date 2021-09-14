@@ -408,7 +408,8 @@ public class NavigationSteps {
     public void hasReviewedTheDossier(String customer) {
         theActorCalled(customer).attemptsTo(
                 Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(CreateDossierDownloadDossierAndLetterPage.TITLE),
-                Click.on(CreateDossierAddInfoForPrisonLetterPage.CONTINUE_BUTTON)
+                Click.on(CreateDossierDownloadDossierAndLetterPage.CONFIRM_DOSSIER_CHECKED),
+                Click.on(CreateDossierDownloadDossierAndLetterPage.CONTINUE_BUTTON)
         );
     }
 
