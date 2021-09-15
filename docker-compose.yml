@@ -47,7 +47,7 @@ services:
     image: quay.io/hmpps/ppud-fake-prison-register-api:latest
     networks:
       - manage-recalls-e2e
-    container_name: fake-prisoner-offender-search-api-e2e
+    container_name: fake-prison-register-api-e2e
     ports:
       - "9094:8080"
     healthcheck:
