@@ -43,6 +43,17 @@ services:
       test: [ "CMD", "curl", "-f", "http://localhost:8080/health/ping" ]
     command: --verbose
 
+  fake-prison-register-api:
+    image: quay.io/hmpps/ppud-fake-prison-register-api:latest
+    networks:
+      - manage-recalls-e2e
+    container_name: fake-prisoner-offender-search-api-e2e
+    ports:
+      - "9094:8080"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/health/ping" ]
+    command: --verbose
+
   manage-recalls-api:
     image: quay.io/hmpps/manage-recalls-api:latest
     networks:
@@ -59,6 +70,7 @@ services:
       - OAUTH_ENDPOINT_URL=http://hmpps-auth:8080/auth
       - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://hmpps-auth:8080/auth/.well-known/jwks.json
       - PRISONERSEARCH_ENDPOINT_URL=http://fake-prisoner-offender-search-api:8080
+      - PRISONREGISTER_ENDPOINT_URL=http://fake-prison-register-api:8080
       - GOTENBERG_ENDPOINT_URL=http://gotenberg:3000
       - POSTGRES_HOST=postgres:5432
       - POSTGRES_DBNAME=manage_recalls
