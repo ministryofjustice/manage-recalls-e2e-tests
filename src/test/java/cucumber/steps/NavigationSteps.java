@@ -211,6 +211,8 @@ public class NavigationSteps {
         UploadRecallDocumentsPage page = new UploadRecallDocumentsPage();
         page.uploadFile("src/test/resources/files/test.pdf", "PART_A_RECALL_REPORT");
         page.uploadFile("src/test/resources/files/test.pdf", "LICENCE");
+        page.uploadFile("src/test/resources/files/test.pdf", "PREVIOUS_CONVICTIONS_SHEET");
+        page.uploadFile("src/test/resources/files/test.pdf", "PRE_SENTENCING_REPORT");
         userClicksOn(customer, UploadRecallDocumentsPage.CONTINUE_BUTTON);
     }
 
@@ -341,6 +343,8 @@ public class NavigationSteps {
     public void downloadRecallDocument(String customer){
         openDocumentInTab(customer, RecallDetailsPage.RECALL_DOCUMENT_LINK_PART_A);
         openDocumentInTab(customer, RecallDetailsPage.RECALL_DOCUMENT_LINK_LICENCE);
+        openDocumentInTab(customer, RecallDetailsPage.RECALL_DOCUMENT_LINK_PREVIOUS_CONVICTIONS_SHEET);
+        openDocumentInTab(customer, RecallDetailsPage.RECALL_DOCUMENT_LINK_PRE_SENTENCING_REPORT);
     }
 
     @Then("{word} navigates to view the details captured during assessment")
