@@ -267,8 +267,8 @@ public class NavigationSteps {
                 Ensure.that(RecallDetailsPage.MAPPA_LEVEL).text().isEqualTo("Level 1"),
                 // Sentence, offence and release details
                 Ensure.that(RecallDetailsPage.getTargetByDataQa("sentenceDate")).text().isEqualTo("3 August 2020"),
-                Ensure.that(RecallDetailsPage.getTargetByDataQa("sentenceExpiryDate")).text().isEqualTo("3 November 2021"),
-                Ensure.that(RecallDetailsPage.getTargetByDataQa("licenceExpiryDate")).text().isEqualTo("12 October 2021"),
+                Ensure.that(RecallDetailsPage.getTargetByDataQa("sentenceExpiryDate")).text().isEqualTo("3 November 2024"),
+                Ensure.that(RecallDetailsPage.getTargetByDataQa("licenceExpiryDate")).text().isEqualTo("12 October 2024"),
                 Ensure.that(RecallDetailsPage.getTargetByDataQa("conditionalReleaseDate")).text().isEqualTo("24 June 2022"),
                 Ensure.that(RecallDetailsPage.getTargetByDataQa("lastReleasePrison")).text().isEqualTo("Ashwell (HMP)"),
                 Ensure.that(RecallDetailsPage.getTargetByDataQa("lastReleaseDate")).text().isEqualTo("15 March 2021"),
