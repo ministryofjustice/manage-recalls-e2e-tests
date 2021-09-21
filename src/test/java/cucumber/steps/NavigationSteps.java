@@ -305,7 +305,6 @@ public class NavigationSteps {
                 Ensure.that(PersonDetails.DATE_OF_BIRTH).text().isNotBlank(),
                 Ensure.that(PersonDetails.GENDER).text().isNotBlank(),
                 Ensure.that(PersonDetails.NOMS_NUMBER).text().isEqualTo(sessionVariableCalled(NOMS_NUMBER)),
-                Ensure.that(PersonDetails.CRO_NUMBER).text().isNotBlank(),
                 Ensure.that(PersonDetails.PRE_CONS_NAME).text().isEqualTo("Wayne Holt"),
                 // Recall
                 Ensure.that(RecallDetails.DATE_RECALL_EMAIL_RECEIVED).text().isEqualTo("5 December 2020 at 15:33"),
