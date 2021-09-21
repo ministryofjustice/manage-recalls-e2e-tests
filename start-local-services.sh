@@ -17,7 +17,8 @@ docker compose -f $LOCAL_DOCKER_COMPOSE_FILE up redis gotenberg hmpps-auth fake-
 npx kill-port 3000 8080
 
 pushd ${MANAGE_RECALLS_UI_DIR}
-npm run clean build
+npm run clean
+npm run build
 npm run start:e2e >> "${MANAGE_RECALLS_UI_LOG_FILE}" 2>&1 &
 popd
 
