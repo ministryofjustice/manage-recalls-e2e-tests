@@ -191,11 +191,11 @@ public class NavigationSteps {
         setSessionVariable("asstChiefOfficerName").to("Jonny Thorn");
         theActorCalled(customer).attemptsTo(
                 Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(ProbationDetailsPage.TITLE),
-                Enter.theValue(sessionVariableCalled("probationOfficerName")).into(ProbationDetailsPage.PROBATION_OFFICER_NAME_FIELD),
-                Enter.theValue(sessionVariableCalled("probationOfficerEmail")).into(ProbationDetailsPage.PROBATION_OFFICER_EMAIL_FIELD),
-                Enter.theValue(sessionVariableCalled("probationOfficerPhoneNumber")).into(ProbationDetailsPage.PROBATION_OFFICER_PHONE_NO_FIELD),
+                Enter.theValue("John Smith").into(ProbationDetailsPage.PROBATION_OFFICER_NAME_FIELD),
+                Enter.theValue("07775825221").into(ProbationDetailsPage.PROBATION_OFFICER_PHONE_NO_FIELD),
+                Enter.theValue("john.smith@digital.justice.gov.uk").into(ProbationDetailsPage.PROBATION_OFFICER_EMAIL_FIELD),
                 SelectFromOptions.byVisibleText(sessionVariableCalled("probationDivision")).from(ProbationDetailsPage.PROBATION_DIVISION_DROPDOWN),
-                Enter.theValue(sessionVariableCalled("asstChiefOfficerName")).into(ProbationDetailsPage.ASSISTANT_CHIEF_OFFICER_NAME_FIELD),
+                Enter.theValue("Jonny Thorn").into(ProbationDetailsPage.ASSISTANT_CHIEF_OFFICER_NAME_FIELD),
                 Click.on(ProbationDetailsPage.CONTINUE_BUTTON)
         );
     }
