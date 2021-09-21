@@ -17,6 +17,7 @@ import net.thucydides.core.util.EnvironmentVariables;
 import net.thucydides.core.util.SystemEnvironmentVariables;
 import java.io.File;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.ArrayList;
 
@@ -364,6 +365,7 @@ public class NavigationSteps {
     @Then("{word} is able to see the details captured during assessment")
     public void confirmRecallDetailsCapturedDuringAssessment(String customer) {
         theActorCalled(customer).attemptsTo(
+                Ensure.that(AssessRecallDetailsPage.ASSESSED_BY_USERNAME).text().isNotBlank(),
                 Ensure.that(AssessRecallDetailsPage.AGREE_WITH_RECALL_RECOMMENDATION).text().isEqualTo("Yes"),
                 Ensure.that(AssessRecallDetailsPage.AGREE_WITH_RECALL_RECOMMENDATION_ADDITIONAL_TEXT).text().isEqualTo("yes, agree with the fixed term recall"),
                 Ensure.that(AssessRecallDetailsPage.LICENCE_CONDITIONS_BREACHED).text().isEqualTo("Licence condition 1(a) has been breached"),
@@ -501,7 +503,7 @@ public class NavigationSteps {
         String linkHref = link.resolveFor(actor).getAttribute("href");
         WebDriver driver = getDriver();
         String oldTab = driver.getWindowHandle();
-        ArrayList<String> newTab = new ArrayList<String>(driver.getWindowHandles());
+        List<String> newTab = new ArrayList<>(driver.getWindowHandles());
         newTab.remove(oldTab);
         driver.switchTo().window(newTab.get(0));
         Ensure.thatTheCurrentPage().currentUrl().hasValue().isEqualTo(linkHref);
