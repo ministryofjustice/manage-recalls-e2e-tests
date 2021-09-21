@@ -41,6 +41,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import net.serenitybdd.core.Serenity;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actions.*;
 import net.serenitybdd.screenplay.actors.OnlineCast;
@@ -210,8 +211,10 @@ public class NavigationSteps {
 
     @When("{word} submits the police contact details")
     public void submitPoliceContactDetails(String customer) {
-        userEnters(customer, PoliceContactDetailsPage.LOCAL_POLICE_FORCE, "Essex");
-        userClicksOn(customer, RecallReceivedPage.CONTINUE_BUTTON);
+        theActorCalled(customer).attemptsTo(
+                Enter.theValue("Essex").into(PoliceContactDetailsPage.LOCAL_POLICE_FORCE),
+                Click.on(RecallReceivedPage.CONTINUE_BUTTON)
+        );
     }
 
     @When("{word} submits any vulnerability and contraband related details for the offender")
@@ -219,14 +222,14 @@ public class NavigationSteps {
         setSessionVariable("vulnerabilityDiversityDetail").to("offender vulnerable to bullying");
         setSessionVariable("contrabandDetail").to("yes, the offender has smuggled drugs in the past");
         setSessionVariable("mappaLevel").to("LEVEL_1");
-        userClicksOn(customer, VulnerabilityAndContrabandDetailsPage.YES_OPTION_FOR_VULNERABILITIES);
-        userEnters(customer, VulnerabilityAndContrabandDetailsPage.TEXT_FIELD_FOR_VULNERABILITIES, sessionVariableCalled("vulnerabilityDiversityDetail"));
-        userClicksOn(customer, VulnerabilityAndContrabandDetailsPage.YES_OPTION_FOR_CONTRABAND);
-        userEnters(customer, VulnerabilityAndContrabandDetailsPage.TEXT_FIELD_FOR_CONTRABAND, sessionVariableCalled("contrabandDetail"));
         theActorCalled(customer).attemptsTo(
-                SelectFromOptions.byValue(sessionVariableCalled("mappaLevel")).from(VulnerabilityAndContrabandDetailsPage.SELECT_MAPPA_LEVEL)
+                Click.on(VulnerabilityAndContrabandDetailsPage.YES_OPTION_FOR_VULNERABILITIES),
+                Enter.theValue(Serenity.<String>sessionVariableCalled("vulnerabilityDiversityDetail")).into(VulnerabilityAndContrabandDetailsPage.TEXT_FIELD_FOR_VULNERABILITIES),
+                Click.on(VulnerabilityAndContrabandDetailsPage.YES_OPTION_FOR_CONTRABAND),
+                Enter.theValue(Serenity.<String>sessionVariableCalled("contrabandDetail")).into(VulnerabilityAndContrabandDetailsPage.TEXT_FIELD_FOR_CONTRABAND),
+                SelectFromOptions.byValue(sessionVariableCalled("mappaLevel")).from(VulnerabilityAndContrabandDetailsPage.SELECT_MAPPA_LEVEL),
+                Click.on(VulnerabilityAndContrabandDetailsPage.CONTINUE_BUTTON)
         );
-        userClicksOn(customer, VulnerabilityAndContrabandDetailsPage.CONTINUE_BUTTON);
     }
 
     @When("{word} submits the probation officer details")
@@ -261,12 +264,16 @@ public class NavigationSteps {
         page.uploadFile("src/test/resources/files/test.pdf", "LICENCE");
         page.uploadFile("src/test/resources/files/test.pdf", "PREVIOUS_CONVICTIONS_SHEET");
         page.uploadFile("src/test/resources/files/test.pdf", "PRE_SENTENCING_REPORT");
-        userClicksOn(customer, UploadRecallDocumentsPage.CONTINUE_BUTTON);
+        theActorCalled(customer).attemptsTo(
+                Click.on(UploadRecallDocumentsPage.CONTINUE_BUTTON)
+        );
     }
 
     @When("{word} clicks on the Book a recall link")
     public void clickOnBookRecallLink(String customer) {
-        userClicksOn(customer, BOOK_RECALL_LINK);
+        theActorCalled(customer).attemptsTo(
+                Click.on(BOOK_RECALL_LINK)
+        );
     }
 
     @When("{word} begins to assess the recall that they have just booked")
@@ -337,7 +344,9 @@ public class NavigationSteps {
 
     @When("{word} starts the assessment process for the recall")
     public void clickOnAssessThisRecallButton(String customer) {
-        userClicksOn(customer, AssessARecallPage.CONTINUE_BUTTON);
+        theActorCalled(customer).attemptsTo(
+                Click.on(AssessARecallPage.CONTINUE_BUTTON)
+        );
     }
 
     @Then("{word} confirms the recall length of {int} days")
@@ -411,6 +420,7 @@ public class NavigationSteps {
     public void confirmRecallDetailsCapturedDuringAssessment(String customer) {
         theActorCalled(customer).attemptsTo(
                 Ensure.that(RecallAssessmentDetails.ASSESSED_BY_USERNAME).text().isEqualTo(sessionVariableCalled("loggedInUserDisplayName")),
+                Ensure.that(RecallAssessmentDetails.BOOKED_BY_USERNAME).text().isEqualTo(sessionVariableCalled("loggedInUserDisplayName")),
                 Ensure.that(RecallAssessmentDetails.AGREE_WITH_RECALL_RECOMMENDATION).text().isEqualTo("Yes"),
                 Ensure.that(RecallAssessmentDetails.AGREE_WITH_RECALL_RECOMMENDATION_ADDITIONAL_TEXT).text().isEqualTo("yes, agree with the fixed term recall"),
                 Ensure.that(RecallAssessmentDetails.LICENCE_CONDITIONS_BREACHED).text().isEqualTo("Licence condition 1(a) has been breached"),
@@ -515,18 +525,6 @@ public class NavigationSteps {
         userIsOnPageWithTitle(customer, AssessARecallPage.TITLE);
     }
 
-    private Callable<Boolean> partAIsDownloaded() {
-        return () -> fileIsDownloaded("/tmp", "part_a_recall_report.pdf");
-    }
-
-    private Callable<Boolean> licenceIsDownloaded() {
-        return () -> fileIsDownloaded("/tmp", "licence.pdf");
-    }
-
-    private Callable<Boolean> revocationOrderIsDownloaded() {
-        return () -> fileIsDownloaded("/tmp", "revocation-order.pdf");
-    }
-
     private Callable<Boolean> recallNotificationEmailIsDownloaded() {
         return () -> fileIsDownloaded("/tmp", "email.msg");
     }
@@ -541,7 +539,9 @@ public class NavigationSteps {
     }
 
     private void openDocumentInTab(String customer, Target link) {
-        userClicksOn(customer, link);
+        theActorCalled(customer).attemptsTo(
+                Click.on(link)
+        );
         Actor actor = theActorCalled(customer);
         String linkHref = link.resolveFor(actor).getAttribute("href");
         WebDriver driver = getDriver();
@@ -557,19 +557,6 @@ public class NavigationSteps {
     private void userIsOnPageWithTitle(String customer, String uniquePageTitle) {
         theActorCalled(customer).attemptsTo(
                 Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(uniquePageTitle)
-        );
-    }
-
-
-    private void userClicksOn(String customer, Target target) {
-        theActorCalled(customer).attemptsTo(
-                Click.on(target)
-        );
-    }
-
-    private void userEnters(String customer, Target target, String value) {
-        theActorCalled(customer).attemptsTo(
-                Enter.theValue(value).into(target)
         );
     }
 }
