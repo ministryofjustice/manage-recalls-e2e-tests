@@ -247,40 +247,41 @@ public class NavigationSteps {
         );
     }
 
-    @Then("{word} is able to see the details captured during booking")
-    public void confirmDetailsCapturedDuringBooking(String customer) {
+ @Then("{word} can check their answers")
+    public void bookingCheckAnswers(String customer) {
         theActorCalled(customer).attemptsTo(
+                Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(RecallCheckAnswersPage.TITLE),
 
                 // User details
-                Ensure.that(FindAnOffenderPage.NOMS_NUMBER_MATCHES).text().isEqualTo(sessionVariableCalled(NOMS_NUMBER)),
-                Ensure.that(RecallDetailsPage.NAME).text().isNotBlank(),
-                Ensure.that(RecallDetailsPage.PRE_CONS_NAME).text().isNotBlank(),
-                Ensure.that(FindAnOffenderPage.DATE_OF_BIRTH_MATCHES).text().isNotBlank(),
-
-                Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(RecallDetailsPage.TITLE),
+                Ensure.that(RecallCheckAnswersPage.NAME).text().isNotBlank(),
+                Ensure.that(RecallCheckAnswersPage.DATE_OF_BIRTH_MATCHES).text().isNotBlank(),
+                Ensure.that(RecallCheckAnswersPage.NOMS_NUMBER_MATCHES).text().isEqualTo(sessionVariableCalled(NOMS_NUMBER)),
+                Ensure.that(RecallCheckAnswersPage.PRE_CONS_NAME).text().isNotBlank(),
                 // Recall
-                Ensure.that(RecallDetailsPage.DATE_RECALL_EMAIL_RECEIVED).text().isEqualTo("5 December 2020 at 15:33"),
-                Ensure.that(RecallDetailsPage.LOCAL_POLICE_STATION).text().isEqualTo("Essex"),
-                // Issues and needs
-                Ensure.that(RecallDetailsPage.VULNERABILITY_DIVERSITY_DETAIL).text().isEqualTo(sessionVariableCalled("vulnerabilityDiversityDetail")),
-                Ensure.that(RecallDetailsPage.CONTRABAND_DETAIL).text().isEqualTo(sessionVariableCalled("contrabandDetail")),
-                Ensure.that(RecallDetailsPage.MAPPA_LEVEL).text().isEqualTo("Level 1"),
+                Ensure.that(RecallCheckAnswersPage.DATE_RECALL_EMAIL_RECEIVED).text().isEqualTo("5 December 2020 at 15:33"),
                 // Sentence, offence and release details
-                Ensure.that(RecallDetailsPage.getTargetByDataQa("sentenceDate")).text().isEqualTo("3 August 2020"),
-                Ensure.that(RecallDetailsPage.getTargetByDataQa("sentenceExpiryDate")).text().isEqualTo("3 November 2024"),
-                Ensure.that(RecallDetailsPage.getTargetByDataQa("licenceExpiryDate")).text().isEqualTo("12 October 2024"),
-                Ensure.that(RecallDetailsPage.getTargetByDataQa("conditionalReleaseDate")).text().isEqualTo("24 June 2022"),
-                Ensure.that(RecallDetailsPage.getTargetByDataQa("lastReleasePrison")).text().isEqualTo("Ashwell (HMP)"),
-                Ensure.that(RecallDetailsPage.getTargetByDataQa("lastReleaseDate")).text().isEqualTo("15 March 2021"),
-                Ensure.that(RecallDetailsPage.getTargetByDataQa("sentenceLength")).text().isEqualTo("3 years 2 months"),
-                Ensure.that(RecallDetailsPage.getTargetByDataQa("recallLength")).text().isEqualTo("28 days"),
-                Ensure.that(RecallDetailsPage.getTargetByDataQa("bookingNumber")).text().isEqualTo("A123456"),
+                Ensure.that(RecallCheckAnswersPage.getTargetByDataQa("sentenceDate")).text().isEqualTo("3 August 2020"),
+                Ensure.that(RecallCheckAnswersPage.getTargetByDataQa("licenceExpiryDate")).text().isEqualTo("12 October 2024"),
+                Ensure.that(RecallCheckAnswersPage.getTargetByDataQa("sentenceExpiryDate")).text().isEqualTo("3 November 2024"),
+                Ensure.that(RecallCheckAnswersPage.getTargetByDataQa("sentenceLength")).text().isEqualTo("3 years 2 months"),
+                Ensure.that(RecallCheckAnswersPage.getTargetByDataQa("sentencingCourt")).text().isEqualTo("Manchester Crown Court"),
+                Ensure.that(RecallCheckAnswersPage.getTargetByDataQa("indexOffence")).text().isEqualTo("Burglary"),
+                Ensure.that(RecallCheckAnswersPage.getTargetByDataQa("lastReleasePrison")).text().isEqualTo("Ashwell (HMP)"),
+                Ensure.that(RecallCheckAnswersPage.getTargetByDataQa("bookingNumber")).text().isEqualTo("A123456"),
+                Ensure.that(RecallCheckAnswersPage.getTargetByDataQa("lastReleaseDate")).text().isEqualTo("15 March 2021"),
+                Ensure.that(RecallCheckAnswersPage.getTargetByDataQa("conditionalReleaseDate")).text().isEqualTo("24 June 2022"),
+                // local police force
+                Ensure.that(RecallCheckAnswersPage.LOCAL_POLICE_STATION).text().isEqualTo("Essex"),
+                // Issues or needs
+                Ensure.that(RecallCheckAnswersPage.VULNERABILITY_DIVERSITY_DETAIL).text().isEqualTo(sessionVariableCalled("vulnerabilityDiversityDetail")),
+                Ensure.that(RecallCheckAnswersPage.CONTRABAND_DETAIL).text().isEqualTo(sessionVariableCalled("contrabandDetail")),
+                Ensure.that(RecallCheckAnswersPage.MAPPA_LEVEL).text().isEqualTo("Level 1"),
                 // Probation details
-                Ensure.that(RecallDetailsPage.PROBATION_OFFICER_NAME).text().isEqualTo(sessionVariableCalled("probationOfficerName")),
-                Ensure.that(RecallDetailsPage.PROBATION_OFFICER_PHONE_NO).text().isEqualTo(sessionVariableCalled("probationOfficerPhoneNumber")),
-                Ensure.that(RecallDetailsPage.PROBATION_OFFICER_EMAIL).text().isEqualTo(sessionVariableCalled("probationOfficerEmail")),
-                Ensure.that(RecallDetailsPage.PROBATION_DIVISION).text().isEqualTo(sessionVariableCalled("probationDivision")),
-                Ensure.that(RecallDetailsPage.ASSISTANT_CHIEF_OFFICER_NAME).text().isEqualTo(sessionVariableCalled("asstChiefOfficerName"))
+                Ensure.that(RecallCheckAnswersPage.PROBATION_OFFICER_NAME).text().isEqualTo(sessionVariableCalled("probationOfficerName")),
+                Ensure.that(RecallCheckAnswersPage.PROBATION_OFFICER_PHONE_NO).text().isEqualTo(sessionVariableCalled("probationOfficerPhoneNumber")),
+                Ensure.that(RecallCheckAnswersPage.PROBATION_OFFICER_EMAIL).text().isEqualTo(sessionVariableCalled("probationOfficerEmail")),
+                Ensure.that(RecallCheckAnswersPage.PROBATION_DIVISION).text().isEqualTo(sessionVariableCalled("probationDivision")),
+                Ensure.that(RecallCheckAnswersPage.ASSISTANT_CHIEF_OFFICER_NAME).text().isEqualTo(sessionVariableCalled("asstChiefOfficerName"))
         );
     }
 
@@ -341,10 +342,13 @@ public class NavigationSteps {
 
     @Then("{word} opens the documents")
     public void downloadRecallDocument(String customer){
-        openDocumentInTab(customer, RecallDetailsPage.RECALL_DOCUMENT_LINK_PART_A);
-        openDocumentInTab(customer, RecallDetailsPage.RECALL_DOCUMENT_LINK_LICENCE);
-        openDocumentInTab(customer, RecallDetailsPage.RECALL_DOCUMENT_LINK_PREVIOUS_CONVICTIONS_SHEET);
-        openDocumentInTab(customer, RecallDetailsPage.RECALL_DOCUMENT_LINK_PRE_SENTENCING_REPORT);
+        openDocumentInTab(customer, RecallCheckAnswersPage.RECALL_DOCUMENT_LINK_PART_A);
+        openDocumentInTab(customer, RecallCheckAnswersPage.RECALL_DOCUMENT_LINK_LICENCE);
+        openDocumentInTab(customer, RecallCheckAnswersPage.RECALL_DOCUMENT_LINK_PREVIOUS_CONVICTIONS_SHEET);
+        openDocumentInTab(customer, RecallCheckAnswersPage.RECALL_DOCUMENT_LINK_PRE_SENTENCING_REPORT);
+        theActorCalled(customer).attemptsTo(
+            Click.on(RecallCheckAnswersPage.CONTINUE_BUTTON)
+        );
     }
 
     @Then("{word} navigates to view the details captured during assessment")
