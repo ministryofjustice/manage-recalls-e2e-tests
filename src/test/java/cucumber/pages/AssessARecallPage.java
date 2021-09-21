@@ -14,7 +14,7 @@ import net.thucydides.core.annotations.NamedUrls;
 public class AssessARecallPage extends PpudPage {
     public static final String TITLE = TITLE_ROOT + "Assess a recall";
 
-    public class RecallAssessmentDetails {
+    public static class RecallAssessmentDetails {
         public static final Target ASSESSED_BY_USERNAME = getTargetByDataQa("assessedByUserName");
         public static final Target AGREE_WITH_RECALL_RECOMMENDATION = getTargetByDataQa("agreeWithRecall");
         public static final Target AGREE_WITH_RECALL_RECOMMENDATION_ADDITIONAL_TEXT = getTargetByDataQa("agreeWithRecallDetail");
@@ -27,7 +27,7 @@ public class AssessARecallPage extends PpudPage {
         public static final Target UPLOADED_RECALL_NOTIFICATION_EMAIL_LINK = getTargetByDataQa("uploadedDocument-RECALL_NOTIFICATION_EMAIL");
     }
 
-    public class CreateDossierDetails {
+    public static class CreateDossierDetails {
         public static final Target ADDITIONAL_LICENCE_CONDITIONS = getTargetByDataQa("additionalLicenceConditions");
         public static final Target MORE_DETAILS_FOR_ADDITIONAL_LICENCE_CONDITIONS_TEXT = getTargetByDataQa("additionalLicenceConditionsDetail");
         public static final Target DIFFERENT_NOMIS_NUMBER = getTargetByDataQa("differentNomsNumber");
