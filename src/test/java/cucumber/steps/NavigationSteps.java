@@ -184,20 +184,20 @@ public class NavigationSteps {
 
     @When("{word} submits the probation officer details")
     public void submitProbationOfficerDetails(String customer) {
-        userIsOnPageWithTitle(customer, ProbationDetailsPage.TITLE);
         setSessionVariable("probationOfficerName").to("John Smith");
         setSessionVariable("probationOfficerPhoneNumber").to("07775825221");
         setSessionVariable("probationOfficerEmail").to("john.smith@digital.justice.gov.uk");
         setSessionVariable("probationDivision").to("London");
         setSessionVariable("asstChiefOfficerName").to("Jonny Thorn");
-        userEnters(customer, ProbationDetailsPage.PROBATION_OFFICER_NAME_FIELD, sessionVariableCalled("probationOfficerName"));
-        userEnters(customer, ProbationDetailsPage.PROBATION_OFFICER_EMAIL_FIELD, sessionVariableCalled("probationOfficerEmail"));
-        userEnters(customer, ProbationDetailsPage.PROBATION_OFFICER_PHONE_NO_FIELD, sessionVariableCalled("probationOfficerPhoneNumber"));
         theActorCalled(customer).attemptsTo(
-                SelectFromOptions.byVisibleText(sessionVariableCalled("probationDivision")).from(ProbationDetailsPage.PROBATION_DIVISION_DROPDOWN)
+                Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(ProbationDetailsPage.TITLE),
+                Enter.theValue(sessionVariableCalled("probationOfficerName")).into(ProbationDetailsPage.PROBATION_OFFICER_NAME_FIELD),
+                Enter.theValue(sessionVariableCalled("probationOfficerEmail")).into(ProbationDetailsPage.PROBATION_OFFICER_EMAIL_FIELD),
+                Enter.theValue(sessionVariableCalled("probationOfficerPhoneNumber")).into(ProbationDetailsPage.PROBATION_OFFICER_PHONE_NO_FIELD),
+                SelectFromOptions.byVisibleText(sessionVariableCalled("probationDivision")).from(ProbationDetailsPage.PROBATION_DIVISION_DROPDOWN),
+                Enter.theValue(sessionVariableCalled("asstChiefOfficerName")).into(ProbationDetailsPage.ASSISTANT_CHIEF_OFFICER_NAME_FIELD),
+                Click.on(ProbationDetailsPage.CONTINUE_BUTTON)
         );
-        userEnters(customer, ProbationDetailsPage.ASSISTANT_CHIEF_OFFICER_NAME_FIELD, sessionVariableCalled("asstChiefOfficerName"));
-        userClicksOn(customer, VulnerabilityAndContrabandDetailsPage.CONTINUE_BUTTON);
     }
 
     @Then("{word} sees confirmation that the new recall was booked")
