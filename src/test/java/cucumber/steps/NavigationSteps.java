@@ -247,7 +247,7 @@ public class NavigationSteps {
         );
     }
 
- @Then("{word} can check her answers")
+ @Then("{word} can check their answers")
     public void bookingCheckAnswers(String customer) {
         theActorCalled(customer).attemptsTo(
                 Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(RecallCheckAnswersPage.TITLE),

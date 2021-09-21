@@ -13,7 +13,7 @@ Feature: Manage Recalls
     And Maria submits any vulnerability and contraband related details for the offender
     And Maria submits the probation officer details
     And Maria uploads two documents
-    And Maria can check her answers
+    And Maria can check their answers
     And Maria opens the documents
     Then Maria sees confirmation that the new recall was booked
     ### Assess the recall
