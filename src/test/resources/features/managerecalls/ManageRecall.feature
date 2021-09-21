@@ -13,11 +13,11 @@ Feature: Manage Recalls
     And Maria submits any vulnerability and contraband related details for the offender
     And Maria submits the probation officer details
     And Maria uploads two documents
+    And Maria can check her answers
+    And Maria opens the documents
     Then Maria sees confirmation that the new recall was booked
     ### Assess the recall
     When Maria begins to assess the recall that they have just booked
-    Then Maria is able to see the details captured during booking
-    And Maria opens the documents
     When Maria starts the assessment process for the recall
     When Maria confirms the recall length of 28 days
     And Maria submits the licence breach details
