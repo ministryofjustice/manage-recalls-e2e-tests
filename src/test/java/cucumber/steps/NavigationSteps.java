@@ -184,6 +184,7 @@ public class NavigationSteps {
 
     @When("{word} submits the probation officer details")
     public void submitProbationOfficerDetails(String customer) {
+        userIsOnPageWithTitle(customer, ProbationDetailsPage.TITLE);
         setSessionVariable("probationOfficerName").to("John Smith");
         setSessionVariable("probationOfficerPhoneNumber").to("07775825221");
         setSessionVariable("probationOfficerEmail").to("john.smith@digital.justice.gov.uk");
