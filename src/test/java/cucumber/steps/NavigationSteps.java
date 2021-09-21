@@ -78,6 +78,17 @@ public class NavigationSteps {
         );
     }
 
+    @When("{word} enters her user details")
+    public void entersUserDetails(String customer) {
+        setSessionVariable("loggedInUserDisplayName").to("Maria Badger");
+        theActorCalled(customer).attemptsTo(
+                Open.browserOn().the(UserDetailsPage.class),
+                Enter.theValue("Maria").into(UserDetailsPage.FIRST_NAME_TEXT_BOX),
+                Enter.theValue("Badger").into(UserDetailsPage.LAST_NAME_TEXT_BOX),
+                Click.on(UserDetailsPage.UPDATE_BUTTON)
+        );
+    }
+
     @When("{word} searches for the environment specific NOMS number")
     public void entersNOMSNumber(String customer) {
         String nomsNumber = sessionVariableCalled(NOMS_NUMBER);
@@ -365,7 +376,7 @@ public class NavigationSteps {
     @Then("{word} is able to see the details captured during assessment")
     public void confirmRecallDetailsCapturedDuringAssessment(String customer) {
         theActorCalled(customer).attemptsTo(
-                Ensure.that(AssessRecallDetailsPage.ASSESSED_BY_USERNAME).text().isNotBlank(),
+                Ensure.that(AssessRecallDetailsPage.ASSESSED_BY_USERNAME).text().isEqualTo(sessionVariableCalled("loggedInUserDisplayName")),
                 Ensure.that(AssessRecallDetailsPage.AGREE_WITH_RECALL_RECOMMENDATION).text().isEqualTo("Yes"),
                 Ensure.that(AssessRecallDetailsPage.AGREE_WITH_RECALL_RECOMMENDATION_ADDITIONAL_TEXT).text().isEqualTo("yes, agree with the fixed term recall"),
                 Ensure.that(AssessRecallDetailsPage.LICENCE_CONDITIONS_BREACHED).text().isEqualTo("Licence condition 1(a) has been breached"),
