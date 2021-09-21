@@ -1,6 +1,40 @@
 package cucumber.steps;
 
-import cucumber.pages.*;
+import cucumber.pages.AssessARecallPage;
+import cucumber.pages.AssessARecallPage.CreateDossierDetails;
+import cucumber.pages.AssessARecallPage.RecallAssessmentDetails;
+import cucumber.pages.AssessCurrentPrisonPage;
+import cucumber.pages.AssessLicenceBreachPage;
+import cucumber.pages.BookRecallConfirmationPage;
+import cucumber.pages.CreateDossierAddInfoForPrisonLetterPage;
+import cucumber.pages.CreateDossierCheckReasonsDocPage;
+import cucumber.pages.CreateDossierConfirmEmailedPage;
+import cucumber.pages.CreateDossierDownloadDossierAndLetterPage;
+import cucumber.pages.DecisionOnRecallRecommendationPage;
+import cucumber.pages.DossierCreationConfirmationPage;
+import cucumber.pages.FindAnOffenderPage;
+import cucumber.pages.LastReleaseDetailsPage;
+import cucumber.pages.LoginPage;
+import cucumber.pages.PoliceContactDetailsPage;
+import cucumber.pages.ProbationDetailsPage;
+import cucumber.pages.RecallAuthorisationPage;
+import cucumber.pages.RecallCheckAnswersPage;
+import cucumber.pages.RecallCheckAnswersPage.DocumentDetails;
+import cucumber.pages.RecallCheckAnswersPage.IssuesAndNeedsDetails;
+import cucumber.pages.RecallCheckAnswersPage.LocalPoliceForceDetails;
+import cucumber.pages.RecallCheckAnswersPage.PersonDetails;
+import cucumber.pages.RecallCheckAnswersPage.ProbationDetails;
+import cucumber.pages.RecallCheckAnswersPage.RecallDetails;
+import cucumber.pages.RecallCheckAnswersPage.SentenceOffenceAndReleaseDetails;
+import cucumber.pages.RecallNotificationDownloadPage;
+import cucumber.pages.RecallPreConsNamePage;
+import cucumber.pages.RecallReceivedPage;
+import cucumber.pages.RecordIssuanceOfRecallNotificationPage;
+import cucumber.pages.TodoRecallsListPage;
+import cucumber.pages.UploadRecallDocumentsPage;
+import cucumber.pages.UserDetailsPage;
+import cucumber.pages.VerifyEmailPage;
+import cucumber.pages.VulnerabilityAndContrabandDetailsPage;
 import cucumber.questions.UserIsOn;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
@@ -26,6 +60,7 @@ import static cucumber.pages.TodoRecallsListPage.FIND_SOMEONE_LINK;
 import static cucumber.questions.ReadTextContent.textContent;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static net.serenitybdd.core.Serenity.*;
+import static net.serenitybdd.core.pages.PageObject.withParameters;
 import static net.serenitybdd.screenplay.actors.OnStage.setTheStage;
 import static net.serenitybdd.screenplay.actors.OnStage.theActorCalled;
 import static org.awaitility.Awaitility.await;
@@ -265,42 +300,45 @@ public class NavigationSteps {
         theActorCalled(customer).attemptsTo(
                 Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(RecallCheckAnswersPage.TITLE),
 
-                // User details
-                Ensure.that(RecallCheckAnswersPage.NAME).text().isNotBlank(),
-                Ensure.that(RecallCheckAnswersPage.DATE_OF_BIRTH_MATCHES).text().isNotBlank(),
-                Ensure.that(RecallCheckAnswersPage.NOMS_NUMBER_MATCHES).text().isEqualTo(sessionVariableCalled(NOMS_NUMBER)),
-                Ensure.that(RecallCheckAnswersPage.PRE_CONS_NAME).text().isNotBlank(),
+                // Person details
+                Ensure.that(PersonDetails.NAME).text().isNotBlank(),
+                Ensure.that(PersonDetails.DATE_OF_BIRTH).text().isNotBlank(),
+                Ensure.that(PersonDetails.GENDER).text().isNotBlank(),
+                Ensure.that(PersonDetails.NOMS_NUMBER).text().isEqualTo(sessionVariableCalled(NOMS_NUMBER)),
+                Ensure.that(PersonDetails.CRO_NUMBER).text().isNotBlank(),
+                Ensure.that(PersonDetails.PRE_CONS_NAME).text().isEqualTo("Wayne Holt"),
                 // Recall
-                Ensure.that(RecallCheckAnswersPage.DATE_RECALL_EMAIL_RECEIVED).text().isEqualTo("5 December 2020 at 15:33"),
+                Ensure.that(RecallDetails.DATE_RECALL_EMAIL_RECEIVED).text().isEqualTo("5 December 2020 at 15:33"),
                 // Sentence, offence and release details
-                Ensure.that(RecallCheckAnswersPage.getTargetByDataQa("sentenceDate")).text().isEqualTo("3 August 2020"),
-                Ensure.that(RecallCheckAnswersPage.getTargetByDataQa("licenceExpiryDate")).text().isEqualTo("12 October 2024"),
-                Ensure.that(RecallCheckAnswersPage.getTargetByDataQa("sentenceExpiryDate")).text().isEqualTo("3 November 2024"),
-                Ensure.that(RecallCheckAnswersPage.getTargetByDataQa("sentenceLength")).text().isEqualTo("3 years 2 months"),
-                Ensure.that(RecallCheckAnswersPage.getTargetByDataQa("sentencingCourt")).text().isEqualTo("Manchester Crown Court"),
-                Ensure.that(RecallCheckAnswersPage.getTargetByDataQa("indexOffence")).text().isEqualTo("Burglary"),
-                Ensure.that(RecallCheckAnswersPage.getTargetByDataQa("lastReleasePrison")).text().isEqualTo("Ashwell (HMP)"),
-                Ensure.that(RecallCheckAnswersPage.getTargetByDataQa("bookingNumber")).text().isEqualTo("A123456"),
-                Ensure.that(RecallCheckAnswersPage.getTargetByDataQa("lastReleaseDate")).text().isEqualTo("15 March 2021"),
-                Ensure.that(RecallCheckAnswersPage.getTargetByDataQa("conditionalReleaseDate")).text().isEqualTo("24 June 2022"),
+                Ensure.that(SentenceOffenceAndReleaseDetails.SENTENCE_TYPE).text().isEqualTo("Determinate"),
+                Ensure.that(SentenceOffenceAndReleaseDetails.SENTENCE_DATE).text().isEqualTo("3 August 2020"),
+                Ensure.that(SentenceOffenceAndReleaseDetails.LICENCE_EXPIRY_DATE).text().isEqualTo("12 October 2024"),
+                Ensure.that(SentenceOffenceAndReleaseDetails.SENTENCE_EXPIRY_DATE).text().isEqualTo("3 November 2024"),
+                Ensure.that(SentenceOffenceAndReleaseDetails.SENTENCE_LENGTH).text().isEqualTo("3 years 2 months"),
+                Ensure.that(SentenceOffenceAndReleaseDetails.SENTENCING_COURT).text().isEqualTo("Manchester Crown Court"),
+                Ensure.that(SentenceOffenceAndReleaseDetails.INDEX_OFFENCE).text().isEqualTo("Burglary"),
+                Ensure.that(SentenceOffenceAndReleaseDetails.LAST_RELEASE_PRISON).text().isEqualTo("Ashwell (HMP)"),
+                Ensure.that(SentenceOffenceAndReleaseDetails.BOOKING_NUMBER).text().isEqualTo("A123456"),
+                Ensure.that(SentenceOffenceAndReleaseDetails.LAST_RELEASE_DATE).text().isEqualTo("15 March 2021"),
+                Ensure.that(SentenceOffenceAndReleaseDetails.CONDITIONAL_RELEASE_DATE).text().isEqualTo("24 June 2022"),
                 // local police force
-                Ensure.that(RecallCheckAnswersPage.LOCAL_POLICE_STATION).text().isEqualTo("Essex"),
+                Ensure.that(LocalPoliceForceDetails.LOCAL_POLICE_FORCE).text().isEqualTo("Essex"),
                 // Issues or needs
-                Ensure.that(RecallCheckAnswersPage.VULNERABILITY_DIVERSITY_DETAIL).text().isEqualTo(sessionVariableCalled("vulnerabilityDiversityDetail")),
-                Ensure.that(RecallCheckAnswersPage.CONTRABAND_DETAIL).text().isEqualTo(sessionVariableCalled("contrabandDetail")),
-                Ensure.that(RecallCheckAnswersPage.MAPPA_LEVEL).text().isEqualTo("Level 1"),
+                Ensure.that(IssuesAndNeedsDetails.VULNERABILITY_DIVERSITY_DETAIL).text().isEqualTo(sessionVariableCalled("vulnerabilityDiversityDetail")),
+                Ensure.that(IssuesAndNeedsDetails.CONTRABAND_DETAIL).text().isEqualTo(sessionVariableCalled("contrabandDetail")),
+                Ensure.that(IssuesAndNeedsDetails.MAPPA_LEVEL).text().isEqualTo("Level 1"),
                 // Probation details
-                Ensure.that(RecallCheckAnswersPage.PROBATION_OFFICER_NAME).text().isEqualTo(sessionVariableCalled("probationOfficerName")),
-                Ensure.that(RecallCheckAnswersPage.PROBATION_OFFICER_PHONE_NO).text().isEqualTo(sessionVariableCalled("probationOfficerPhoneNumber")),
-                Ensure.that(RecallCheckAnswersPage.PROBATION_OFFICER_EMAIL).text().isEqualTo(sessionVariableCalled("probationOfficerEmail")),
-                Ensure.that(RecallCheckAnswersPage.PROBATION_DIVISION).text().isEqualTo(sessionVariableCalled("probationDivision")),
-                Ensure.that(RecallCheckAnswersPage.ASSISTANT_CHIEF_OFFICER_NAME).text().isEqualTo(sessionVariableCalled("asstChiefOfficerName"))
+                Ensure.that(ProbationDetails.PROBATION_OFFICER_NAME).text().isEqualTo(sessionVariableCalled("probationOfficerName")),
+                Ensure.that(ProbationDetails.PROBATION_OFFICER_PHONE_NO).text().isEqualTo(sessionVariableCalled("probationOfficerPhoneNumber")),
+                Ensure.that(ProbationDetails.PROBATION_OFFICER_EMAIL).text().isEqualTo(sessionVariableCalled("probationOfficerEmail")),
+                Ensure.that(ProbationDetails.PROBATION_DIVISION).text().isEqualTo(sessionVariableCalled("probationDivision")),
+                Ensure.that(ProbationDetails.ASSISTANT_CHIEF_OFFICER_NAME).text().isEqualTo(sessionVariableCalled("asstChiefOfficerName"))
         );
     }
 
     @When("{word} starts the assessment process for the recall")
     public void clickOnAssessThisRecallButton(String customer) {
-        userClicksOn(customer, RecallDetailsPage.CONTINUE_BUTTON);
+        userClicksOn(customer, AssessARecallPage.CONTINUE_BUTTON);
     }
 
     @Then("{word} confirms the recall length of {int} days")
@@ -355,10 +393,10 @@ public class NavigationSteps {
 
     @Then("{word} opens the documents")
     public void downloadRecallDocument(String customer){
-        openDocumentInTab(customer, RecallCheckAnswersPage.RECALL_DOCUMENT_LINK_PART_A);
-        openDocumentInTab(customer, RecallCheckAnswersPage.RECALL_DOCUMENT_LINK_LICENCE);
-        openDocumentInTab(customer, RecallCheckAnswersPage.RECALL_DOCUMENT_LINK_PREVIOUS_CONVICTIONS_SHEET);
-        openDocumentInTab(customer, RecallCheckAnswersPage.RECALL_DOCUMENT_LINK_PRE_SENTENCING_REPORT);
+        openDocumentInTab(customer, DocumentDetails.RECALL_DOCUMENT_LINK_PART_A);
+        openDocumentInTab(customer, DocumentDetails.RECALL_DOCUMENT_LINK_LICENCE);
+        openDocumentInTab(customer, DocumentDetails.RECALL_DOCUMENT_LINK_PREVIOUS_CONVICTIONS_SHEET);
+        openDocumentInTab(customer, DocumentDetails.RECALL_DOCUMENT_LINK_PRE_SENTENCING_REPORT);
         theActorCalled(customer).attemptsTo(
             Click.on(RecallCheckAnswersPage.CONTINUE_BUTTON)
         );
@@ -366,36 +404,34 @@ public class NavigationSteps {
 
     @Then("{word} navigates to view the details captured during assessment")
     public void navigateToViewRecallAssessmentDetails(String customer){
-        Actor actor = theActorCalled(customer);
-        new AssessRecallDetailsPage().getAssessRecallDetailsPage(environmentVariables, sessionVariableCalled(NOMS_NUMBER), actor.recall("RECALL_ID"));
-        theActorCalled(customer).attemptsTo(
-                Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(AssessRecallDetailsPage.TITLE)
-        );
+        new AssessARecallPage().open("assess.recall", withParameters(sessionVariableCalled(NOMS_NUMBER), theActorCalled(customer).recall("RECALL_ID")));
+        userIsOnPageWithTitle(customer, AssessARecallPage.TITLE);
     }
 
     @Then("{word} is able to see the details captured during assessment")
     public void confirmRecallDetailsCapturedDuringAssessment(String customer) {
         theActorCalled(customer).attemptsTo(
-                Ensure.that(AssessRecallDetailsPage.ASSESSED_BY_USERNAME).text().isEqualTo(sessionVariableCalled("loggedInUserDisplayName")),
-                Ensure.that(AssessRecallDetailsPage.AGREE_WITH_RECALL_RECOMMENDATION).text().isEqualTo("Yes"),
-                Ensure.that(AssessRecallDetailsPage.AGREE_WITH_RECALL_RECOMMENDATION_ADDITIONAL_TEXT).text().isEqualTo("yes, agree with the fixed term recall"),
-                Ensure.that(AssessRecallDetailsPage.LICENCE_CONDITIONS_BREACHED).text().isEqualTo("Licence condition 1(a) has been breached"),
-                Ensure.that(AssessRecallDetailsPage.REASON_FOR_RECALL_OPTION_ONE).text().isEqualTo("Breach of exclusion zone"),
-                Ensure.that(AssessRecallDetailsPage.REASON_FOR_RECALL_OPTION_OTHER).text().isEqualTo("Other"),
-                Ensure.that(AssessRecallDetailsPage.OTHER_REASON_FOR_RECALL_TEXT).text().isEqualTo("other reason for recall"),
-                Ensure.that(AssessRecallDetailsPage.CURRENT_PRISON).text().isEqualTo("Ashfield (HMP)"),
-                Ensure.that(AssessRecallDetailsPage.DATETIME_RECALL_NOTIFICATION_EMAIL_SENT).text().isEqualTo("5 December 2020 at 15:33"),
-                Ensure.that(AssessRecallDetailsPage.UPLOADED_RECALL_NOTIFICATION_EMAIL_LINK).text().isEqualTo("email.msg")
+                Ensure.that(RecallAssessmentDetails.ASSESSED_BY_USERNAME).text().isEqualTo(sessionVariableCalled("loggedInUserDisplayName")),
+                Ensure.that(RecallAssessmentDetails.AGREE_WITH_RECALL_RECOMMENDATION).text().isEqualTo("Yes"),
+                Ensure.that(RecallAssessmentDetails.AGREE_WITH_RECALL_RECOMMENDATION_ADDITIONAL_TEXT).text().isEqualTo("yes, agree with the fixed term recall"),
+                Ensure.that(RecallAssessmentDetails.LICENCE_CONDITIONS_BREACHED).text().isEqualTo("Licence condition 1(a) has been breached"),
+                Ensure.that(RecallAssessmentDetails.REASON_FOR_RECALL_OPTION_ONE).text().isEqualTo("Breach of exclusion zone"),
+                Ensure.that(RecallAssessmentDetails.REASON_FOR_RECALL_OPTION_OTHER).text().isEqualTo("Other"),
+                Ensure.that(RecallAssessmentDetails.OTHER_REASON_FOR_RECALL_TEXT).text().isEqualTo("other reason for recall"),
+                Ensure.that(RecallAssessmentDetails.CURRENT_PRISON).text().isEqualTo("Ashfield (HMP)"),
+                Ensure.that(RecallAssessmentDetails.DATETIME_RECALL_NOTIFICATION_EMAIL_SENT).text().isEqualTo("5 December 2020 at 15:33"),
+                Ensure.that(RecallAssessmentDetails.UPLOADED_RECALL_NOTIFICATION_EMAIL_LINK).text().isEqualTo("email.msg")
         );
     }
 
     @Then("{word} can download the email")
     public void downloadEmail(String customer) {
         theActorCalled(customer).attemptsTo(
-                Click.on(AssessRecallDetailsPage.UPLOADED_RECALL_NOTIFICATION_EMAIL_LINK)
+                Click.on(RecallAssessmentDetails.UPLOADED_RECALL_NOTIFICATION_EMAIL_LINK)
         );
         await().atMost(10, SECONDS).until(recallNotificationEmailIsDownloaded());
     }
+
     @And("{word} submits the information for the prison letter")
     public void submitInfoForPrisonLetter(String customer) {
         theActorCalled(customer).attemptsTo(
@@ -457,30 +493,27 @@ public class NavigationSteps {
     @Then("{word} is able to see the details captured during dossier creation")
     public void confirmDetailsCapturedDuringDossierCreation(String customer) {
         theActorCalled(customer).attemptsTo(
-                Ensure.that(CreateDossierRecallDetailsPage.ADDITIONAL_LICENCE_CONDITIONS).text().isEqualTo("Yes"),
-                Ensure.that(CreateDossierRecallDetailsPage.MORE_DETAILS_FOR_ADDITIONAL_LICENCE_CONDITIONS_TEXT).text().isEqualTo("Licence condition 14(a)"),
-                Ensure.that(CreateDossierRecallDetailsPage.DIFFERENT_NOMIS_NUMBER).text().isEqualTo("Yes"),
-                Ensure.that(CreateDossierRecallDetailsPage.MORE_DETAILS_FOR_DIFFERENT_NOMIS_NUMBER_TEXT).text().isEqualTo("A4321AA"),
-                Ensure.that(CreateDossierRecallDetailsPage.DATE_DOSSIER_EMAIL_SENT).text().isEqualTo("5 December 2020"),
-                Ensure.that(CreateDossierRecallDetailsPage.UPLOADED_DOSSIER_EMAIL_LINK).text().isEqualTo("email.msg")
+                Ensure.that(CreateDossierDetails.ADDITIONAL_LICENCE_CONDITIONS).text().isEqualTo("Yes"),
+                Ensure.that(CreateDossierDetails.MORE_DETAILS_FOR_ADDITIONAL_LICENCE_CONDITIONS_TEXT).text().isEqualTo("Licence condition 14(a)"),
+                Ensure.that(CreateDossierDetails.DIFFERENT_NOMIS_NUMBER).text().isEqualTo("Yes"),
+                Ensure.that(CreateDossierDetails.MORE_DETAILS_FOR_DIFFERENT_NOMIS_NUMBER_TEXT).text().isEqualTo("A4321AA"),
+                Ensure.that(CreateDossierDetails.DATE_DOSSIER_EMAIL_SENT).text().isEqualTo("5 December 2020"),
+                Ensure.that(CreateDossierDetails.UPLOADED_DOSSIER_EMAIL_LINK).text().isEqualTo("email.msg")
         );
     }
 
     @Then("{word} can download the dossier email")
     public void downloadDossierEmail(String customer) {
         theActorCalled(customer).attemptsTo(
-                Click.on(CreateDossierRecallDetailsPage.UPLOADED_DOSSIER_EMAIL_LINK)
+                Click.on(CreateDossierDetails.UPLOADED_DOSSIER_EMAIL_LINK)
         );
         await().atMost(10, SECONDS).until(recallDossierEmailIsDownloaded());
     }
 
     @When("{word} navigates to view the details captured during dossier creation")
     public void viewDossierCreationDetails(String customer) {
-        Actor actor = theActorCalled(customer);
-        new CreateDossierRecallDetailsPage().getCreateDossierRecallDetailsPage(environmentVariables, sessionVariableCalled(NOMS_NUMBER), actor.recall("RECALL_ID"));
-        theActorCalled(customer).attemptsTo(
-                Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(CreateDossierRecallDetailsPage.TITLE)
-        );
+        new AssessARecallPage().open("assess.recall", withParameters(sessionVariableCalled(NOMS_NUMBER), theActorCalled(customer).recall("RECALL_ID")));
+        userIsOnPageWithTitle(customer, AssessARecallPage.TITLE);
     }
 
     private Callable<Boolean> partAIsDownloaded() {
