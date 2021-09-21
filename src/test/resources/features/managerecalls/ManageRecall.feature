@@ -3,6 +3,7 @@ Feature: Manage Recalls
   Scenario: Book and Assess a recall
     Given Maria navigates to manage recall service
     And Maria logs in
+    And Maria enters her user details
     When Maria searches for the environment specific NOMS number
     ### Book a recall
     And Maria clicks on the Book a recall link

@@ -1,10 +1,9 @@
 package cucumber.pages;
 
-import net.serenitybdd.core.Serenity;
 import net.serenitybdd.screenplay.targets.Target;
 import net.thucydides.core.pages.PageObject;
-import org.openqa.selenium.By;
 import net.thucydides.core.pages.components.FileToUpload;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public abstract class PpudPage extends PageObject {
@@ -36,7 +35,7 @@ public abstract class PpudPage extends PageObject {
         return Target.the(fieldsetName + " matches").located(By.name(fieldsetName + "Day"));
     }
 
-	public void uploadFile(String filePath, String doc) {
+    public void uploadFile(String filePath, String doc) {
         WebDriver driver = getDriver();
         FileToUpload fileToUpload = new FileToUpload(driver, filePath);
         fileToUpload.fromLocalMachine().to(find(By.name(doc)));
