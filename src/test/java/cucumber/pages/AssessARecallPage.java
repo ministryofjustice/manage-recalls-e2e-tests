@@ -16,6 +16,7 @@ public class AssessARecallPage extends PpudPage {
 
     public static class RecallAssessmentDetails {
         public static final Target ASSESSED_BY_USERNAME = getTargetByDataQa("assessedByUserName");
+        public static final Target BOOKED_BY_USERNAME = getTargetByDataQa("bookedByUserName");
         public static final Target AGREE_WITH_RECALL_RECOMMENDATION = getTargetByDataQa("agreeWithRecall");
         public static final Target AGREE_WITH_RECALL_RECOMMENDATION_ADDITIONAL_TEXT = getTargetByDataQa("agreeWithRecallDetail");
         public static final Target LICENCE_CONDITIONS_BREACHED = getTargetByDataQa("licenceConditionsBreached");
