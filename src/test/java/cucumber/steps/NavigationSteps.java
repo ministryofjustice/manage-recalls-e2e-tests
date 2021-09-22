@@ -244,7 +244,7 @@ public class NavigationSteps {
                 Enter.theValue("John Smith").into(ProbationDetailsPage.PROBATION_OFFICER_NAME_FIELD),
                 Enter.theValue("07775825221").into(ProbationDetailsPage.PROBATION_OFFICER_PHONE_NO_FIELD),
                 Enter.theValue("john.smith@digital.justice.gov.uk").into(ProbationDetailsPage.PROBATION_OFFICER_EMAIL_FIELD),
-                Enter.theValue("PS - Der", ProbationDetailsPage.LOCAL_DELIVERY_UNIT_AUTOCOMPLETE),
+                Enter.theValue("PS - Der").into(ProbationDetailsPage.LOCAL_DELIVERY_UNIT_AUTOCOMPLETE),
                 Click.on(ProbationDetailsPage.getTargetForLocalDeliveryUnit("PS - Derbyshire")),
                 Enter.theValue("Jonny Thorn").into(ProbationDetailsPage.ASSISTANT_CHIEF_OFFICER_NAME_FIELD),
                 Click.on(ProbationDetailsPage.CONTINUE_BUTTON)
@@ -335,11 +335,11 @@ public class NavigationSteps {
                 Ensure.that(IssuesAndNeedsDetails.CONTRABAND_DETAIL).text().isEqualTo(sessionVariableCalled("contrabandDetail")),
                 Ensure.that(IssuesAndNeedsDetails.MAPPA_LEVEL).text().isEqualTo("Level 1"),
                 // Probation details
-                Ensure.that(RecallDetailsPage.PROBATION_OFFICER_NAME).text().isEqualTo(sessionVariableCalled("probationOfficerName")),
-                Ensure.that(RecallDetailsPage.PROBATION_OFFICER_PHONE_NO).text().isEqualTo(sessionVariableCalled("probationOfficerPhoneNumber")),
-                Ensure.that(RecallDetailsPage.PROBATION_OFFICER_EMAIL).text().isEqualTo(sessionVariableCalled("probationOfficerEmail")),
-                Ensure.that(RecallDetailsPage.LOCAL_DELIVERY_UNIT).text().isEqualTo(sessionVariableCalled("localDeliveryUnit")),
-                Ensure.that(RecallDetailsPage.ASSISTANT_CHIEF_OFFICER_NAME).text().isEqualTo(sessionVariableCalled("asstChiefOfficerName"))
+                Ensure.that(ProbationDetails.PROBATION_OFFICER_NAME).text().isEqualTo(sessionVariableCalled("probationOfficerName")),
+                Ensure.that(ProbationDetails.PROBATION_OFFICER_PHONE_NO).text().isEqualTo(sessionVariableCalled("probationOfficerPhoneNumber")),
+                Ensure.that(ProbationDetails.PROBATION_OFFICER_EMAIL).text().isEqualTo(sessionVariableCalled("probationOfficerEmail")),
+                Ensure.that(ProbationDetails.LOCAL_DELIVERY_UNIT).text().isEqualTo(sessionVariableCalled("localDeliveryUnit")),
+                Ensure.that(ProbationDetails.ASSISTANT_CHIEF_OFFICER_NAME).text().isEqualTo(sessionVariableCalled("asstChiefOfficerName"))
         );
     }
 
