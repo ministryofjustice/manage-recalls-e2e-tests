@@ -503,6 +503,7 @@ public class NavigationSteps {
     @Then("{word} is able to see the details captured during dossier creation")
     public void confirmDetailsCapturedDuringDossierCreation(String customer) {
         theActorCalled(customer).attemptsTo(
+                Ensure.that(CreateDossierDetails.DOSSIER_CREATED_BY_USERNAME).text().isEqualTo(sessionVariableCalled("loggedInUserDisplayName")),
                 Ensure.that(CreateDossierDetails.ADDITIONAL_LICENCE_CONDITIONS).text().isEqualTo("Yes"),
                 Ensure.that(CreateDossierDetails.MORE_DETAILS_FOR_ADDITIONAL_LICENCE_CONDITIONS_TEXT).text().isEqualTo("Licence condition 14(a)"),
                 Ensure.that(CreateDossierDetails.DIFFERENT_NOMIS_NUMBER).text().isEqualTo("Yes"),
@@ -522,7 +523,10 @@ public class NavigationSteps {
 
     @When("{word} navigates to view the details captured during dossier creation")
     public void viewDossierCreationDetails(String customer) {
-        new AssessARecallPage().open("assess.recall", withParameters(sessionVariableCalled(NOMS_NUMBER), theActorCalled(customer).recall("RECALL_ID")));
+        new AssessARecallPage().open(
+                "assess.recall",
+                withParameters(sessionVariableCalled(NOMS_NUMBER), theActorCalled(customer).recall("RECALL_ID"))
+        );
         userIsOnPageWithTitle(customer, AssessARecallPage.TITLE);
     }
 

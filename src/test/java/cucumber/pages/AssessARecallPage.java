@@ -29,6 +29,7 @@ public class AssessARecallPage extends PpudPage {
     }
 
     public static class CreateDossierDetails {
+        public static final Target DOSSIER_CREATED_BY_USERNAME = getTargetByDataQa("dossierCreatedByUserName");
         public static final Target ADDITIONAL_LICENCE_CONDITIONS = getTargetByDataQa("additionalLicenceConditions");
         public static final Target MORE_DETAILS_FOR_ADDITIONAL_LICENCE_CONDITIONS_TEXT = getTargetByDataQa("additionalLicenceConditionsDetail");
         public static final Target DIFFERENT_NOMIS_NUMBER = getTargetByDataQa("differentNomsNumber");
