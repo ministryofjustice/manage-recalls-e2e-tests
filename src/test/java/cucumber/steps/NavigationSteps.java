@@ -237,14 +237,15 @@ public class NavigationSteps {
         setSessionVariable("probationOfficerName").to("John Smith");
         setSessionVariable("probationOfficerPhoneNumber").to("07775825221");
         setSessionVariable("probationOfficerEmail").to("john.smith@digital.justice.gov.uk");
-        setSessionVariable("probationDivision").to("London");
+        setSessionVariable("localDeliveryUnit").to("PS - Derbyshire");
         setSessionVariable("asstChiefOfficerName").to("Jonny Thorn");
         theActorCalled(customer).attemptsTo(
                 Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(ProbationDetailsPage.TITLE),
                 Enter.theValue("John Smith").into(ProbationDetailsPage.PROBATION_OFFICER_NAME_FIELD),
                 Enter.theValue("07775825221").into(ProbationDetailsPage.PROBATION_OFFICER_PHONE_NO_FIELD),
                 Enter.theValue("john.smith@digital.justice.gov.uk").into(ProbationDetailsPage.PROBATION_OFFICER_EMAIL_FIELD),
-                SelectFromOptions.byVisibleText(sessionVariableCalled("probationDivision")).from(ProbationDetailsPage.PROBATION_DIVISION_DROPDOWN),
+                Enter.theValue("PS - Der").into(ProbationDetailsPage.LOCAL_DELIVERY_UNIT_AUTOCOMPLETE),
+                Click.on(ProbationDetailsPage.getTargetForLocalDeliveryUnit("PS - Derbyshire")),
                 Enter.theValue("Jonny Thorn").into(ProbationDetailsPage.ASSISTANT_CHIEF_OFFICER_NAME_FIELD),
                 Click.on(ProbationDetailsPage.CONTINUE_BUTTON)
         );
@@ -337,7 +338,7 @@ public class NavigationSteps {
                 Ensure.that(ProbationDetails.PROBATION_OFFICER_NAME).text().isEqualTo(sessionVariableCalled("probationOfficerName")),
                 Ensure.that(ProbationDetails.PROBATION_OFFICER_PHONE_NO).text().isEqualTo(sessionVariableCalled("probationOfficerPhoneNumber")),
                 Ensure.that(ProbationDetails.PROBATION_OFFICER_EMAIL).text().isEqualTo(sessionVariableCalled("probationOfficerEmail")),
-                Ensure.that(ProbationDetails.PROBATION_DIVISION).text().isEqualTo(sessionVariableCalled("probationDivision")),
+                Ensure.that(ProbationDetails.LOCAL_DELIVERY_UNIT).text().isEqualTo(sessionVariableCalled("localDeliveryUnit")),
                 Ensure.that(ProbationDetails.ASSISTANT_CHIEF_OFFICER_NAME).text().isEqualTo(sessionVariableCalled("asstChiefOfficerName"))
         );
     }
