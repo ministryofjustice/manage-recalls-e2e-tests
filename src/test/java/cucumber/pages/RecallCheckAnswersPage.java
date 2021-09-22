@@ -42,7 +42,7 @@ public class RecallCheckAnswersPage extends PpudPage {
         public static final Target PROBATION_OFFICER_NAME = getTargetByDataQa("probationOfficerName");
         public static final Target PROBATION_OFFICER_EMAIL = getTargetByDataQa("probationOfficerEmail");
         public static final Target PROBATION_OFFICER_PHONE_NO = getTargetByDataQa("probationOfficerPhoneNumber");
-        public static final Target PROBATION_DIVISION = getTargetByDataQa("probationDivision");
+        public static final Target LOCAL_DELIVERY_UNIT = getTargetByDataQa("localDeliveryUnit");
         public static final Target ASSISTANT_CHIEF_OFFICER_NAME = getTargetByDataQa("authorisingAssistantChiefOfficer");
     }
     public static class DocumentDetails {
