@@ -320,7 +320,7 @@ public class NavigationSteps {
                 Ensure.that(PersonDetails.NOMS_NUMBER).text().isEqualTo(sessionVariableCalled(NOMS_NUMBER)),
                 Ensure.that(PersonDetails.PRE_CONS_NAME).text().isEqualTo("Wayne Holt"),
                 // Recall
-                Ensure.that(RecallDetails.DATE_RECALL_EMAIL_RECEIVED).text().isEqualTo("5 December 2020 at 3:33pm"),
+                Ensure.that(RecallDetails.DATE_RECALL_EMAIL_RECEIVED).text().isEqualTo("5 December 2020 at 15:33"),
                 // Sentence, offence and release details
                 Ensure.that(SentenceOffenceAndReleaseDetails.SENTENCE_TYPE).text().isEqualTo("Determinate"),
                 Ensure.that(SentenceOffenceAndReleaseDetails.SENTENCE_DATE).text().isEqualTo("3 August 2020"),
@@ -435,7 +435,7 @@ public class NavigationSteps {
                 Ensure.that(RecallAssessmentDetails.REASON_FOR_RECALL_OPTION_OTHER).text().isEqualTo("Other"),
                 Ensure.that(RecallAssessmentDetails.OTHER_REASON_FOR_RECALL_TEXT).text().isEqualTo("other reason for recall"),
                 Ensure.that(RecallAssessmentDetails.CURRENT_PRISON).text().isEqualTo("Ashfield (HMP)"),
-                Ensure.that(RecallAssessmentDetails.DATETIME_RECALL_NOTIFICATION_EMAIL_SENT).text().isEqualTo("5 December 2020 at 3:33pm"),
+                Ensure.that(RecallAssessmentDetails.DATETIME_RECALL_NOTIFICATION_EMAIL_SENT).text().isEqualTo("5 December 2020 at 15:33"),
                 Ensure.that(RecallAssessmentDetails.UPLOADED_RECALL_NOTIFICATION_EMAIL_LINK).text().isEqualTo("email.msg")
         );
     }
