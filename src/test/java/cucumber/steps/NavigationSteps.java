@@ -315,7 +315,7 @@ public class NavigationSteps {
                 Ensure.that(PersonDetails.NOMS_NUMBER).text().isEqualTo(sessionVariableCalled(NOMS_NUMBER)),
                 Ensure.that(PersonDetails.PRE_CONS_NAME).text().isEqualTo("Wayne Holt"),
                 // Recall
-                Ensure.that(RecallDetails.DATE_RECALL_EMAIL_RECEIVED).text().isEqualTo("5 December 2020 at 15:33"),
+                Ensure.that(RecallDetails.DATE_RECALL_EMAIL_RECEIVED).text().isEqualTo("5 December 2020 at 3:33pm"),
                 // Sentence, offence and release details
                 Ensure.that(SentenceOffenceAndReleaseDetails.SENTENCE_TYPE).text().isEqualTo("Determinate"),
                 Ensure.that(SentenceOffenceAndReleaseDetails.SENTENCE_DATE).text().isEqualTo("3 August 2020"),
