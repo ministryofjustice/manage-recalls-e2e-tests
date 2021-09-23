@@ -34,7 +34,7 @@ Feature: Manage Recalls
     When Maria navigates to the recall to create a dossier
     And Maria submits the information for the prison letter
     And Maria has checked and created the reasons for recall document
-    And Maria can open the dossier
+    And Maria can open the dossier and letter
     And Maria has reviewed the dossier
     And Maria records that the dossier was emailed
     Then Maria gets a confirmation that the dossier creation is complete

@@ -466,10 +466,11 @@ public class NavigationSteps {
         );
     }
 
-    @Then("{word} can open the dossier")
+    @Then("{word} can open the dossier and letter")
     public void canDownloadTheDossier(String customer) {
         userIsOnPageWithTitle(customer, CreateDossierDownloadDossierAndLetterPage.TITLE);
         openDocumentInTab(customer, CreateDossierDownloadDossierAndLetterPage.DOWNLOAD_DOSSIER_LINK);
+        openDocumentInTab(customer, CreateDossierDownloadDossierAndLetterPage.DOWNLOAD_LETTER_LINK);
     }
 
     @When("{word} has reviewed the dossier")
