@@ -50,6 +50,7 @@ import net.serenitybdd.screenplay.ensure.Ensure;
 import net.serenitybdd.screenplay.targets.Target;
 import net.thucydides.core.util.EnvironmentVariables;
 import net.thucydides.core.util.SystemEnvironmentVariables;
+
 import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
@@ -65,6 +66,7 @@ import static net.serenitybdd.core.pages.PageObject.withParameters;
 import static net.serenitybdd.screenplay.actors.OnStage.setTheStage;
 import static net.serenitybdd.screenplay.actors.OnStage.theActorCalled;
 import static org.awaitility.Awaitility.await;
+
 import org.openqa.selenium.WebDriver;
 
 public class NavigationSteps {
@@ -117,10 +119,13 @@ public class NavigationSteps {
     @When("{word} enters her user details")
     public void entersUserDetails(String customer) {
         setSessionVariable("loggedInUserDisplayName").to("Maria Badger");
-        theActorCalled(customer).attemptsTo(
+        Actor actor = theActorCalled(customer);
+        actor.attemptsTo(
                 Open.browserOn().the(UserDetailsPage.class),
                 Enter.theValue("Maria").into(UserDetailsPage.FIRST_NAME_TEXT_BOX),
-                Enter.theValue("Badger").into(UserDetailsPage.LAST_NAME_TEXT_BOX),
+                Enter.theValue("Badger").into(UserDetailsPage.LAST_NAME_TEXT_BOX));
+        new UserDetailsPage().uploadFile("src/test/resources/files/signature.jpg", "signature");
+        actor.attemptsTo(
                 Click.on(UserDetailsPage.UPDATE_BUTTON)
         );
     }
@@ -154,7 +159,7 @@ public class NavigationSteps {
     public void clickOnRecallNotificationLink(String customer) {
         openDocumentInTab(customer, RecallNotificationDownloadPage.DOWNLOAD_RECALL_NOTIFICATION_LINK);
         theActorCalled(customer).attemptsTo(
-            Click.on(RecallNotificationDownloadPage.CONTINUE_BUTTON)
+                Click.on(RecallNotificationDownloadPage.CONTINUE_BUTTON)
         );
     }
 
@@ -303,7 +308,7 @@ public class NavigationSteps {
         );
     }
 
- @Then("{word} can check their answers")
+    @Then("{word} can check their answers")
     public void bookingCheckAnswers(String customer) {
         theActorCalled(customer).attemptsTo(
                 Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(RecallCheckAnswersPage.TITLE),
@@ -394,6 +399,7 @@ public class NavigationSteps {
                 Upload.theFile(Path.of("src/test/resources/files/email.msg")).to(RecordIssuanceOfRecallNotificationPage.UPLOAD_FILE),
                 Click.on(RecordIssuanceOfRecallNotificationPage.CONTINUE_BUTTON));
     }
+
     @Then("{word} can see that the recall is authorised")
     public void confirmRecallAuthorisation(String customer) {
         userIsOnPageWithTitle(customer, RecallAuthorisationPage.TITLE);
@@ -401,18 +407,18 @@ public class NavigationSteps {
     }
 
     @Then("{word} opens the documents")
-    public void downloadRecallDocument(String customer){
+    public void downloadRecallDocument(String customer) {
         openDocumentInTab(customer, DocumentDetails.RECALL_DOCUMENT_LINK_PART_A);
         openDocumentInTab(customer, DocumentDetails.RECALL_DOCUMENT_LINK_LICENCE);
         openDocumentInTab(customer, DocumentDetails.RECALL_DOCUMENT_LINK_PREVIOUS_CONVICTIONS_SHEET);
         openDocumentInTab(customer, DocumentDetails.RECALL_DOCUMENT_LINK_PRE_SENTENCING_REPORT);
         theActorCalled(customer).attemptsTo(
-            Click.on(RecallCheckAnswersPage.CONTINUE_BUTTON)
+                Click.on(RecallCheckAnswersPage.CONTINUE_BUTTON)
         );
     }
 
     @Then("{word} navigates to view the details captured during assessment")
-    public void navigateToViewRecallAssessmentDetails(String customer){
+    public void navigateToViewRecallAssessmentDetails(String customer) {
         new AssessARecallPage().open("assess.recall", withParameters(sessionVariableCalled(NOMS_NUMBER), theActorCalled(customer).recall("RECALL_ID")));
         userIsOnPageWithTitle(customer, AssessARecallPage.TITLE);
     }
@@ -457,12 +463,12 @@ public class NavigationSteps {
     public void checkCreateReasonsRecallDoc(String customer) {
         userIsOnPageWithTitle(customer, CreateDossierCheckReasonsDocPage.TITLE);
         theActorCalled(customer).attemptsTo(
-            Ensure.that(CreateDossierCheckReasonsDocPage.NOMS_NUMBER).text().isEqualTo(sessionVariableCalled(NOMS_NUMBER)),
-            Ensure.that(CreateDossierCheckReasonsDocPage.BOOKING_NUMBER).text().isEqualTo("A123456"),
-            Ensure.that(CreateDossierCheckReasonsDocPage.LICENCE_CONDITIONS_BREACHED).text().isEqualTo("Licence condition 1(a) has been breached"),
-            Ensure.that(CreateDossierCheckReasonsDocPage.RECALL_TYPE).text().isEqualTo("Fixed term"),
-            Ensure.that(CreateDossierCheckReasonsDocPage.RECALL_LENGTH).text().isEqualTo("28 days"),
-            Click.on(CreateDossierCheckReasonsDocPage.CONTINUE_BUTTON)
+                Ensure.that(CreateDossierCheckReasonsDocPage.NOMS_NUMBER).text().isEqualTo(sessionVariableCalled(NOMS_NUMBER)),
+                Ensure.that(CreateDossierCheckReasonsDocPage.BOOKING_NUMBER).text().isEqualTo("A123456"),
+                Ensure.that(CreateDossierCheckReasonsDocPage.LICENCE_CONDITIONS_BREACHED).text().isEqualTo("Licence condition 1(a) has been breached"),
+                Ensure.that(CreateDossierCheckReasonsDocPage.RECALL_TYPE).text().isEqualTo("Fixed term"),
+                Ensure.that(CreateDossierCheckReasonsDocPage.RECALL_LENGTH).text().isEqualTo("28 days"),
+                Click.on(CreateDossierCheckReasonsDocPage.CONTINUE_BUTTON)
         );
     }
 

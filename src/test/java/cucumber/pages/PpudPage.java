@@ -35,9 +35,9 @@ public abstract class PpudPage extends PageObject {
         return Target.the(fieldsetName + " matches").located(By.name(fieldsetName + "Day"));
     }
 
-    public void uploadFile(String filePath, String doc) {
+    public void uploadFile(String filePath, String elementName) {
         WebDriver driver = getDriver();
         FileToUpload fileToUpload = new FileToUpload(driver, filePath);
-        fileToUpload.fromLocalMachine().to(find(By.name(doc)));
+        fileToUpload.fromLocalMachine().to(find(By.name(elementName)));
     }
 }
