@@ -71,6 +71,7 @@ import org.openqa.selenium.WebDriver;
 
 public class NavigationSteps {
 
+    public static final String BOOKING_NUMBER = "A12345";
     private EnvironmentVariables environmentVariables;
     private static final String NOMS_NUMBER = "nomsNumber";
 
@@ -122,8 +123,11 @@ public class NavigationSteps {
         Actor actor = theActorCalled(customer);
         actor.attemptsTo(
                 Open.browserOn().the(UserDetailsPage.class),
-                Enter.theValue("Maria").into(UserDetailsPage.FIRST_NAME_TEXT_BOX),
-                Enter.theValue("Badger").into(UserDetailsPage.LAST_NAME_TEXT_BOX));
+                Enter.theValue("Maria").into(UserDetailsPage.FIRST_NAME),
+                Enter.theValue("Badger").into(UserDetailsPage.LAST_NAME),
+                Enter.theValue("maria.badger@thebadgers.org").into(UserDetailsPage.EMAIL_ADDRESS),
+                Enter.theValue("09876543210").into(UserDetailsPage.PHONE_NUMBER)
+        );
         new UserDetailsPage().uploadFile("src/test/resources/files/signature.jpg", "signature");
         actor.attemptsTo(
                 Click.on(UserDetailsPage.UPDATE_BUTTON)
@@ -200,7 +204,7 @@ public class NavigationSteps {
                 Enter.theValue("3").into(LastReleaseDetailsPage.getTargetByName("sentenceLengthYears")),
                 Enter.theValue("2").into(LastReleaseDetailsPage.getTargetByName("sentenceLengthMonths")),
                 Enter.theValue("Manchester Crown Court").into(LastReleaseDetailsPage.getTargetByName("sentencingCourt")),
-                Enter.theValue("A123456").into(LastReleaseDetailsPage.getTargetByName("bookingNumber")),
+                Enter.theValue(BOOKING_NUMBER).into(LastReleaseDetailsPage.getTargetByName("bookingNumber")),
                 Enter.theValue("Burglary").into(LastReleaseDetailsPage.getTargetByName("indexOffence")),
                 Enter.theValue("Ashw").into(LastReleaseDetailsPage.RELEASING_PRISON_AUTOCOMPLETE_FIELD),
                 Click.on(LastReleaseDetailsPage.getTargetForReleasingPrison("Ashwell (HMP)")),
@@ -330,7 +334,7 @@ public class NavigationSteps {
                 Ensure.that(SentenceOffenceAndReleaseDetails.SENTENCING_COURT).text().isEqualTo("Manchester Crown Court"),
                 Ensure.that(SentenceOffenceAndReleaseDetails.INDEX_OFFENCE).text().isEqualTo("Burglary"),
                 Ensure.that(SentenceOffenceAndReleaseDetails.LAST_RELEASE_PRISON).text().isEqualTo("Ashwell (HMP)"),
-                Ensure.that(SentenceOffenceAndReleaseDetails.BOOKING_NUMBER).text().isEqualTo("A123456"),
+                Ensure.that(SentenceOffenceAndReleaseDetails.BOOKING_NUMBER).text().isEqualTo(BOOKING_NUMBER),
                 Ensure.that(SentenceOffenceAndReleaseDetails.LAST_RELEASE_DATE).text().isEqualTo("15 March 2021"),
                 Ensure.that(SentenceOffenceAndReleaseDetails.CONDITIONAL_RELEASE_DATE).text().isEqualTo("24 June 2022"),
                 // local police force
@@ -464,7 +468,7 @@ public class NavigationSteps {
         userIsOnPageWithTitle(customer, CreateDossierCheckReasonsDocPage.TITLE);
         theActorCalled(customer).attemptsTo(
                 Ensure.that(CreateDossierCheckReasonsDocPage.NOMS_NUMBER).text().isEqualTo(sessionVariableCalled(NOMS_NUMBER)),
-                Ensure.that(CreateDossierCheckReasonsDocPage.BOOKING_NUMBER).text().isEqualTo("A123456"),
+                Ensure.that(CreateDossierCheckReasonsDocPage.BOOKING_NUMBER).text().isEqualTo(BOOKING_NUMBER),
                 Ensure.that(CreateDossierCheckReasonsDocPage.LICENCE_CONDITIONS_BREACHED).text().isEqualTo("Licence condition 1(a) has been breached"),
                 Ensure.that(CreateDossierCheckReasonsDocPage.RECALL_TYPE).text().isEqualTo("Fixed term"),
                 Ensure.that(CreateDossierCheckReasonsDocPage.RECALL_LENGTH).text().isEqualTo("28 days"),
