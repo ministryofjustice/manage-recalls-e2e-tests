@@ -4,4 +4,4 @@ ADD . /home/circleci/project
 
 WORKDIR /home/circleci/project
 
-CMD ["/home/circleci/project/gradlew", "clean", "test", "-Denvironment=ci-local", "-Dchrome.switches=\"--headless;--enable-logging;--v=1;--no-sandbox;--disable-dev-shm-usage;--verbose\""]
+CMD ["/home/circleci/project/gradlew", "clean", "test", "-Denvironment=ci-local", "-Dchrome.switches=\"--enable-logging;--v=1;--no-sandbox;--disable-dev-shm-usage;--verbose\""]
