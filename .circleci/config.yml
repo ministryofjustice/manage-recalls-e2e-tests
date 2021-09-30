@@ -68,7 +68,7 @@ jobs:
             SERENITY_USERNAME=${SERENITY_USERNAME_<<pipeline.parameters.e2e_environment>>} \
             SERENITY_PASSWORD=${SERENITY_PASSWORD_<<pipeline.parameters.e2e_environment>>} \
             NOMS_NUMBER=${NOMS_NUMBER_<<pipeline.parameters.e2e_environment>>} \
-            ./gradlew test -Denvironment=<<pipeline.parameters.e2e_environment>> -Dchrome.switches=--headless
+            ./gradlew test -Denvironment=<<pipeline.parameters.e2e_environment>>
       - store_artifacts:
           path: build/reports/tests/test
           destination: deploy-test-summary

@@ -1,40 +1,9 @@
 package cucumber.steps;
 
-import cucumber.pages.AssessARecallPage;
+import cucumber.pages.*;
 import cucumber.pages.AssessARecallPage.CreateDossierDetails;
 import cucumber.pages.AssessARecallPage.RecallAssessmentDetails;
-import cucumber.pages.AssessCurrentPrisonPage;
-import cucumber.pages.AssessLicenceBreachPage;
-import cucumber.pages.BookRecallConfirmationPage;
-import cucumber.pages.CreateDossierAddInfoForPrisonLetterPage;
-import cucumber.pages.CreateDossierCheckReasonsDocPage;
-import cucumber.pages.CreateDossierConfirmEmailedPage;
-import cucumber.pages.CreateDossierDownloadDossierAndLetterPage;
-import cucumber.pages.DecisionOnRecallRecommendationPage;
-import cucumber.pages.DossierCreationConfirmationPage;
-import cucumber.pages.FindAnOffenderPage;
-import cucumber.pages.LastReleaseDetailsPage;
-import cucumber.pages.LoginPage;
-import cucumber.pages.PoliceContactDetailsPage;
-import cucumber.pages.ProbationDetailsPage;
-import cucumber.pages.RecallAuthorisationPage;
-import cucumber.pages.RecallCheckAnswersPage;
-import cucumber.pages.RecallCheckAnswersPage.DocumentDetails;
-import cucumber.pages.RecallCheckAnswersPage.IssuesAndNeedsDetails;
-import cucumber.pages.RecallCheckAnswersPage.LocalPoliceForceDetails;
-import cucumber.pages.RecallCheckAnswersPage.PersonDetails;
-import cucumber.pages.RecallCheckAnswersPage.ProbationDetails;
-import cucumber.pages.RecallCheckAnswersPage.RecallDetails;
-import cucumber.pages.RecallCheckAnswersPage.SentenceOffenceAndReleaseDetails;
-import cucumber.pages.RecallNotificationDownloadPage;
-import cucumber.pages.RecallPreConsNamePage;
-import cucumber.pages.RecallReceivedPage;
-import cucumber.pages.RecordIssuanceOfRecallNotificationPage;
-import cucumber.pages.TodoRecallsListPage;
-import cucumber.pages.UploadRecallDocumentsPage;
-import cucumber.pages.UserDetailsPage;
-import cucumber.pages.VerifyEmailPage;
-import cucumber.pages.VulnerabilityAndContrabandDetailsPage;
+import cucumber.pages.RecallCheckAnswersPage.*;
 import cucumber.questions.UserIsOn;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
@@ -43,6 +12,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import net.serenitybdd.core.Serenity;
 import net.serenitybdd.screenplay.Actor;
+import net.serenitybdd.screenplay.abilities.BrowseTheWeb;
 import net.serenitybdd.screenplay.actions.*;
 import net.serenitybdd.screenplay.actors.OnlineCast;
 import net.serenitybdd.screenplay.conditions.Check;
@@ -50,24 +20,25 @@ import net.serenitybdd.screenplay.ensure.Ensure;
 import net.serenitybdd.screenplay.targets.Target;
 import net.thucydides.core.util.EnvironmentVariables;
 import net.thucydides.core.util.SystemEnvironmentVariables;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.ArrayList;
 
 import static cucumber.pages.FindAnOffenderPage.BOOK_RECALL_LINK;
 import static cucumber.pages.TodoRecallsListPage.FIND_SOMEONE_LINK;
 import static cucumber.questions.ReadTextContent.textContent;
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static net.serenitybdd.core.Serenity.*;
+import static net.serenitybdd.core.Serenity.sessionVariableCalled;
+import static net.serenitybdd.core.Serenity.setSessionVariable;
 import static net.serenitybdd.core.pages.PageObject.withParameters;
 import static net.serenitybdd.screenplay.actors.OnStage.setTheStage;
 import static net.serenitybdd.screenplay.actors.OnStage.theActorCalled;
 import static org.awaitility.Awaitility.await;
-
-import org.openqa.selenium.WebDriver;
 
 public class NavigationSteps {
 
@@ -126,10 +97,8 @@ public class NavigationSteps {
                 Enter.theValue("Maria").into(UserDetailsPage.FIRST_NAME),
                 Enter.theValue("Badger").into(UserDetailsPage.LAST_NAME),
                 Enter.theValue("maria.badger@thebadgers.org").into(UserDetailsPage.EMAIL_ADDRESS),
-                Enter.theValue("09876543210").into(UserDetailsPage.PHONE_NUMBER)
-        );
-        new UserDetailsPage().uploadFile("src/test/resources/files/signature.jpg", "signature");
-        actor.attemptsTo(
+                Enter.theValue("09876543210").into(UserDetailsPage.PHONE_NUMBER),
+                Upload.theFile(Path.of("src/test/resources/files/signature.jpg")).to(UserDetailsPage.SIGNATURE),
                 Click.on(UserDetailsPage.UPDATE_BUTTON)
         );
     }
@@ -269,12 +238,12 @@ public class NavigationSteps {
     @When("{word} uploads two documents")
     public void addRecallDocument(String customer) {
         userIsOnPageWithTitle(customer, UploadRecallDocumentsPage.TITLE);
-        UploadRecallDocumentsPage page = new UploadRecallDocumentsPage();
-        page.uploadFile("src/test/resources/files/test.pdf", "PART_A_RECALL_REPORT");
-        page.uploadFile("src/test/resources/files/test.pdf", "LICENCE");
-        page.uploadFile("src/test/resources/files/test.pdf", "PREVIOUS_CONVICTIONS_SHEET");
-        page.uploadFile("src/test/resources/files/test.pdf", "PRE_SENTENCING_REPORT");
+        Path testPdfPath = Path.of("src/test/resources/files/test.pdf");
         theActorCalled(customer).attemptsTo(
+                Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.PART_A_RECALL_REPORT),
+                Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.LICENCE),
+                Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.PREVIOUS_CONVICTIONS_SHEET),
+                Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.PRE_SENTENCING_REPORT),
                 Click.on(UploadRecallDocumentsPage.CONTINUE_BUTTON)
         );
     }
@@ -555,17 +524,21 @@ public class NavigationSteps {
     }
 
     private void openDocumentInTab(String customer, Target link) {
-        theActorCalled(customer).attemptsTo(
+        Actor actor = theActorCalled(customer);
+        actor.attemptsTo(
                 Click.on(link)
         );
-        Actor actor = theActorCalled(customer);
         String linkHref = link.resolveFor(actor).getAttribute("href");
-        WebDriver driver = getDriver();
+        WebDriver driver = BrowseTheWeb.as(actor).getDriver();
         String oldTab = driver.getWindowHandle();
-        List<String> newTab = new ArrayList<>(driver.getWindowHandles());
-        newTab.remove(oldTab);
-        driver.switchTo().window(newTab.get(0));
-        Ensure.thatTheCurrentPage().currentUrl().hasValue().isEqualTo(linkHref);
+        List<String> allTabs = new ArrayList<>(driver.getWindowHandles());
+        allTabs.remove(oldTab);
+        //This fails when running in headless mode. appears to be an issue with chromedriver
+        actor.attemptsTo(
+                Switch.toWindow(allTabs.get(0)),
+                Ensure.thatTheCurrentPage().currentUrl().isEqualTo(linkHref),
+                Ensure.thatTheCurrentPage().pageSource().doesNotContain("Internal Server Error")
+        );
         driver.close();
         driver.switchTo().window(oldTab);
     }
