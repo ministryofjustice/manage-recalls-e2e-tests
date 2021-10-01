@@ -145,7 +145,7 @@ public class NavigationSteps {
         );
     }
 
-    @When("{word} submits the date and time of the recall request received from probation service")
+    @When("{word} submits the date and email of the recall request received from probation service")
     public void submitDateTimeOfRecallRequestReceived(String customer) {
         theActorCalled(customer).attemptsTo(
                 Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(RecallReceivedPage.TITLE),
@@ -154,6 +154,7 @@ public class NavigationSteps {
                 Enter.theValue("2020").into(RecallReceivedPage.YEAR_FIELD),
                 Enter.theValue("15").into(RecallReceivedPage.HOUR_FIELD),
                 Enter.theValue("33").into(RecallReceivedPage.MINUTE_FIELD),
+                Upload.theFile(Path.of("src/test/resources/files/email.msg")).to(RecallReceivedPage.UPLOAD_FILE),
                 Click.on(RecallReceivedPage.CONTINUE_BUTTON)
         );
     }
