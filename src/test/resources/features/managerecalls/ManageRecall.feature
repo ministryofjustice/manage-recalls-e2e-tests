@@ -8,7 +8,7 @@ Feature: Manage Recalls
     ### Book a recall
     And Maria clicks on the Book a recall link
     And Maria enters the pre-convictions name
-    And Maria submits the date and time of the recall request received from probation service
+    And Maria submits the date and email of the recall request received from probation service
     And Maria submits the sentence, offence and release details
     And Maria submits the police contact details
     And Maria submits any vulnerability and contraband related details for the offender
