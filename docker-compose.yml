@@ -59,7 +59,7 @@ services:
     networks:
       - manage-recalls-e2e
     container_name: manage-recalls-api-e2e
-    depends_on: [gotenberg, fake-prisoner-offender-search-api, fake-prison-register-api, postgres, localstack]
+    depends_on: [gotenberg, fake-prisoner-offender-search-api, fake-prison-register-api, postgres, localstack, clamav]
     ports:
       - "9091:8080"
     healthcheck:
@@ -124,6 +124,18 @@ services:
     environment:
       - SERVICES=s3
       - DATA_DIR=/tmp/localstack/data
+
+  clamav:
+    image: mkodockx/docker-clamav
+    networks:
+      - manage-recalls-e2e
+    container_name: clamav_manage-recalls-e2e
+    ports:
+      - "3310:3310"
+    deploy:
+      resources:
+        limits:
+          memory: 1G
 
 networks:
   manage-recalls-e2e:
