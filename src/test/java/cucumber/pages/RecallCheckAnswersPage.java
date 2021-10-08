@@ -34,7 +34,9 @@ public class RecallCheckAnswersPage extends PpudPage {
         public static final Target LOCAL_POLICE_FORCE = getTargetByDataQa("localPoliceForce");
     }
     public static class IssuesAndNeedsDetails {
+        public static final Target VULNERABILITY_DIVERSITY = getTargetByDataQa("vulnerabilityDiversity");
         public static final Target VULNERABILITY_DIVERSITY_DETAIL = getTargetByDataQa("vulnerabilityDiversityDetail");
+        public static final Target CONTRABAND = getTargetByDataQa("contraband");
         public static final Target CONTRABAND_DETAIL = getTargetByDataQa("contrabandDetail");
         public static final Target MAPPA_LEVEL = getTargetByDataQa("mappaLevel");
     }

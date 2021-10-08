@@ -127,10 +127,7 @@ Build both locally (see readme's for commands). Check that the local build passe
 for both of those projects.  Potentially those builds will clash (e.g. wiremock port usage) with
 services running for these tests, which will then need to be stopped.
 
-To start the two services and run all tests:
-```
-./build-local.sh
-```
+Then use e.g. `./build.sh` as described above.
 
 ### Running tests in Intellij
 To run or debug tests within IntelliJ/Idea it should be sufficient, 

@@ -310,7 +310,9 @@ public class NavigationSteps {
                 // local police force
                 Ensure.that(LocalPoliceForceDetails.LOCAL_POLICE_FORCE).text().isEqualTo("Essex"),
                 // Issues or needs
+                Ensure.that(IssuesAndNeedsDetails.VULNERABILITY_DIVERSITY).text().isEqualTo("Yes"),
                 Ensure.that(IssuesAndNeedsDetails.VULNERABILITY_DIVERSITY_DETAIL).text().isEqualTo(sessionVariableCalled("vulnerabilityDiversityDetail")),
+                Ensure.that(IssuesAndNeedsDetails.CONTRABAND).text().isEqualTo("Yes"),
                 Ensure.that(IssuesAndNeedsDetails.CONTRABAND_DETAIL).text().isEqualTo(sessionVariableCalled("contrabandDetail")),
                 Ensure.that(IssuesAndNeedsDetails.MAPPA_LEVEL).text().isEqualTo("Level 1"),
                 // Probation details
