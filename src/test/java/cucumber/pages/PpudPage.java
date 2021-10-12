@@ -1,15 +1,8 @@
 package cucumber.pages;
 
-import com.assertthat.selenium_shutterbug.utils.web.Browser;
-import net.serenitybdd.screenplay.abilities.BrowseTheWeb;
-import net.serenitybdd.screenplay.actions.Upload;
 import net.serenitybdd.screenplay.targets.Target;
 import net.thucydides.core.pages.PageObject;
-import net.thucydides.core.pages.components.FileToUpload;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-
-import java.nio.file.Path;
 
 public abstract class PpudPage extends PageObject {
     protected static final String TITLE_ROOT = "Manage a recall - ";
