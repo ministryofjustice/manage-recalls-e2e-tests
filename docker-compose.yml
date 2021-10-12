@@ -70,7 +70,7 @@ services:
     networks:
       - manage-recalls-e2e
     container_name: manage-recalls-api-e2e
-    depends_on: [gotenberg, fake-prisoner-offender-search-api, fake-prison-register-api, fake-court-register-api, postgres, localstack, clamav]
+    depends_on: [gotenberg, fake-prisoner-offender-search-api, fake-prison-register-api, fake-court-register-api, postgres, localstack]
     ports:
       - "9091:8080"
     healthcheck:
