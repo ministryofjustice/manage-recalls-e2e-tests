@@ -20,7 +20,6 @@ import net.serenitybdd.screenplay.ensure.Ensure;
 import net.serenitybdd.screenplay.targets.Target;
 import net.thucydides.core.util.EnvironmentVariables;
 import net.thucydides.core.util.SystemEnvironmentVariables;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import java.io.File;
@@ -43,6 +42,7 @@ import static org.awaitility.Awaitility.await;
 public class NavigationSteps {
 
     public static final String BOOKING_NUMBER = "A12345";
+    public static final String SENTENCING_COURT = "Aberdare County Court";
     private EnvironmentVariables environmentVariables;
     private static final String NOMS_NUMBER = "nomsNumber";
 
@@ -173,10 +173,11 @@ public class NavigationSteps {
                 Enter.theValue("2024").into(LastReleaseDetailsPage.dateYearInput("sentenceExpiryDate")),
                 Enter.theValue("3").into(LastReleaseDetailsPage.getTargetByName("sentenceLengthYears")),
                 Enter.theValue("2").into(LastReleaseDetailsPage.getTargetByName("sentenceLengthMonths")),
-                Enter.theValue("Manchester Crown Court").into(LastReleaseDetailsPage.getTargetByName("sentencingCourt")),
+                Enter.theValue(SENTENCING_COURT.substring(0, 3)).into(LastReleaseDetailsPage.SENTENCING_COURT),
+                Click.on(LastReleaseDetailsPage.getTargetForSentencingCourt(SENTENCING_COURT)),
                 Enter.theValue(BOOKING_NUMBER).into(LastReleaseDetailsPage.getTargetByName("bookingNumber")),
                 Enter.theValue("Burglary").into(LastReleaseDetailsPage.getTargetByName("indexOffence")),
-                Enter.theValue("Ashw").into(LastReleaseDetailsPage.RELEASING_PRISON_AUTOCOMPLETE_FIELD),
+                Enter.theValue("Ashw").into(LastReleaseDetailsPage.RELEASING_PRISON),
                 Click.on(LastReleaseDetailsPage.getTargetForReleasingPrison("Ashwell (HMP)")),
                 Enter.theValue("15").into(LastReleaseDetailsPage.dateDayInput("lastReleaseDate")),
                 Enter.theValue("03").into(LastReleaseDetailsPage.dateMonthInput("lastReleaseDate")),
@@ -301,7 +302,7 @@ public class NavigationSteps {
                 Ensure.that(SentenceOffenceAndReleaseDetails.LICENCE_EXPIRY_DATE).text().isEqualTo("12 October 2024"),
                 Ensure.that(SentenceOffenceAndReleaseDetails.SENTENCE_EXPIRY_DATE).text().isEqualTo("3 November 2024"),
                 Ensure.that(SentenceOffenceAndReleaseDetails.SENTENCE_LENGTH).text().isEqualTo("3 years 2 months"),
-                Ensure.that(SentenceOffenceAndReleaseDetails.SENTENCING_COURT).text().isEqualTo("Manchester Crown Court"),
+                Ensure.that(SentenceOffenceAndReleaseDetails.SENTENCING_COURT).text().isEqualTo(SENTENCING_COURT),
                 Ensure.that(SentenceOffenceAndReleaseDetails.INDEX_OFFENCE).text().isEqualTo("Burglary"),
                 Ensure.that(SentenceOffenceAndReleaseDetails.LAST_RELEASE_PRISON).text().isEqualTo("Ashwell (HMP)"),
                 Ensure.that(SentenceOffenceAndReleaseDetails.BOOKING_NUMBER).text().isEqualTo(BOOKING_NUMBER),
