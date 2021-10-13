@@ -52,7 +52,7 @@ services:
       - "9094:8080"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8080/health/ping" ]
-    command: --verbose
+    command: --verbose --local-response-templating
 
   fake-court-register-api:
     image: quay.io/hmpps/ppud-fake-court-register-api:latest
@@ -63,7 +63,7 @@ services:
       - "9095:8080"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8080/health/ping" ]
-    command: --verbose
+    command: --verbose --local-response-templating
 
   manage-recalls-api:
     image: quay.io/hmpps/manage-recalls-api:latest
