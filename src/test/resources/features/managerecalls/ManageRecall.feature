@@ -32,6 +32,7 @@ Feature: Manage Recalls
     And Maria can download the email
     ### create a dossier
     When Maria navigates to the recall to create a dossier
+    Then Maria is able to see the recall information before creating a dossier
     And Maria submits the information for the prison letter
     And Maria has checked and created the reasons for recall document
     And Maria can open the dossier and letter
