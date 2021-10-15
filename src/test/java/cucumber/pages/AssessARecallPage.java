@@ -8,11 +8,11 @@ import net.thucydides.core.annotations.NamedUrls;
 @DefaultUrl("https://manage-recalls-dev.hmpps.service.justice.gov.uk")
 @NamedUrls(
         {
-                @NamedUrl(name = "assess.recall", url = "/persons/{1}/recalls/{2}/assess")
+                @NamedUrl(name = "assess.recall", url = "/persons/{1}/recalls/{2}/assess"),
+                @NamedUrl(name = "view.recall", url = "/persons/{1}/recalls/{2}/view-recall"),
         }
 )
 public class AssessARecallPage extends PpudPage {
-    public static final String TITLE = TITLE_ROOT + "Assess a recall";
 
     public static class RecallAssessmentDetails {
         public static final Target ASSESSED_BY_USERNAME = getTargetByDataQa("assessedByUserName");
@@ -31,9 +31,7 @@ public class AssessARecallPage extends PpudPage {
     public static class CreateDossierDetails {
         public static final Target DOSSIER_CREATED_BY_USERNAME = getTargetByDataQa("dossierCreatedByUserName");
         public static final Target ADDITIONAL_LICENCE_CONDITIONS = getTargetByDataQa("additionalLicenceConditions");
-        public static final Target MORE_DETAILS_FOR_ADDITIONAL_LICENCE_CONDITIONS_TEXT = getTargetByDataQa("additionalLicenceConditionsDetail");
         public static final Target DIFFERENT_NOMIS_NUMBER = getTargetByDataQa("differentNomsNumber");
-        public static final Target MORE_DETAILS_FOR_DIFFERENT_NOMIS_NUMBER_TEXT = getTargetByDataQa("differentNomsNumberDetail");
         public static final Target DATE_DOSSIER_EMAIL_SENT = getTargetByDataQa("dossierEmailSentDate");
         public static final Target UPLOADED_DOSSIER_EMAIL_LINK = getTargetByDataQa("uploadedDocument-DOSSIER_EMAIL");
     }

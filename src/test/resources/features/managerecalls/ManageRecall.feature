@@ -38,6 +38,6 @@ Feature: Manage Recalls
     And Maria has reviewed the dossier
     And Maria records that the dossier was emailed
     Then Maria gets a confirmation that the dossier creation is complete
-#    And Maria navigates to view the details captured during dossier creation
-#    Then Maria is able to see the details captured during dossier creation
-#    And Maria can download the dossier email
+    And Maria navigates to view the details captured during dossier creation
+    Then Maria is able to see the details captured during dossier creation
+    And Maria can download the dossier email
