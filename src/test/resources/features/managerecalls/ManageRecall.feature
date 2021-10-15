@@ -29,15 +29,15 @@ Feature: Manage Recalls
     ### confirm the details captured during the recall assessment journey are displayed
     When Maria navigates to view the details captured during assessment
     Then Maria is able to see the details captured during assessment
-    And Maria can download the email
     ### create a dossier
     When Maria navigates to the recall to create a dossier
+    Then Maria is able to see the recall information before creating a dossier
     And Maria submits the information for the prison letter
     And Maria has checked and created the reasons for recall document
     And Maria can open the dossier and letter
     And Maria has reviewed the dossier
     And Maria records that the dossier was emailed
     Then Maria gets a confirmation that the dossier creation is complete
-    And Maria navigates to view the details captured during dossier creation
-    Then Maria is able to see the details captured during dossier creation
-    And Maria can download the dossier email
+#    And Maria navigates to view the details captured during dossier creation
+#    Then Maria is able to see the details captured during dossier creation
+#    And Maria can download the dossier email

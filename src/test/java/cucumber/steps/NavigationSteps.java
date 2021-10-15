@@ -291,7 +291,6 @@ public class NavigationSteps {
                 // Person details
                 Ensure.that(PersonDetails.NAME).text().isNotBlank(),
                 Ensure.that(PersonDetails.DATE_OF_BIRTH).text().isNotBlank(),
-                Ensure.that(PersonDetails.GENDER).text().isNotBlank(),
                 Ensure.that(PersonDetails.NOMS_NUMBER).text().isEqualTo(sessionVariableCalled(NOMS_NUMBER)),
                 Ensure.that(PersonDetails.PRE_CONS_NAME).text().isEqualTo("Wayne Holt"),
                 // Recall
@@ -311,10 +310,8 @@ public class NavigationSteps {
                 // local police force
                 Ensure.that(LocalPoliceForceDetails.LOCAL_POLICE_FORCE).text().isEqualTo("Essex"),
                 // Issues or needs
-                Ensure.that(IssuesAndNeedsDetails.VULNERABILITY_DIVERSITY).text().isEqualTo("Yes"),
-                Ensure.that(IssuesAndNeedsDetails.VULNERABILITY_DIVERSITY_DETAIL).text().isEqualTo(sessionVariableCalled("vulnerabilityDiversityDetail")),
-                Ensure.that(IssuesAndNeedsDetails.CONTRABAND).text().isEqualTo("Yes"),
-                Ensure.that(IssuesAndNeedsDetails.CONTRABAND_DETAIL).text().isEqualTo(sessionVariableCalled("contrabandDetail")),
+                Ensure.that(IssuesAndNeedsDetails.VULNERABILITY_DIVERSITY).text().isEqualTo(sessionVariableCalled("vulnerabilityDiversityDetail")),
+                Ensure.that(IssuesAndNeedsDetails.CONTRABAND).text().isEqualTo(sessionVariableCalled("contrabandDetail")),
                 Ensure.that(IssuesAndNeedsDetails.MAPPA_LEVEL).text().isEqualTo("Level 1"),
                 // Probation details
                 Ensure.that(ProbationDetails.PROBATION_OFFICER_NAME).text().isEqualTo(sessionVariableCalled("probationOfficerName")),
@@ -405,21 +402,18 @@ public class NavigationSteps {
         theActorCalled(customer).attemptsTo(
                 Ensure.that(RecallAssessmentDetails.ASSESSED_BY_USERNAME).text().isEqualTo(sessionVariableCalled("loggedInUserDisplayName")),
                 Ensure.that(RecallAssessmentDetails.BOOKED_BY_USERNAME).text().isEqualTo(sessionVariableCalled("loggedInUserDisplayName")),
-                Ensure.that(RecallAssessmentDetails.AGREE_WITH_RECALL_RECOMMENDATION).text().isEqualTo("Yes"),
                 Ensure.that(RecallAssessmentDetails.AGREE_WITH_RECALL_RECOMMENDATION_ADDITIONAL_TEXT).text().isEqualTo("yes, agree with the fixed term recall"),
                 Ensure.that(RecallAssessmentDetails.LICENCE_CONDITIONS_BREACHED).text().isEqualTo("Licence condition 1(a) has been breached"),
                 Ensure.that(RecallAssessmentDetails.REASON_FOR_RECALL_OPTION_ONE).text().isEqualTo("Breach of exclusion zone"),
-                Ensure.that(RecallAssessmentDetails.REASON_FOR_RECALL_OPTION_OTHER).text().isEqualTo("Other"),
-                Ensure.that(RecallAssessmentDetails.OTHER_REASON_FOR_RECALL_TEXT).text().isEqualTo("other reason for recall"),
-                Ensure.that(RecallAssessmentDetails.CURRENT_PRISON).text().isEqualTo("Ashfield (HMP)"),
-                Ensure.that(RecallAssessmentDetails.DATETIME_RECALL_NOTIFICATION_EMAIL_SENT).text().isEqualTo("5 December 2020 at 15:33"),
-                Ensure.that(RecallAssessmentDetails.UPLOADED_RECALL_NOTIFICATION_EMAIL_LINK).text().isEqualTo("email.msg")
+                Ensure.that(RecallAssessmentDetails.REASON_FOR_RECALL_OPTION_OTHER).text().isEqualTo("Other - other reason for recall")
         );
     }
 
     @Then("{word} can download the email")
     public void downloadEmail(String customer) {
         theActorCalled(customer).attemptsTo(
+                Ensure.that(RecallAssessmentDetails.DATETIME_RECALL_NOTIFICATION_EMAIL_SENT).text().isEqualTo("5 December 2020 at 15:33"),
+                Ensure.that(RecallAssessmentDetails.UPLOADED_RECALL_NOTIFICATION_EMAIL_LINK).text().isEqualTo("email.msg"),
                 Click.on(RecallAssessmentDetails.UPLOADED_RECALL_NOTIFICATION_EMAIL_LINK)
         );
         await().atMost(10, SECONDS).until(recallNotificationEmailIsDownloaded());
@@ -446,6 +440,14 @@ public class NavigationSteps {
                 Ensure.that(CreateDossierCheckReasonsDocPage.RECALL_TYPE).text().isEqualTo("Fixed term"),
                 Ensure.that(CreateDossierCheckReasonsDocPage.RECALL_LENGTH).text().isEqualTo("28 days"),
                 Click.on(CreateDossierCheckReasonsDocPage.CONTINUE_BUTTON)
+        );
+    }
+
+    @Then("{word} is able to see the recall information before creating a dossier")
+    public void confirmRecallDetailsBeforeDossier(String customer) {
+        theActorCalled(customer).attemptsTo(
+                Ensure.that(RecallAssessmentDetails.CURRENT_PRISON).text().isEqualTo("Ashfield (HMP)"),
+                Click.on(AssessARecallPage.CONTINUE_BUTTON)
         );
     }
 
