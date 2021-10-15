@@ -406,7 +406,6 @@ public class NavigationSteps {
                 Ensure.that(RecallAssessmentDetails.LICENCE_CONDITIONS_BREACHED).text().isEqualTo("Licence condition 1(a) has been breached"),
                 Ensure.that(RecallAssessmentDetails.REASON_FOR_RECALL_OPTION_ONE).text().isEqualTo("Breach of exclusion zone"),
                 Ensure.that(RecallAssessmentDetails.REASON_FOR_RECALL_OPTION_OTHER).text().isEqualTo("Other - other reason for recall"),
-                Ensure.that(RecallAssessmentDetails.CURRENT_PRISON).text().isEqualTo("Ashfield (HMP)"),
                 Ensure.that(RecallAssessmentDetails.DATETIME_RECALL_NOTIFICATION_EMAIL_SENT).text().isEqualTo("5 December 2020 at 15:33"),
                 Ensure.that(RecallAssessmentDetails.UPLOADED_RECALL_NOTIFICATION_EMAIL_LINK).text().isEqualTo("email.msg")
         );
@@ -447,6 +446,7 @@ public class NavigationSteps {
     @Then("{word} is able to see the recall information before creating a dossier")
     public void confirmRecallDetailsBeforeDossier(String customer) {
         theActorCalled(customer).attemptsTo(
+                Ensure.that(RecallAssessmentDetails.CURRENT_PRISON).text().isEqualTo("Ashfield (HMP)"),
                 Click.on(AssessARecallPage.CONTINUE_BUTTON)
         );
     }
