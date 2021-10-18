@@ -445,6 +445,7 @@ public class NavigationSteps {
     @Then("{word} is able to see the recall information before creating a dossier")
     public void confirmRecallDetailsBeforeDossier(String customer) {
         theActorCalled(customer).attemptsTo(
+                Ensure.that(CreateDossierDetails.DOSSIER_DUE_DATE).text().isEqualTo("Dossier due on 7 December 2020"),
                 Ensure.that(RecallAssessmentDetails.CURRENT_PRISON).text().isEqualTo("Ashfield (HMP)"),
                 Click.on(AssessARecallPage.CONTINUE_BUTTON)
         );
