@@ -376,7 +376,7 @@ public class NavigationSteps {
                 Click.on(RecordIssuanceOfRecallNotificationPage.CONTINUE_BUTTON));
     }
 
-    @Then("{word} can see that the recall is authorised")
+    @Then("{word} can see that the recall is assessed")
     public void confirmRecallAuthorisation(String customer) {
         userIsOnPageWithTitle(customer, RecallAuthorisationPage.TITLE);
         theActorCalled(customer).remember("RECALL_ID", textContent(RecallAuthorisationPage.RECALL_ID));
