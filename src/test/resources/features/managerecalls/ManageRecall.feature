@@ -25,7 +25,7 @@ Feature: Manage Recalls
     And Maria submits the current prison details
     And Maria opens the recall notification
     And Maria records the issuance of recall notification
-    Then Maria can see that the recall is authorised
+    Then Maria can see that the recall is assessed
     ### confirm the details captured during the recall assessment journey are displayed
     When Maria navigates to view the details captured during assessment
     Then Maria is able to see the details captured during assessment
