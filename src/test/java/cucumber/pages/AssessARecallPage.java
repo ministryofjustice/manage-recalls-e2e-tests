@@ -14,6 +14,9 @@ import net.thucydides.core.annotations.NamedUrls;
 )
 public class AssessARecallPage extends PpudPage {
 
+    public static final String TITLE = TITLE_ROOT + "Assess a recall for ";
+    public static final Target RECALL_ASSESSMENT_DUE_TEXT = getTargetByDataQa("recallAssessmentDueText");
+
     public static class RecallAssessmentDetails {
         public static final Target ASSESSED_BY_USERNAME = getTargetByDataQa("assessedByUserName");
         public static final Target BOOKED_BY_USERNAME = getTargetByDataQa("bookedByUserName");

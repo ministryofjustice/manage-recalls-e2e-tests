@@ -325,6 +325,8 @@ public class NavigationSteps {
     @When("{word} starts the assessment process for the recall")
     public void clickOnAssessThisRecallButton(String customer) {
         theActorCalled(customer).attemptsTo(
+                Ensure.thatTheCurrentPage().title().startsWith(AssessARecallPage.TITLE),
+                Ensure.that(AssessARecallPage.RECALL_ASSESSMENT_DUE_TEXT).text().isEqualTo("Overdue: recall assessment was due on 6 December 2020 by 15:33"),
                 Click.on(AssessARecallPage.CONTINUE_BUTTON)
         );
     }
