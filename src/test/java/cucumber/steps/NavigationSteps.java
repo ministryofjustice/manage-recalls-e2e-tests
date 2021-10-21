@@ -265,6 +265,7 @@ public class NavigationSteps {
         theActorCalled(customer).attemptsTo(
                 Click.on(TodoRecallsListPage.RECALL_LIST_TODO_LINK),
                 Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(TodoRecallsListPage.TITLE),
+                Ensure.that(TodoRecallsListPage.getTargetByDataQa("dueDate")).text().isEqualTo("6 December 2020 at 15:33"),
                 Ensure.that(TodoRecallsListPage.getTargetByDataQa("continue-booking-" + recallId)).isNotDisplayed(),
                 Click.on(TodoRecallsListPage.getTargetByDataQa("assess-recall-" + recallId))
         );
