@@ -11,6 +11,7 @@ public class TodoRecallsListPage extends PpudPage {
 
     public static final Target FIND_SOMEONE_LINK = getTargetByDataQa("navLinkFindSomeone");
     public static final Target RECALL_LIST_TODO_LINK = getTargetByDataQa("navLinkToDo");
+    public static final Target RECALL_LIST_DUE_DATE = getTargetByDataQa("dueDate");
     public static final Target RECALLS_TABLE = Target.the("Recalls Table").located(By.className("govuk-table"));
 
 
