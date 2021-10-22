@@ -263,9 +263,9 @@ public class NavigationSteps {
         String recallId = actor.recall("RECALL_ID");
 
         theActorCalled(customer).attemptsTo(
-                Click.on(TodoRecallsListPage.RECALL_LIST_TODO_LINK),
+                Click.on(TodoRecallsListPage.NAV_TODO_LINK),
                 Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(TodoRecallsListPage.TITLE),
-                Ensure.that(TodoRecallsListPage.RECALL_LIST_DUE_DATE).text().isEqualTo("6 December 2020 at 15:33"),
+                Ensure.that(TodoRecallsListPage.getTargetBySelector("[data-qa='recall-id-" + recallId + "'] [data-qa='dueDate']")).text().isEqualTo("6 December 2020 at 15:33"),
                 Ensure.that(TodoRecallsListPage.getTargetByDataQa("continue-booking-" + recallId)).isNotDisplayed(),
                 Click.on(TodoRecallsListPage.getTargetByDataQa("assess-recall-" + recallId))
         );
@@ -277,7 +277,7 @@ public class NavigationSteps {
         String recallId = actor.recall("RECALL_ID");
 
         theActorCalled(customer).attemptsTo(
-                Click.on(TodoRecallsListPage.RECALL_LIST_TODO_LINK),
+                Click.on(TodoRecallsListPage.NAV_TODO_LINK),
                 Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(TodoRecallsListPage.TITLE),
                 Ensure.that(TodoRecallsListPage.getTargetByDataQa("assess-recall-" + recallId)).isNotDisplayed(),
                 Click.on(TodoRecallsListPage.getTargetByDataQa("create-dossier-" + recallId))
@@ -381,6 +381,18 @@ public class NavigationSteps {
     public void confirmRecallAuthorisation(String customer) {
         userIsOnPageWithTitle(customer, RecallAuthorisationPage.TITLE);
         theActorCalled(customer).remember("RECALL_ID", textContent(RecallAuthorisationPage.RECALL_ID));
+    }
+
+    @Then("{word} can see that they are unassigned from the recall")
+    public void confirmUnassigned(String customer) {
+        theActorCalled(customer).remember("RECALL_ID", textContent(RecallAuthorisationPage.RECALL_ID));
+        String recallId = theActorCalled(customer).recall("RECALL_ID");
+        theActorCalled(customer).attemptsTo(
+            Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(RecallAuthorisationPage.TITLE),
+            Click.on(RecallAuthorisationPage.NAV_TODO_LINK),
+            Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(TodoRecallsListPage.TITLE),
+            Ensure.that(TodoRecallsListPage.getTargetBySelector("[data-qa='recall-id-" + recallId + "'] [data-qa='assignedTo']")).text().isEqualTo("")
+        );
     }
 
     @Then("{word} opens the documents")
