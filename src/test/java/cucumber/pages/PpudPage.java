@@ -8,9 +8,14 @@ public abstract class PpudPage extends PageObject {
     protected static final String TITLE_ROOT = "Manage a recall - ";
 
     public static Target CONTINUE_BUTTON = getTargetByDataQa("continueButton");
+    public static final Target NAV_TODO_LINK = getTargetByDataQa("navLinkToDo");
 
     public static Target getTargetByDataQa(String dataQa) {
         return Target.the(dataQa + " matches").locatedBy("[data-qa='" + dataQa + "']");
+    }
+
+    public static Target getTargetBySelector(String selector) {
+        return Target.the(selector + " matches").locatedBy(selector);
     }
 
     protected static Target getTargetByInputValue(String value) {
