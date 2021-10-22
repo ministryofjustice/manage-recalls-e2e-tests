@@ -11,4 +11,12 @@ public class TodoRecallsListPage extends PpudPage {
 
     public static final Target FIND_SOMEONE_LINK = getTargetByDataQa("navLinkFindSomeone");
     public static final Target RECALLS_TABLE = Target.the("Recalls Table").located(By.className("govuk-table"));
+
+    public static final Target assignedToForRecallId(String recallId) {
+        return getTargetBySelector("[data-qa='recall-id-" + recallId + "'] [data-qa='assignedTo']");
+    }
+
+    public static final Target dueDateForRecallId(String recallId) {
+        return getTargetBySelector("[data-qa='recall-id-" + recallId + "'] [data-qa='dueDate']");
+    }
 }

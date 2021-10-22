@@ -265,7 +265,7 @@ public class NavigationSteps {
         theActorCalled(customer).attemptsTo(
                 Click.on(TodoRecallsListPage.NAV_TODO_LINK),
                 Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(TodoRecallsListPage.TITLE),
-                Ensure.that(TodoRecallsListPage.getTargetBySelector("[data-qa='recall-id-" + recallId + "'] [data-qa='dueDate']")).text().isEqualTo("6 December 2020 at 15:33"),
+                Ensure.that(TodoRecallsListPage.dueDateForRecallId(recallId).text().isEqualTo("6 December 2020 at 15:33"),
                 Ensure.that(TodoRecallsListPage.getTargetByDataQa("continue-booking-" + recallId)).isNotDisplayed(),
                 Click.on(TodoRecallsListPage.getTargetByDataQa("assess-recall-" + recallId))
         );
@@ -391,7 +391,7 @@ public class NavigationSteps {
             Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(RecallAuthorisationPage.TITLE),
             Click.on(RecallAuthorisationPage.NAV_TODO_LINK),
             Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(TodoRecallsListPage.TITLE),
-            Ensure.that(TodoRecallsListPage.getTargetBySelector("[data-qa='recall-id-" + recallId + "'] [data-qa='assignedTo']")).text().isEqualTo("")
+            Ensure.that(TodoRecallsListPage.assignedToForRecallId(recallId)).text().isEqualTo("")
         );
     }
 
