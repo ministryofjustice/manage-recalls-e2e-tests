@@ -237,7 +237,7 @@ public class NavigationSteps {
         theActorCalled(customer).remember("RECALL_ID", textContent(RecallAuthorisationPage.RECALL_ID));
     }
 
-    @When("{word} uploads two documents")
+    @When("{word} uploads some documents")
     public void addRecallDocument(String customer) {
         userIsOnPageWithTitle(customer, UploadRecallDocumentsPage.TITLE);
         Path testPdfPath = Path.of("src/test/resources/files/test.pdf");
@@ -246,6 +246,7 @@ public class NavigationSteps {
                 Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.LICENCE),
                 Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.PREVIOUS_CONVICTIONS_SHEET),
                 Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.PRE_SENTENCING_REPORT),
+                Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.OTHER),
                 Click.on(UploadRecallDocumentsPage.CONTINUE_BUTTON)
         );
     }
@@ -401,6 +402,7 @@ public class NavigationSteps {
         openDocumentInTab(customer, DocumentDetails.RECALL_DOCUMENT_LINK_LICENCE);
         openDocumentInTab(customer, DocumentDetails.RECALL_DOCUMENT_LINK_PREVIOUS_CONVICTIONS_SHEET);
         openDocumentInTab(customer, DocumentDetails.RECALL_DOCUMENT_LINK_PRE_SENTENCING_REPORT);
+        openDocumentInTab(customer, DocumentDetails.OTHER);
         theActorCalled(customer).attemptsTo(
                 Click.on(RecallCheckAnswersPage.CONTINUE_BUTTON)
         );
