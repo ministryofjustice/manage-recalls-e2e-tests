@@ -9,4 +9,5 @@ public class UploadRecallDocumentsPage extends PpudPage {
     public static final Target LICENCE = Target.the("upload element: LICENCE").located(By.name("LICENCE"));
     public static final Target PREVIOUS_CONVICTIONS_SHEET = Target.the("upload element: PREVIOUS_CONVICTIONS_SHEET").located(By.name("PREVIOUS_CONVICTIONS_SHEET"));
     public static final Target PRE_SENTENCING_REPORT = Target.the("upload element: PRE_SENTENCING_REPORT").located(By.name("PRE_SENTENCING_REPORT"));
+    public static final Target OTHER = Target.the("upload element: OTHER").located(By.name("OTHER"));
 }
