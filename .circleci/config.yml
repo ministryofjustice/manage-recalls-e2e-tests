@@ -67,11 +67,14 @@ jobs:
       - run:
           name: "Run Gradle tests [<<pipeline.parameters.e2e_environment>>]"
           command: |
+            set +e
             SERENITY_USERNAME=${SERENITY_USERNAME_<<pipeline.parameters.e2e_environment>>} \
             SERENITY_PASSWORD=${SERENITY_PASSWORD_<<pipeline.parameters.e2e_environment>>} \
             NOMS_NUMBER=${NOMS_NUMBER_<<pipeline.parameters.e2e_environment>>} \
             ./gradlew test -Denvironment=${ENVIRONMENT}
             export E2E_RESULT=$?
+            set -e
+
             ./report-results-to-dashboard.sh
             exit $E2E_RESULT
       - store_artifacts:
