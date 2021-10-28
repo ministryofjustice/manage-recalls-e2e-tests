@@ -28,6 +28,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import net.serenitybdd.screenplay.matchers.WebElementStateMatchers;
+import net.serenitybdd.screenplay.questions.WebElementQuestion;
+import net.serenitybdd.screenplay.waits.Wait;
 import static cucumber.pages.FindAnOffenderPage.BOOK_RECALL_LINK;
 import static cucumber.pages.TodoRecallsListPage.FIND_SOMEONE_LINK;
 import static cucumber.questions.ReadTextContent.textContent;
@@ -244,7 +247,7 @@ public class NavigationSteps {
         theActorCalled(customer).attemptsTo(
                 Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
                 Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
-                Click.on(UploadRecallDocumentsPage.waitForNumberOfDocuments("2")),
+                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.waitForNumberOfDocuments("2")), WebElementStateMatchers.isVisible()).forNoLongerThan(2).seconds(),
                 SelectFromOptions.byValue("LICENCE").from(UploadRecallDocumentsPage.getTargetForCategoryDropdownByNumber(1)),
                 SelectFromOptions.byValue("PART_A_RECALL_REPORT").from(UploadRecallDocumentsPage.getTargetForCategoryDropdownByNumber(2)),
                 Click.on(UploadRecallDocumentsPage.CONTINUE_BUTTON)
