@@ -28,6 +28,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import net.serenitybdd.screenplay.matchers.WebElementStateMatchers;
+import net.serenitybdd.screenplay.questions.WebElementQuestion;
+import net.serenitybdd.screenplay.waits.Wait;
 import static cucumber.pages.FindAnOffenderPage.BOOK_RECALL_LINK;
 import static cucumber.pages.TodoRecallsListPage.FIND_SOMEONE_LINK;
 import static cucumber.questions.ReadTextContent.textContent;
@@ -242,11 +245,11 @@ public class NavigationSteps {
         userIsOnPageWithTitle(customer, UploadRecallDocumentsPage.TITLE);
         Path testPdfPath = Path.of("src/test/resources/files/test.pdf");
         theActorCalled(customer).attemptsTo(
-                Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.PART_A_RECALL_REPORT),
-                Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.LICENCE),
-                Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.PREVIOUS_CONVICTIONS_SHEET),
-                Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.PRE_SENTENCING_REPORT),
-                Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.OTHER),
+                Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
+                Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
+                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.waitForNumberOfDocuments("2")), WebElementStateMatchers.isVisible()).forNoLongerThan(2).seconds(),
+                SelectFromOptions.byValue("LICENCE").from(UploadRecallDocumentsPage.getTargetForCategoryDropdownByNumber(1)),
+                SelectFromOptions.byValue("PART_A_RECALL_REPORT").from(UploadRecallDocumentsPage.getTargetForCategoryDropdownByNumber(2)),
                 Click.on(UploadRecallDocumentsPage.CONTINUE_BUTTON)
         );
     }
@@ -400,9 +403,6 @@ public class NavigationSteps {
     public void downloadRecallDocument(String customer) {
         openDocumentInTab(customer, DocumentDetails.RECALL_DOCUMENT_LINK_PART_A);
         openDocumentInTab(customer, DocumentDetails.RECALL_DOCUMENT_LINK_LICENCE);
-        openDocumentInTab(customer, DocumentDetails.RECALL_DOCUMENT_LINK_PREVIOUS_CONVICTIONS_SHEET);
-        openDocumentInTab(customer, DocumentDetails.RECALL_DOCUMENT_LINK_PRE_SENTENCING_REPORT);
-        openDocumentInTab(customer, DocumentDetails.OTHER);
         theActorCalled(customer).attemptsTo(
                 Click.on(RecallCheckAnswersPage.CONTINUE_BUTTON)
         );
