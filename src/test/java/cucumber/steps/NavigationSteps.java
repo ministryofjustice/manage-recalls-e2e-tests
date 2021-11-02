@@ -285,6 +285,7 @@ public class NavigationSteps {
                 Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(TodoRecallsListPage.TITLE),
                 Ensure.that(TodoRecallsListPage.dueDateForRecallId(recallId)).text().isEqualTo("7 December"),
                 Ensure.that(TodoRecallsListPage.getTargetByDataQa("assess-recall-" + recallId)).isNotDisplayed(),
+                Ensure.that(TodoRecallsListPage.getTargetByDataQa("continue-dossier-creation-" + recallId)).isNotDisplayed(),
                 Click.on(TodoRecallsListPage.getTargetByDataQa("create-dossier-" + recallId))
         );
     }
@@ -502,6 +503,18 @@ public class NavigationSteps {
     public void confirmDossierCreation(String customer) {
         userIsOnPageWithTitle(customer, DossierCreationConfirmationPage.TITLE);
         theActorCalled(customer).remember("RECALL_ID", textContent(DossierCreationConfirmationPage.RECALL_ID));
+    }
+
+    @Then("{word} can see that they are unassigned from the recall after dossier creation is complete")
+    public void confirmUnassignedAfterCompletionOfDossierCreation(String customer) {
+        theActorCalled(customer).remember("RECALL_ID", textContent(DossierCreationConfirmationPage.RECALL_ID));
+        String recallId = theActorCalled(customer).recall("RECALL_ID");
+        theActorCalled(customer).attemptsTo(
+                Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(DossierCreationConfirmationPage.TITLE),
+                Click.on(DossierCreationConfirmationPage.NAV_TODO_LINK),
+                Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(TodoRecallsListPage.TITLE),
+                Ensure.that(TodoRecallsListPage.assignedToForRecallId(recallId)).text().isEqualTo("")
+        );
     }
 
     @Then("{word} is able to see the details captured during dossier creation")
