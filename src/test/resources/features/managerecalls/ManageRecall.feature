@@ -16,6 +16,7 @@ Feature: Manage Recalls
     And Maria uploads some documents
     And Maria can check their answers
     And Maria opens the documents
+    # Then Maria can see the documents are uploaded
     Then Maria sees confirmation that the new recall was booked
     ### Assess the recall
     When Maria begins to assess the recall that they have just booked
