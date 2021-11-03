@@ -7,10 +7,11 @@ import org.openqa.selenium.By;
 @DefaultUrl("https://manage-recalls-dev.hmpps.service.justice.gov.uk/todo")
 public class TodoRecallsListPage extends PpudPage {
 
-    public static final String TITLE = TITLE_ROOT + "To do";
+    public static final String TITLE = TITLE_ROOT + "Recalls";
 
     public static final Target FIND_SOMEONE_LINK = getTargetByDataQa("navLinkFindSomeone");
     public static final Target RECALLS_TABLE = Target.the("Recalls Table").located(By.className("govuk-table"));
+    public static final Target COMPLETED_TAB = Target.the("Completed tab matches").locatedBy("#tab_completed");
 
     public static final Target assignedToForRecallId(String recallId) {
         return getTargetBySelector("[data-qa='recall-id-" + recallId + "'] [data-qa='assignedTo']");
@@ -18,5 +19,9 @@ public class TodoRecallsListPage extends PpudPage {
 
     public static final Target dueDateForRecallId(String recallId) {
         return getTargetBySelector("[data-qa='recall-id-" + recallId + "'] [data-qa='dueDate']");
+    }
+
+    public static final Target viewLinkForRecallId(String recallId) {
+        return getTargetBySelector("[data-qa='view-recall-" + recallId + "']");
     }
 }

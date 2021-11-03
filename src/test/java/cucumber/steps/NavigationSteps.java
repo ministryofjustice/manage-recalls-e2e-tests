@@ -542,9 +542,9 @@ public class NavigationSteps {
 
     @When("{word} navigates to view the details captured during dossier creation")
     public void viewDossierCreationDetails(String customer) {
-        new AssessARecallPage().open(
-                "view.recall",
-                withParameters(sessionVariableCalled(NOMS_NUMBER), theActorCalled(customer).recall("RECALL_ID"))
+        theActorCalled(customer).attemptsTo(
+                Click.on(TodoRecallsListPage.COMPLETED_TAB),
+                Click.on(TodoRecallsListPage.viewLinkForRecallId(theActorCalled(customer).recall("RECALL_ID")))
         );
     }
 
