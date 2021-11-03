@@ -39,6 +39,8 @@ Feature: Manage Recalls
     And Maria has reviewed the dossier
     And Maria records that the dossier was emailed
     Then Maria gets a confirmation that the dossier creation is complete
+    And Maria can see that they are unassigned from the recall after dossier creation is complete
+    ### confirm the details captured during the dossier creation journey are displayed
     And Maria navigates to view the details captured during dossier creation
     Then Maria is able to see the details captured during dossier creation
     And Maria can download the dossier email
