@@ -248,6 +248,10 @@ public class NavigationSteps {
                 Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
                 Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
                 Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.waitForNumberOfDocuments("2")), WebElementStateMatchers.isVisible()).forNoLongerThan(2).seconds(),
+                Click.on(UploadRecallDocumentsPage.DELETE_FIRST_DOCUMENT_BY_LINK),
+                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.waitForNumberOfDocuments("1")), WebElementStateMatchers.isVisible()).forNoLongerThan(2).seconds(),
+                Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
+                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.waitForNumberOfDocuments("2")), WebElementStateMatchers.isVisible()).forNoLongerThan(2).seconds(),
                 SelectFromOptions.byValue("LICENCE").from(UploadRecallDocumentsPage.getTargetForCategoryDropdownByNumber(1)),
                 SelectFromOptions.byValue("PART_A_RECALL_REPORT").from(UploadRecallDocumentsPage.getTargetForCategoryDropdownByNumber(2)),
                 Click.on(UploadRecallDocumentsPage.CONTINUE_BUTTON)
