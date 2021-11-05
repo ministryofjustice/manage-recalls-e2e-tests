@@ -273,7 +273,7 @@ public class NavigationSteps {
         theActorCalled(customer).attemptsTo(
                 Click.on(TodoRecallsListPage.NAV_TODO_LINK),
                 Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(TodoRecallsListPage.TITLE),
-                Ensure.that(TodoRecallsListPage.dueDateForRecallId(recallId)).text().isEqualTo("6 December at 15:33"),
+                Ensure.that(TodoRecallsListPage.dueDateForRecallId(recallId)).text().isEqualTo("6 Dec at 15:33"),
                 Ensure.that(TodoRecallsListPage.getTargetByDataQa("continue-booking-" + recallId)).isNotDisplayed(),
                 Click.on(TodoRecallsListPage.getTargetByDataQa("assess-recall-" + recallId))
         );
@@ -287,7 +287,7 @@ public class NavigationSteps {
         theActorCalled(customer).attemptsTo(
                 Click.on(TodoRecallsListPage.NAV_TODO_LINK),
                 Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(TodoRecallsListPage.TITLE),
-                Ensure.that(TodoRecallsListPage.dueDateForRecallId(recallId)).text().isEqualTo("7 December"),
+                Ensure.that(TodoRecallsListPage.dueDateForRecallId(recallId)).text().isEqualTo("7 Dec"),
                 Ensure.that(TodoRecallsListPage.getTargetByDataQa("assess-recall-" + recallId)).isNotDisplayed(),
                 Ensure.that(TodoRecallsListPage.getTargetByDataQa("continue-dossier-creation-" + recallId)).isNotDisplayed(),
                 Click.on(TodoRecallsListPage.getTargetByDataQa("create-dossier-" + recallId))
