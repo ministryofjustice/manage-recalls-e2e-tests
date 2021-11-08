@@ -249,17 +249,16 @@ public class NavigationSteps {
         Path ExclusionZonePdfPath = Path.of("src/test/resources/files/Exclusion zone map -version 1.pdf");
         theActorCalled(customer).attemptsTo(
                 Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
-                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForUnCategoryDropdownByNumber("UNCATEGORISED", 0)), WebElementStateMatchers.isVisible()).forNoLongerThan(2).seconds(),
+                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdownByNumber("UNCATEGORISED", 0)), WebElementStateMatchers.isVisible()).forNoLongerThan(2).seconds(),
                 Click.on(UploadRecallDocumentsPage.DELETE_FIRST_DOCUMENT_BY_LINK),
                 Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.waitForNumberOfDocuments("0")), WebElementStateMatchers.isVisible()).forNoLongerThan(2).seconds(),
                 Upload.theFile(licencePdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
                 Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdownByNumber("LICENCE", 0)), WebElementStateMatchers.isVisible()).forNoLongerThan(2).seconds(),
                 Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
-                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.waitForNumberOfDocuments("2")), WebElementStateMatchers.isVisible()).forNoLongerThan(2).seconds(),
+                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdownByNumber("UNCATEGORISED", 1)), WebElementStateMatchers.isVisible()).forNoLongerThan(2).seconds(),
+                SelectFromOptions.byValue("PART_A_RECALL_REPORT").from(UploadRecallDocumentsPage.getTargetForCategoryDropdownByNumber("UNCATEGORISED", 1)),
                 Upload.theFile(OASysPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
                 Upload.theFile(ExclusionZonePdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
-                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.waitForNumberOfDocuments("4")), WebElementStateMatchers.isVisible()).forNoLongerThan(2).seconds(),
-                SelectFromOptions.byValue("PART_A_RECALL_REPORT").from(UploadRecallDocumentsPage.getTargetForCategoryDropdownByNumber("UNCATEGORISED", 1)),
                 Click.on(UploadRecallDocumentsPage.CONTINUE_BUTTON)
         );
     }
