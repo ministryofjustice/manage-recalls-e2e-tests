@@ -245,15 +245,20 @@ public class NavigationSteps {
         userIsOnPageWithTitle(customer, UploadRecallDocumentsPage.TITLE);
         Path testPdfPath = Path.of("src/test/resources/files/test.pdf");
         Path licencePdfPath = Path.of("src/test/resources/files/Licence.pdf");
+        Path OASysPdfPath = Path.of("src/test/resources/files/OASys version 1.pdf");
+        Path ExclusionZonePdfPath = Path.of("src/test/resources/files/Exclusion zone map -version 1.pdf");
         theActorCalled(customer).attemptsTo(
                 Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
-                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdownByNumber("UNCATEGORISED", 0)), WebElementStateMatchers.isVisible()).forNoLongerThan(2).seconds(),
+                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForUnCategoryDropdownByNumber("UNCATEGORISED", 0)), WebElementStateMatchers.isVisible()).forNoLongerThan(2).seconds(),
                 Click.on(UploadRecallDocumentsPage.DELETE_FIRST_DOCUMENT_BY_LINK),
                 Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.waitForNumberOfDocuments("0")), WebElementStateMatchers.isVisible()).forNoLongerThan(2).seconds(),
                 Upload.theFile(licencePdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
                 Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdownByNumber("LICENCE", 0)), WebElementStateMatchers.isVisible()).forNoLongerThan(2).seconds(),
                 Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
-                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdownByNumber("UNCATEGORISED", 1)), WebElementStateMatchers.isVisible()).forNoLongerThan(2).seconds(),
+                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.waitForNumberOfDocuments("2")), WebElementStateMatchers.isVisible()).forNoLongerThan(2).seconds(),
+                Upload.theFile(OASysPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
+                Upload.theFile(ExclusionZonePdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
+                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.waitForNumberOfDocuments("4")), WebElementStateMatchers.isVisible()).forNoLongerThan(2).seconds(),
                 SelectFromOptions.byValue("PART_A_RECALL_REPORT").from(UploadRecallDocumentsPage.getTargetForCategoryDropdownByNumber("UNCATEGORISED", 1)),
                 Click.on(UploadRecallDocumentsPage.CONTINUE_BUTTON)
         );
@@ -330,7 +335,12 @@ public class NavigationSteps {
                 Ensure.that(ProbationDetails.PROBATION_OFFICER_PHONE_NO).text().isEqualTo(sessionVariableCalled("probationOfficerPhoneNumber")),
                 Ensure.that(ProbationDetails.PROBATION_OFFICER_EMAIL).text().isEqualTo(sessionVariableCalled("probationOfficerEmail")),
                 Ensure.that(ProbationDetails.LOCAL_DELIVERY_UNIT).text().isEqualTo(sessionVariableCalled("localDeliveryUnit")),
-                Ensure.that(ProbationDetails.ASSISTANT_CHIEF_OFFICER_NAME).text().isEqualTo(sessionVariableCalled("asstChiefOfficerName"))
+                Ensure.that(ProbationDetails.ASSISTANT_CHIEF_OFFICER_NAME).text().isEqualTo(sessionVariableCalled("asstChiefOfficerName")),
+                //Uploaded documents
+                Ensure.that(DocumentDetails.RECALL_DOCUMENT_LINK_PART_A).text().isEqualTo("Part A.pdf"),
+                Ensure.that(DocumentDetails.RECALL_DOCUMENT_LINK_LICENCE).text().isEqualTo("Licence.pdf"),
+                Ensure.that(DocumentDetails.RECALL_DOCUMENT_LINK_OASYS_RISK_ASSESSMENT).text().isEqualTo("OASys.pdf"),
+                Ensure.that(DocumentDetails.RECALL_DOCUMENT_LINK_EXCLUSION_ZONE_MAP).text().isEqualTo("Exclusion zone map.pdf")
         );
     }
 

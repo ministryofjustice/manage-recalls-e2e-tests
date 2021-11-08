@@ -52,6 +52,8 @@ public class RecallCheckAnswersPage extends PpudPage {
         public static final Target RECALL_DOCUMENT_LINK_LICENCE = getTargetByDataQa("uploadedDocument-LICENCE");
         public static final Target RECALL_DOCUMENT_LINK_PREVIOUS_CONVICTIONS_SHEET = getTargetByDataQa("uploadedDocument-PREVIOUS_CONVICTIONS_SHEET");
         public static final Target RECALL_DOCUMENT_LINK_PRE_SENTENCING_REPORT = getTargetByDataQa("uploadedDocument-PRE_SENTENCING_REPORT");
+        public static final Target RECALL_DOCUMENT_LINK_OASYS_RISK_ASSESSMENT = getTargetByDataQa("uploadedDocument-OASYS_RISK_ASSESSMENT");
+        public static final Target RECALL_DOCUMENT_LINK_EXCLUSION_ZONE_MAP = getTargetByDataQa("uploadedDocument-EXCLUSION_ZONE_MAP");
         public static final Target OTHER = getTargetByDataQa("uploadedDocument-OTHER");
     }
 }
