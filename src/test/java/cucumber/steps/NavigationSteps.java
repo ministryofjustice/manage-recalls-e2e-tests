@@ -253,7 +253,7 @@ public class NavigationSteps {
                 Upload.theFile(licencePdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
                 Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdownByNumber("LICENCE", 0)), WebElementStateMatchers.isVisible()).forNoLongerThan(2).seconds(),
                 Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
-                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdownByNumber("UNCATEGORISED", 1)), WebElementStateMatchers.isVisible()).forNoLongerThan(200).seconds(),
+                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdownByNumber("UNCATEGORISED", 1)), WebElementStateMatchers.isVisible()).forNoLongerThan(2).seconds(),
                 SelectFromOptions.byValue("PART_A_RECALL_REPORT").from(UploadRecallDocumentsPage.getTargetForCategoryDropdownByNumber("UNCATEGORISED", 1)),
                 Click.on(UploadRecallDocumentsPage.CONTINUE_BUTTON)
         );
