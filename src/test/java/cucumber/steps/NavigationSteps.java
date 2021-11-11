@@ -342,6 +342,7 @@ public class NavigationSteps {
         theActorCalled(customer).attemptsTo(
                 Ensure.thatTheCurrentPage().title().startsWith(AssessARecallPage.TITLE),
                 Ensure.that(AssessARecallPage.RECALL_ASSESSMENT_DUE_TEXT).text().isEqualTo("Overdue: recall assessment was due on 6 December 2020 by 15:33"),
+                Ensure.that(AssessARecallPage.RECALL_STATUS).text().isEqualTo("IN ASSESSMENT"),
                 Click.on(AssessARecallPage.CONTINUE_BUTTON)
         );
     }
@@ -426,6 +427,7 @@ public class NavigationSteps {
     @Then("{word} is able to see the details captured during assessment")
     public void confirmRecallDetailsCapturedDuringAssessment(String customer) {
         theActorCalled(customer).attemptsTo(
+                Ensure.that(AssessARecallPage.RECALL_STATUS).text().isEqualTo("RECALL NOTIFICATION ISSUED"),
                 Ensure.that(RecallAssessmentDetails.ASSESSED_BY_USERNAME).text().isEqualTo(sessionVariableCalled("loggedInUserDisplayName")),
                 Ensure.that(RecallAssessmentDetails.BOOKED_BY_USERNAME).text().isEqualTo(sessionVariableCalled("loggedInUserDisplayName")),
                 Ensure.that(RecallAssessmentDetails.AGREE_WITH_RECALL_RECOMMENDATION_ADDITIONAL_TEXT).text().isEqualTo("yes, agree with the fixed term recall"),
@@ -483,6 +485,7 @@ public class NavigationSteps {
         theActorCalled(customer).attemptsTo(
                 Ensure.that(CreateDossierDetails.DOSSIER_DUE_DATE).text().isEqualTo("Overdue: Due on 7 December 2020"),
                 Ensure.that(RecallAssessmentDetails.CURRENT_PRISON).text().isEqualTo("Ashfield (HMP)"),
+                Ensure.that(AssessARecallPage.RECALL_STATUS).text().isEqualTo("DOSSIER IN PROGRESS"),
                 Click.on(AssessARecallPage.CONTINUE_BUTTON)
         );
     }
@@ -537,6 +540,7 @@ public class NavigationSteps {
     @Then("{word} is able to see the details captured during dossier creation")
     public void confirmDetailsCapturedDuringDossierCreation(String customer) {
         theActorCalled(customer).attemptsTo(
+                Ensure.that(AssessARecallPage.RECALL_STATUS).text().isEqualTo("DOSSIER ISSUED"),
                 Ensure.that(CreateDossierDetails.DOSSIER_CREATED_BY_USERNAME).text().isEqualTo(sessionVariableCalled("loggedInUserDisplayName")),
                 Ensure.that(CreateDossierDetails.ADDITIONAL_LICENCE_CONDITIONS).text().isEqualTo("Licence condition 14(a)"),
                 Ensure.that(CreateDossierDetails.DIFFERENT_NOMIS_NUMBER).text().isEqualTo("A4321AA"),

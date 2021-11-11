@@ -9,6 +9,7 @@ public abstract class PpudPage extends PageObject {
 
     public static Target CONTINUE_BUTTON = getTargetByDataQa("continueButton");
     public static final Target NAV_TODO_LINK = getTargetByDataQa("navLinkToDo");
+    public static final Target RECALL_STATUS = getTargetByDataQa("recallStatus");
 
     public static Target getTargetByDataQa(String dataQa) {
         return Target.the(dataQa + " matches").locatedBy("[data-qa='" + dataQa + "']");
