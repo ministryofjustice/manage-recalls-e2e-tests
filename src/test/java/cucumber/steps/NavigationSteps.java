@@ -246,10 +246,6 @@ public class NavigationSteps {
         Path testPdfPath = Path.of("src/test/resources/files/test.pdf");
         Path licencePdfPath = Path.of("src/test/resources/files/Licence.pdf");
         theActorCalled(customer).attemptsTo(
-                Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
-                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdownByNumber("UNCATEGORISED", 0)), WebElementStateMatchers.isVisible()).forNoLongerThan(2).seconds(),
-                Click.on(UploadRecallDocumentsPage.DELETE_FIRST_DOCUMENT_BY_LINK),
-                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.waitForNumberOfDocuments("0")), WebElementStateMatchers.isVisible()).forNoLongerThan(2).seconds(),
                 Upload.theFile(licencePdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
                 Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdownByNumber("LICENCE", 0)), WebElementStateMatchers.isVisible()).forNoLongerThan(2).seconds(),
                 Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
@@ -482,6 +478,7 @@ public class NavigationSteps {
 
     @Then("{word} is able to see the recall information before creating a dossier")
     public void confirmRecallDetailsBeforeDossier(String customer) {
+        openDocumentInTab(customer, CreateDossierDetails.REVOCATION_ORDER_DOCUMENT_LINK);
         theActorCalled(customer).attemptsTo(
                 Ensure.that(CreateDossierDetails.DOSSIER_DUE_DATE).text().isEqualTo("Overdue: Due on 7 December 2020"),
                 Ensure.that(RecallAssessmentDetails.CURRENT_PRISON).text().isEqualTo("Ashfield (HMP)"),

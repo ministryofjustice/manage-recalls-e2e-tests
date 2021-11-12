@@ -38,5 +38,6 @@ public class AssessARecallPage extends PpudPage {
         public static final Target DIFFERENT_NOMIS_NUMBER = getTargetByDataQa("differentNomsNumber");
         public static final Target DATE_DOSSIER_EMAIL_SENT = getTargetByDataQa("dossierEmailSentDate");
         public static final Target UPLOADED_DOSSIER_EMAIL_LINK = getTargetByDataQa("uploadedDocument-DOSSIER_EMAIL");
+        public static final Target REVOCATION_ORDER_DOCUMENT_LINK = getTargetByDataQa("generatedDocument-REVOCATION_ORDER");
     }
 }
