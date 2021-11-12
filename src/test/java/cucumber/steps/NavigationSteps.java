@@ -246,10 +246,6 @@ public class NavigationSteps {
         Path testPdfPath = Path.of("src/test/resources/files/test.pdf");
         Path licencePdfPath = Path.of("src/test/resources/files/Licence.pdf");
         theActorCalled(customer).attemptsTo(
-                Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
-                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdownByNumber("UNCATEGORISED", 0)), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds(),
-                Click.on(UploadRecallDocumentsPage.DELETE_FIRST_DOCUMENT_BY_LINK),
-                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.waitForNumberOfDocuments("0")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds(),
                 Upload.theFile(licencePdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
                 Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdownByNumber("LICENCE", 0)), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds(),
                 Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
