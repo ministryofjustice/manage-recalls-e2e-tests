@@ -46,6 +46,7 @@ public class NavigationSteps {
 
     public static final String BOOKING_NUMBER = "A12345";
     public static final String SENTENCING_COURT = "Aberdare County Court";
+    public static final String INDEX_OFFENCE = "Burglary";
     private EnvironmentVariables environmentVariables;
     private static final String NOMS_NUMBER = "nomsNumber";
 
@@ -179,7 +180,8 @@ public class NavigationSteps {
                 Enter.theValue(SENTENCING_COURT.substring(0, 3)).into(LastReleaseDetailsPage.SENTENCING_COURT),
                 Click.on(LastReleaseDetailsPage.getTargetForSentencingCourt(SENTENCING_COURT)),
                 Enter.theValue(BOOKING_NUMBER).into(LastReleaseDetailsPage.getTargetByName("bookingNumber")),
-                Enter.theValue("Burglary").into(LastReleaseDetailsPage.getTargetByName("indexOffence")),
+                Enter.theValue(INDEX_OFFENCE.substring(0, 3)).into(LastReleaseDetailsPage.INDEX_OFFENCE),
+                Click.on(LastReleaseDetailsPage.getTargetForIndexOffence(INDEX_OFFENCE)),
                 Enter.theValue("Ashw").into(LastReleaseDetailsPage.RELEASING_PRISON),
                 Click.on(LastReleaseDetailsPage.getTargetForReleasingPrison("Ashwell (HMP)")),
                 Enter.theValue("15").into(LastReleaseDetailsPage.dateDayInput("lastReleaseDate")),
@@ -310,7 +312,7 @@ public class NavigationSteps {
                 Ensure.that(SentenceOffenceAndReleaseDetails.SENTENCE_EXPIRY_DATE).text().isEqualTo("3 November 2024"),
                 Ensure.that(SentenceOffenceAndReleaseDetails.SENTENCE_LENGTH).text().isEqualTo("3 years 2 months"),
                 Ensure.that(SentenceOffenceAndReleaseDetails.SENTENCING_COURT).text().isEqualTo(SENTENCING_COURT),
-                Ensure.that(SentenceOffenceAndReleaseDetails.INDEX_OFFENCE).text().isEqualTo("Burglary"),
+                Ensure.that(SentenceOffenceAndReleaseDetails.INDEX_OFFENCE).text().isEqualTo(INDEX_OFFENCE),
                 Ensure.that(SentenceOffenceAndReleaseDetails.LAST_RELEASE_PRISON).text().isEqualTo("Ashwell (HMP)"),
                 Ensure.that(SentenceOffenceAndReleaseDetails.BOOKING_NUMBER).text().isEqualTo(BOOKING_NUMBER),
                 Ensure.that(SentenceOffenceAndReleaseDetails.LAST_RELEASE_DATE).text().isEqualTo("15 March 2021"),
