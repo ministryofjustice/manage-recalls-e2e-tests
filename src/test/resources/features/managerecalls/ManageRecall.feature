@@ -22,8 +22,9 @@ Feature: Manage Recalls
     Then Maria sees confirmation that the new recall was booked
     ### Assess the recall
     When Maria begins to assess the recall that they have just booked
-    When Maria starts the assessment process for the recall
-    When Maria confirms the recall length of 28 days
+    And Maria adds a new version of the Part A
+    And Maria starts the assessment process for the recall
+    And Maria confirms the recall length of 28 days
     And Maria submits the licence breach details
     And Maria submits the current prison details
     And Maria opens the recall notification

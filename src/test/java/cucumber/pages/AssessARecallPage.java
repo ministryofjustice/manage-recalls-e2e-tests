@@ -20,15 +20,16 @@ public class AssessARecallPage extends PpudPage {
     public static class RecallAssessmentDetails {
         public static final Target ASSESSED_BY_USERNAME = getTargetByDataQa("assessedByUserName");
         public static final Target BOOKED_BY_USERNAME = getTargetByDataQa("bookedByUserName");
-        public static final Target AGREE_WITH_RECALL_RECOMMENDATION = getTargetByDataQa("agreeWithRecall");
         public static final Target AGREE_WITH_RECALL_RECOMMENDATION_ADDITIONAL_TEXT = getTargetByDataQa("agreeWithRecallDetail");
         public static final Target LICENCE_CONDITIONS_BREACHED = getTargetByDataQa("licenceConditionsBreached");
         public static final Target REASON_FOR_RECALL_OPTION_ONE = getTargetByDataQa("reasonsForRecall-BREACH_EXCLUSION_ZONE");
         public static final Target REASON_FOR_RECALL_OPTION_OTHER = getTargetByDataQa("reasonsForRecall-OTHER");
-        public static final Target OTHER_REASON_FOR_RECALL_TEXT = getTargetByDataQa("reasonsForRecallOtherDetail");
         public static final Target CURRENT_PRISON = getTargetByDataQa("currentPrison");
         public static final Target DATETIME_RECALL_NOTIFICATION_EMAIL_SENT = getTargetByDataQa("recallNotificationEmailSentDateTime");
         public static final Target UPLOADED_RECALL_NOTIFICATION_EMAIL_LINK = getTargetByDataQa("uploadedDocument-RECALL_NOTIFICATION_EMAIL");
+        public static final Target PART_A_CHANGE_LINK = getTargetByDataQa("uploadedDocument-PART_A_RECALL_REPORT-Change");
+        public static final Target PART_A_VERSION = getTargetByDataQa("uploadedDocument-PART_A_RECALL_REPORT-version");
+
     }
 
     public static class CreateDossierDetails {
