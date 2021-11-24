@@ -256,7 +256,7 @@ public class NavigationSteps {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        theActorCalled(customer).attemptsTo(
+        theActorCalled(caseworker).attemptsTo(
                 Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
                 Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("UNCATEGORISED")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds()
         );
@@ -265,7 +265,7 @@ public class NavigationSteps {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        theActorCalled(customer).attemptsTo(
+        theActorCalled(caseworker).attemptsTo(
                 SelectFromOptions.byValue("PART_A_RECALL_REPORT").from(UploadRecallDocumentsPage.getTargetForCategoryDropdown("UNCATEGORISED")),
                 Click.on(UploadRecallDocumentsPage.CONTINUE_BUTTON)
         );
