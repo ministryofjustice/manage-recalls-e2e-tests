@@ -14,7 +14,9 @@ Feature: Manage Recalls
     And Maria submits any vulnerability and contraband related details for the offender
     And Maria submits the probation officer details
     And Maria uploads some documents
+    And Maria submits the reason for missing documents
     And Maria can check their answers
+    And Maria uploads missing documents
     And Maria opens the documents
     # Then Maria can see the documents are uploaded
     Then Maria sees confirmation that the new recall was booked

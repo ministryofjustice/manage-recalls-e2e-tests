@@ -14,7 +14,7 @@ public class UploadRecallDocumentsPage extends PpudPage {
         return Target.the("category").locatedBy("[data-qa='document-count-" + number + "']");
     }
 
-    public static Target getTargetForCategoryDropdownByNumber(String category, Number number){
-         return Target.the("category").locatedBy("[data-qa='category-index-" + category + "-" + number + "']");
+    public static Target getTargetForCategoryDropdown(String category){
+         return Target.the("category").locatedBy("[data-qa='category-index-" + category + "']");
     }
 }
