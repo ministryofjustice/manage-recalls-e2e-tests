@@ -248,22 +248,38 @@ public class NavigationSteps {
         Path licencePdfPath = Path.of("src/test/resources/files/Licence.pdf");
         theActorCalled(caseworker).attemptsTo(
                 Ensure.thatTheCurrentPage().title().isEqualTo(UploadRecallDocumentsPage.TITLE),
-                Upload.theFile(licencePdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
-                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("LICENCE")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds()
+                Upload.theFile(licencePdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD)
         );
         try {
             Serenity.takeScreenshot();
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         theActorCalled(caseworker).attemptsTo(
-                Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
+                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("LICENCE")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds()
+        );
+        try {
+            Serenity.takeScreenshot();
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        theActorCalled(caseworker).attemptsTo(
+                Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD)
+        );
+        try {
+            Serenity.takeScreenshot();
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        theActorCalled(caseworker).attemptsTo(
                 Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("UNCATEGORISED")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds()
         );
         try {
             Serenity.takeScreenshot();
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -280,12 +296,20 @@ public class NavigationSteps {
 
         theActorCalled(caseworker).attemptsTo(
                 Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(UploadRecallDocumentsPage.TITLE),
-                Upload.theFile(preConsPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
+                Upload.theFile(preConsPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD)
+        );
+        try {
+            Serenity.takeScreenshot();
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        theActorCalled(caseworker).attemptsTo(
                 Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("PREVIOUS_CONVICTIONS_SHEET")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds()
         );
         try {
             Serenity.takeScreenshot();
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -295,7 +319,7 @@ public class NavigationSteps {
         );
         try {
             Serenity.takeScreenshot();
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
