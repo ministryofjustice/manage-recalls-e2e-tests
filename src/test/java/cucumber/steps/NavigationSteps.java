@@ -314,7 +314,15 @@ public class NavigationSteps {
             e.printStackTrace();
         }
         theActorCalled(caseworker).attemptsTo(
-                Upload.theFile(OASysPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
+                Upload.theFile(OASysPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD)
+        );
+        try {
+            Serenity.takeScreenshot();
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        theActorCalled(caseworker).attemptsTo(
                 Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("OASYS_RISK_ASSESSMENT")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds()
         );
         try {
