@@ -249,10 +249,53 @@ public class NavigationSteps {
         theActorCalled(caseworker).attemptsTo(
                 Ensure.thatTheCurrentPage().title().isEqualTo(UploadRecallDocumentsPage.TITLE),
                 Upload.theFile(licencePdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
-                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("LICENCE")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds(),
+                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("LICENCE")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds()
+        );
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        theActorCalled(customer).attemptsTo(
                 Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
-                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("UNCATEGORISED")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds(),
+                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("UNCATEGORISED")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds()
+        );
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        theActorCalled(customer).attemptsTo(
                 SelectFromOptions.byValue("PART_A_RECALL_REPORT").from(UploadRecallDocumentsPage.getTargetForCategoryDropdown("UNCATEGORISED")),
+                Click.on(UploadRecallDocumentsPage.CONTINUE_BUTTON)
+        );
+    }
+
+    @When("{word} uploads missing documents")
+    public void uploadsMissingDocuments(String caseworker) {
+        Path preConsPdfPath = Path.of("src/test/resources/files/Pre cons.pdf");
+        Path OASysPdfPath = Path.of("src/test/resources/files/OASys.pdf");
+
+        theActorCalled(caseworker).attemptsTo(
+                Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(UploadRecallDocumentsPage.TITLE),
+                Upload.theFile(preConsPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
+                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("PREVIOUS_CONVICTIONS_SHEET")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds()
+        );
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        theActorCalled(caseworker).attemptsTo(
+                Upload.theFile(OASysPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
+                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("OASYS_RISK_ASSESSMENT")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds()
+        );
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        theActorCalled(caseworker).attemptsTo(
                 Click.on(UploadRecallDocumentsPage.CONTINUE_BUTTON)
         );
     }
@@ -355,21 +398,6 @@ public class NavigationSteps {
                 Ensure.that(DocumentDetails.RECALL_DOCUMENT_LINK_PART_A).text().isEqualTo("Part A.pdf"),
                 Ensure.that(DocumentDetails.RECALL_DOCUMENT_LINK_LICENCE).text().isEqualTo("Licence.pdf"),
                 Click.on(MissingDocuments.ADD_LINK_FOR_PREVIOUS_CONVICTIONS_SHEET)
-        );
-    }
-
-    @When("{word} uploads missing documents")
-    public void uploadsMissingDocuments(String caseworker) {
-        Path preConsPdfPath = Path.of("src/test/resources/files/Pre cons.pdf");
-        Path OASysPdfPath = Path.of("src/test/resources/files/OASys.pdf");
-
-        theActorCalled(caseworker).attemptsTo(
-            Ensure.thatTheCurrentPage().title().isEqualTo(UploadRecallDocumentsPage.TITLE),
-            Upload.theFile(preConsPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
-            Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("PREVIOUS_CONVICTIONS_SHEET")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds(),
-            Upload.theFile(OASysPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
-            Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("OASYS_RISK_ASSESSMENT")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds(),
-            Click.on(UploadRecallDocumentsPage.CONTINUE_BUTTON)
         );
     }
 
