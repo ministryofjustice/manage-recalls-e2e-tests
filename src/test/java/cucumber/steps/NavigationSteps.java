@@ -138,6 +138,14 @@ public class NavigationSteps {
         );
     }
 
+    @When("{word} enters the licence name")
+    public void enterLicenceMainName(String caseworker) {
+        theActorCalled(caseworker).attemptsTo(
+                Click.on(RecallLicenceNamePage.LICENCE_NAME_FIRST_LAST),
+                Click.on(RecallLicenceNamePage.CONTINUE_BUTTON)
+        );
+    }
+
     @When("{word} enters the pre-convictions name")
     public void enterPreConsMainName(String caseworker) {
         theActorCalled(caseworker).attemptsTo(
