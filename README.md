@@ -100,7 +100,7 @@ login once `hmpps-auth-e2e` has logged e.g. `Completed initialization`.
 
 Then, to run the tests, e.g. at a separate command prompt:
 ```
-./gradlew test 
+./gradlew clean test 
 ```
 
 ### 3. Run tests while developing the UI and/or API locally
@@ -156,3 +156,11 @@ The `autofill-extension-import.csv` file in the repo root can be imported into t
 
 ## Changing the person that E2E tests run against
 On dev or pre-prod, change the NOMS_NUMBER_dev or NOMS_NUMBER_preprod env var accordingly ([CircleCI page](https://app.circleci.com/settings/project/github/ministryofjustice/manage-recalls-e2e-tests/environment-variables?return-to=https%3A%2F%2Fapp.circleci.com%2Fpipelines%2Fgithub%2Fministryofjustice%2Fmanage-recalls-e2e-tests))
+
+## Troubleshooting
+
+### Chromedriver version does not support Chrome version (running locally)
+
+1. upgrade chromedriver eg `brew upgrade chromedriver`
+2. on Mac, allow the updated file to be opened - `xattr -d com.apple.quarantine /usr/local/bin/chromedriver`
+
