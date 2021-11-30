@@ -1,5 +1,6 @@
 package cucumber.steps;
 
+import cucumber.actions.ScreenshotAndWait;
 import cucumber.pages.*;
 import cucumber.pages.AssessARecallPage.CreateDossierDetails;
 import cucumber.pages.AssessARecallPage.RecallAssessmentDetails;
@@ -17,7 +18,10 @@ import net.serenitybdd.screenplay.actions.*;
 import net.serenitybdd.screenplay.actors.OnlineCast;
 import net.serenitybdd.screenplay.conditions.Check;
 import net.serenitybdd.screenplay.ensure.Ensure;
+import net.serenitybdd.screenplay.matchers.WebElementStateMatchers;
+import net.serenitybdd.screenplay.questions.WebElementQuestion;
 import net.serenitybdd.screenplay.targets.Target;
+import net.serenitybdd.screenplay.waits.Wait;
 import net.thucydides.core.util.EnvironmentVariables;
 import net.thucydides.core.util.SystemEnvironmentVariables;
 import org.openqa.selenium.WebDriver;
@@ -28,9 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import net.serenitybdd.screenplay.matchers.WebElementStateMatchers;
-import net.serenitybdd.screenplay.questions.WebElementQuestion;
-import net.serenitybdd.screenplay.waits.Wait;
 import static cucumber.pages.FindAnOffenderPage.BOOK_RECALL_LINK;
 import static cucumber.pages.TodoRecallsListPage.FIND_SOMEONE_LINK;
 import static cucumber.questions.ReadTextContent.textContent;
@@ -251,47 +252,19 @@ public class NavigationSteps {
     }
 
     @When("{word} uploads some documents")
-    public void addRecallDocument(String caseworker) {
+    public void uploadsDocuments(String caseworker) {
         Path testPdfPath = Path.of("src/test/resources/files/test.pdf");
         Path licencePdfPath = Path.of("src/test/resources/files/Licence.pdf");
         theActorCalled(caseworker).attemptsTo(
                 Ensure.thatTheCurrentPage().title().isEqualTo(UploadRecallDocumentsPage.TITLE),
-                Upload.theFile(licencePdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD)
-        );
-        try {
-            Serenity.takeScreenshot();
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        theActorCalled(caseworker).attemptsTo(
-                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("LICENCE")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds()
-        );
-        try {
-            Serenity.takeScreenshot();
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        theActorCalled(caseworker).attemptsTo(
-                Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD)
-        );
-        try {
-            Serenity.takeScreenshot();
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        theActorCalled(caseworker).attemptsTo(
-                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("UNCATEGORISED")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds()
-        );
-        try {
-            Serenity.takeScreenshot();
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        theActorCalled(caseworker).attemptsTo(
+                Upload.theFile(licencePdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
+                ScreenshotAndWait.forMillis(250),
+                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("LICENCE")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds(),
+                ScreenshotAndWait.forMillis(250),
+                Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
+                ScreenshotAndWait.forMillis(250),
+                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("UNCATEGORISED")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds(),
+                ScreenshotAndWait.forMillis(250),
                 SelectFromOptions.byValue("PART_A_RECALL_REPORT").from(UploadRecallDocumentsPage.getTargetForCategoryDropdown("UNCATEGORISED")),
                 Click.on(UploadRecallDocumentsPage.CONTINUE_BUTTON)
         );
@@ -304,42 +277,14 @@ public class NavigationSteps {
 
         theActorCalled(caseworker).attemptsTo(
                 Ensure.thatTheCurrentPage().title().hasValue().isEqualTo(UploadRecallDocumentsPage.TITLE),
-                Upload.theFile(preConsPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD)
-        );
-        try {
-            Serenity.takeScreenshot();
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        theActorCalled(caseworker).attemptsTo(
-                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("PREVIOUS_CONVICTIONS_SHEET")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds()
-        );
-        try {
-            Serenity.takeScreenshot();
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        theActorCalled(caseworker).attemptsTo(
-                Upload.theFile(OASysPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD)
-        );
-        try {
-            Serenity.takeScreenshot();
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        theActorCalled(caseworker).attemptsTo(
-                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("OASYS_RISK_ASSESSMENT")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds()
-        );
-        try {
-            Serenity.takeScreenshot();
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        theActorCalled(caseworker).attemptsTo(
+                Upload.theFile(preConsPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
+                ScreenshotAndWait.forMillis(250),
+                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("PREVIOUS_CONVICTIONS_SHEET")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds(),
+                ScreenshotAndWait.forMillis(250),
+                Upload.theFile(OASysPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
+                ScreenshotAndWait.forMillis(250),
+                Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("OASYS_RISK_ASSESSMENT")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds(),
+                ScreenshotAndWait.forMillis(250),
                 Click.on(UploadRecallDocumentsPage.CONTINUE_BUTTON)
         );
     }
@@ -376,7 +321,7 @@ public class NavigationSteps {
     }
 
     @When("{word} adds a new version of the Part A")
-    public void addNewVersion(String caseworker){
+    public void addNewVersion(String caseworker) {
         theActorCalled(caseworker).attemptsTo(
                 Click.on(RecallAssessmentDetails.PART_A_CHANGE_LINK),
                 Ensure.thatTheCurrentPage().title().isEqualTo(UploadANewDocumentPage.TITLE),
@@ -515,10 +460,10 @@ public class NavigationSteps {
         actor.remember("RECALL_ID", textContent(RecallAuthorisationPage.RECALL_ID));
         String recallId = actor.recall("RECALL_ID");
         actor.attemptsTo(
-            Ensure.thatTheCurrentPage().title().isEqualTo(RecallAuthorisationPage.TITLE),
-            Click.on(RecallAuthorisationPage.NAV_TODO_LINK),
-            Ensure.thatTheCurrentPage().title().isEqualTo(TodoRecallsListPage.TITLE),
-            Ensure.that(TodoRecallsListPage.assignedToForRecallId(recallId)).text().isEqualTo("")
+                Ensure.thatTheCurrentPage().title().isEqualTo(RecallAuthorisationPage.TITLE),
+                Click.on(RecallAuthorisationPage.NAV_TODO_LINK),
+                Ensure.thatTheCurrentPage().title().isEqualTo(TodoRecallsListPage.TITLE),
+                Ensure.that(TodoRecallsListPage.assignedToForRecallId(recallId)).text().isEqualTo("")
         );
     }
 
