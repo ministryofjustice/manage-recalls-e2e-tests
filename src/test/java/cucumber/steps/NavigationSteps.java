@@ -92,7 +92,7 @@ public class NavigationSteps {
         );
     }
 
-    @When("{word} enters her user details")
+    @When("{word} enters their user details")
     public void entersUserDetails(String caseworker) {
         setSessionVariable("loggedInUserDisplayName").to("Maria Badger");
         theActorCalled(caseworker).attemptsTo(
@@ -107,7 +107,7 @@ public class NavigationSteps {
         );
     }
 
-    @When("{word} changes her caseworker band to 3")
+    @When("{word} changes their caseworker band to 3")
     public void changesCaseworkerBandToThree(String caseworker) {
         theActorCalled(caseworker).attemptsTo(
                 Open.browserOn().the(UserDetailsPage.class),
@@ -116,7 +116,7 @@ public class NavigationSteps {
         );
     }
 
-    @When("{word} changes her caseworker band to 4+")
+    @When("{word} changes their caseworker band to 4+")
     public void changesCaseworkerBandToFour(String caseworker) {
         theActorCalled(caseworker).attemptsTo(
                 Open.browserOn().the(UserDetailsPage.class),
