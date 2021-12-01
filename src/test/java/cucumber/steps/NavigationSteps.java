@@ -1,6 +1,7 @@
 package cucumber.steps;
 
 import cucumber.actions.ScreenshotAndWait;
+import cucumber.actions.Refresh;
 import cucumber.pages.*;
 import cucumber.pages.AssessARecallPage.CreateDossierDetails;
 import cucumber.pages.AssessARecallPage.RecallAssessmentDetails;
@@ -279,7 +280,7 @@ public class NavigationSteps {
                 Upload.theFile(licencePdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
                 ScreenshotAndWait.forMillis(250),
                 Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("LICENCE")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds(),
-                ScreenshotAndWait.forMillis(250),
+                Refresh.page(),
                 Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
                 ScreenshotAndWait.forMillis(250),
                 Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("UNCATEGORISED")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds(),
@@ -299,7 +300,7 @@ public class NavigationSteps {
                 Upload.theFile(preConsPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
                 ScreenshotAndWait.forMillis(250),
                 Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("PREVIOUS_CONVICTIONS_SHEET")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds(),
-                ScreenshotAndWait.forMillis(250),
+                Refresh.page(),
                 Upload.theFile(OASysPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
                 ScreenshotAndWait.forMillis(250),
                 Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("OASYS_RISK_ASSESSMENT")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds(),
