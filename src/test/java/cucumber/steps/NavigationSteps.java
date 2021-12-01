@@ -203,7 +203,7 @@ public class NavigationSteps {
     @When("{word} submits the police contact details")
     public void submitPoliceContactDetails(String caseworker) {
         theActorCalled(caseworker).attemptsTo(
-                Enter.theValue("Essex").into(PoliceContactDetailsPage.LOCAL_POLICE_FORCE),
+                Enter.theValue("Essex".substring(0, 3)).into(PoliceContactDetailsPage.LOCAL_POLICE_FORCE),
                 Click.on(RecallReceivedPage.CONTINUE_BUTTON)
         );
     }
@@ -372,7 +372,7 @@ public class NavigationSteps {
                 Ensure.that(SentenceOffenceAndReleaseDetails.LAST_RELEASE_DATE).text().isEqualTo("15 March 2021"),
                 Ensure.that(SentenceOffenceAndReleaseDetails.CONDITIONAL_RELEASE_DATE).text().isEqualTo("24 June 2022"),
                 // local police force
-                Ensure.that(LocalPoliceForceDetails.LOCAL_POLICE_FORCE).text().isEqualTo("Essex"),
+                Ensure.that(LocalPoliceForceDetails.LOCAL_POLICE_FORCE).text().isEqualTo("Essex Police"),
                 // Issues or needs
                 Ensure.that(IssuesAndNeedsDetails.VULNERABILITY_DIVERSITY).text().isEqualTo(sessionVariableCalled("vulnerabilityDiversityDetail")),
                 Ensure.that(IssuesAndNeedsDetails.CONTRABAND).text().isEqualTo(sessionVariableCalled("contrabandDetail")),
