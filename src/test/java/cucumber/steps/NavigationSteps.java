@@ -101,7 +101,26 @@ public class NavigationSteps {
                 Enter.theValue("Badger").into(UserDetailsPage.LAST_NAME),
                 Enter.theValue("maria.badger@thebadgers.org").into(UserDetailsPage.EMAIL_ADDRESS),
                 Enter.theValue("09876543210").into(UserDetailsPage.PHONE_NUMBER),
+                Click.on(UserDetailsPage.BAND_3_OPTION),
                 Upload.theFile(Path.of("src/test/resources/files/signature.jpg")).to(UserDetailsPage.SIGNATURE),
+                Click.on(UserDetailsPage.UPDATE_BUTTON)
+        );
+    }
+
+    @When("{word} changes her caseworker band to 3")
+    public void changesCaseworkerBandToThree(String caseworker) {
+        theActorCalled(caseworker).attemptsTo(
+                Open.browserOn().the(UserDetailsPage.class),
+                Click.on(UserDetailsPage.BAND_3_OPTION),
+                Click.on(UserDetailsPage.UPDATE_BUTTON)
+        );
+    }
+
+    @When("{word} changes her caseworker band to 4+")
+    public void changesCaseworkerBandToFour(String caseworker) {
+        theActorCalled(caseworker).attemptsTo(
+                Open.browserOn().the(UserDetailsPage.class),
+                Click.on(UserDetailsPage.BAND_4_OPTION),
                 Click.on(UserDetailsPage.UPDATE_BUTTON)
         );
     }

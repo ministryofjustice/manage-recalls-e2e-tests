@@ -22,7 +22,8 @@ Feature: Manage Recalls
     # Then Maria can see the documents are uploaded
     Then Maria sees confirmation that the new recall was booked
     ### Assess the recall
-    When Maria begins to assess the recall that they have just booked
+    When Maria changes her caseworker band to 4+
+    And Maria begins to assess the recall that they have just booked
     And Maria adds a new version of the Part A
     And Maria starts the assessment process for the recall
     And Maria confirms the recall length of 28 days
@@ -37,7 +38,8 @@ Feature: Manage Recalls
     Then Maria is able to see the details captured during assessment
     And Maria is able to see the documents uploaded during booking
     ### create a dossier
-    When Maria navigates to the recall to create a dossier
+    When Maria changes her caseworker band to 3
+    And Maria navigates to the recall to create a dossier
     Then Maria is able to see the recall information before creating a dossier
     And Maria submits the information for the prison letter
     And Maria has checked and created the reasons for recall document
