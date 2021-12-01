@@ -339,6 +339,18 @@ public class NavigationSteps {
         );
     }
 
+    @When("{word} confirms they can't assess the recall as a band 3")
+    public void confirmCantAssessRecall(String caseworker) {
+        Actor actor = theActorCalled(caseworker);
+        String recallId = actor.recall("RECALL_ID");
+
+        actor.attemptsTo(
+                Click.on(TodoRecallsListPage.NAV_TODO_LINK),
+                Ensure.thatTheCurrentPage().title().isEqualTo(TodoRecallsListPage.TITLE),
+                Ensure.that(TodoRecallsListPage.assessRecallLinkForRecallId(recallId)).isNotDisplayed()
+        );
+    }
+
     @When("{word} adds a new version of the Part A")
     public void addNewVersion(String caseworker) {
         theActorCalled(caseworker).attemptsTo(

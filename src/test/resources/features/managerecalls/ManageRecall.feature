@@ -21,6 +21,7 @@ Feature: Manage Recalls
     And Maria opens the documents
     # Then Maria can see the documents are uploaded
     Then Maria sees confirmation that the new recall was booked
+    And Maria confirms they can't assess the recall as a band 3
     ### Assess the recall
     When Maria changes their caseworker band to 4+
     And Maria begins to assess the recall that they have just booked
