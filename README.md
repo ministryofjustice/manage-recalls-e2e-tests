@@ -19,6 +19,15 @@ You can install either with Homebrew:
 brew install chromedriver
 ```
 
+Check - and allow to execute - with:
+```
+`which chromedriver` --version
+```
+This will likely result in a security prompt warning of downloaded software.
+You will need to allow it to execute via `System Preferences | Security and Privacy | General | Allow ...`.
+To upgrade with `brew`: `brew upgrade chromedriver`. 
+You can check your Chrome version via `Help | About ...`.  
+
 Then verify that it's on your path with `which chromedriver`.
 
 or, [download chromedriver](https://chromedriver.chromium.org/downloads). The `chromedriver` executable needs to be on your PATH (e.g. `export PATH=~/dev/chromedriver/:$PATH`)
@@ -98,7 +107,7 @@ Processes started with the above will log to the terminal from which docker is r
 Note: starting particularly `hmpps-auth` can take several minutes; you should be able to
 login once `hmpps-auth-e2e` has logged e.g. `Completed initialization`.
 
-Then, to run the tests, e.g. at a separate command prompt:
+Then, to run the tests versus local services, e.g. at a separate command prompt run:
 ```
 ./gradlew clean test 
 ```
@@ -111,7 +120,7 @@ The script `build.sh` achieves this by:
 * running `start-local-services.sh`
   * building and starting `manage-recalls-ui` and `manage-recalls-api` from   cloned source, as local siblings of this project,
   * starting remaining dependencies from docker images, and,
-* executing the e2e tests via gradle, as above.
+* executing the e2e tests via gradle, as above (`./gradlew clean test`).
 * running `stop-local-services.sh`
   * stops all the components started by `start-local-services.sh`
 
