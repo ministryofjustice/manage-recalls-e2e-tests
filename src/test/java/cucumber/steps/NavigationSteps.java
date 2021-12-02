@@ -1,6 +1,7 @@
 package cucumber.steps;
 
 import cucumber.actions.ScreenshotAndWait;
+import cucumber.actions.Refresh;
 import cucumber.pages.*;
 import cucumber.pages.AssessARecallPage.CreateDossierDetails;
 import cucumber.pages.AssessARecallPage.RecallAssessmentDetails;
@@ -92,7 +93,7 @@ public class NavigationSteps {
         );
     }
 
-    @When("{word} enters her user details")
+    @When("{word} enters their user details")
     public void entersUserDetails(String caseworker) {
         setSessionVariable("loggedInUserDisplayName").to("Maria Badger");
         theActorCalled(caseworker).attemptsTo(
@@ -101,7 +102,26 @@ public class NavigationSteps {
                 Enter.theValue("Badger").into(UserDetailsPage.LAST_NAME),
                 Enter.theValue("maria.badger@thebadgers.org").into(UserDetailsPage.EMAIL_ADDRESS),
                 Enter.theValue("09876543210").into(UserDetailsPage.PHONE_NUMBER),
+                Click.on(UserDetailsPage.BAND_3_OPTION),
                 Upload.theFile(Path.of("src/test/resources/files/signature.jpg")).to(UserDetailsPage.SIGNATURE),
+                Click.on(UserDetailsPage.UPDATE_BUTTON)
+        );
+    }
+
+    @When("{word} changes their caseworker band to 3")
+    public void changesCaseworkerBandToThree(String caseworker) {
+        theActorCalled(caseworker).attemptsTo(
+                Open.browserOn().the(UserDetailsPage.class),
+                Click.on(UserDetailsPage.BAND_3_OPTION),
+                Click.on(UserDetailsPage.UPDATE_BUTTON)
+        );
+    }
+
+    @When("{word} changes their caseworker band to 4+")
+    public void changesCaseworkerBandToFour(String caseworker) {
+        theActorCalled(caseworker).attemptsTo(
+                Open.browserOn().the(UserDetailsPage.class),
+                Click.on(UserDetailsPage.BAND_4_OPTION),
                 Click.on(UserDetailsPage.UPDATE_BUTTON)
         );
     }
@@ -260,7 +280,7 @@ public class NavigationSteps {
                 Upload.theFile(licencePdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
                 ScreenshotAndWait.forMillis(250),
                 Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("LICENCE")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds(),
-                ScreenshotAndWait.forMillis(250),
+                Refresh.page(),
                 Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
                 ScreenshotAndWait.forMillis(250),
                 Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("UNCATEGORISED")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds(),
@@ -280,7 +300,7 @@ public class NavigationSteps {
                 Upload.theFile(preConsPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
                 ScreenshotAndWait.forMillis(250),
                 Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("PREVIOUS_CONVICTIONS_SHEET")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds(),
-                ScreenshotAndWait.forMillis(250),
+                Refresh.page(),
                 Upload.theFile(OASysPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
                 ScreenshotAndWait.forMillis(250),
                 Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("OASYS_RISK_ASSESSMENT")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds(),
@@ -317,6 +337,18 @@ public class NavigationSteps {
                 Ensure.that(TodoRecallsListPage.dueDateForRecallId(recallId)).hasText("6 Dec at 15:33"),
                 Ensure.that(TodoRecallsListPage.continueBookingLinkForRecallId(recallId)).isNotDisplayed(),
                 Click.on(TodoRecallsListPage.assessRecallLinkForRecallId(recallId))
+        );
+    }
+
+    @When("{word} confirms they can't assess the recall as a band 3")
+    public void confirmCantAssessRecall(String caseworker) {
+        Actor actor = theActorCalled(caseworker);
+        String recallId = actor.recall("RECALL_ID");
+
+        actor.attemptsTo(
+                Click.on(TodoRecallsListPage.NAV_TODO_LINK),
+                Ensure.thatTheCurrentPage().title().isEqualTo(TodoRecallsListPage.TITLE),
+                Ensure.that(TodoRecallsListPage.assessRecallLinkForRecallId(recallId)).isNotDisplayed()
         );
     }
 

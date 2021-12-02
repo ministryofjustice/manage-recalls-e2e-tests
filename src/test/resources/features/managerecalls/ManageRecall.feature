@@ -3,7 +3,7 @@ Feature: Manage Recalls
   Scenario: Book and Assess a recall
     Given Maria navigates to manage recall service
     And Maria logs in
-    And Maria enters her user details
+    And Maria enters their user details
     When Maria searches for the environment specific NOMS number
     ### Book a recall
     And Maria clicks on the Book a recall link
@@ -21,8 +21,10 @@ Feature: Manage Recalls
     And Maria opens the documents
     # Then Maria can see the documents are uploaded
     Then Maria sees confirmation that the new recall was booked
+    And Maria confirms they can't assess the recall as a band 3
     ### Assess the recall
-    When Maria begins to assess the recall that they have just booked
+    When Maria changes their caseworker band to 4+
+    And Maria begins to assess the recall that they have just booked
     And Maria adds a new version of the Part A
     And Maria starts the assessment process for the recall
     And Maria confirms the recall length of 28 days
@@ -37,7 +39,8 @@ Feature: Manage Recalls
     Then Maria is able to see the details captured during assessment
     And Maria is able to see the documents uploaded during booking
     ### create a dossier
-    When Maria navigates to the recall to create a dossier
+    When Maria changes their caseworker band to 3
+    And Maria navigates to the recall to create a dossier
     Then Maria is able to see the recall information before creating a dossier
     And Maria submits the information for the prison letter
     And Maria has checked and created the reasons for recall document
