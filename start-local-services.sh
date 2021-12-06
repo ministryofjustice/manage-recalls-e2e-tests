@@ -27,7 +27,7 @@ SPRING_PROFILES_ACTIVE=dev ./gradlew bootRun >> "${MANAGE_RECALLS_API_LOG_FILE}"
 popd
 
 printf "\nChecking hmpps-auth is running..."
-curl -s -4 --retry 20 --retry-delay 1 --retry-connrefused http://localhost:9090/auth/health/ping
+curl -s -4 --retry 40 --retry-delay 2 --retry-connrefused http://localhost:9090/auth/health/ping
 
 printf "\nChecking ${MANAGE_RECALLS_API_NAME} is running..."
 curl -s -4 --retry 20 --retry-delay 1 --retry-connrefused http://localhost:8080/health/ping
