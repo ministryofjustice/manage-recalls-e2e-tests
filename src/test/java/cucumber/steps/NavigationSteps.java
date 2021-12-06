@@ -104,7 +104,7 @@ public class NavigationSteps {
                 Enter.theValue("09876543210").into(UserDetailsPage.PHONE_NUMBER),
                 Click.on(UserDetailsPage.BAND_3_OPTION),
                 Upload.theFile(Path.of("src/test/resources/files/signature.jpg")).to(UserDetailsPage.SIGNATURE),
-                Click.on(UserDetailsPage.UPDATE_BUTTON)
+                Click.on(UserDetailsPage.SAVE_BUTTON)
         );
     }
 
@@ -113,7 +113,7 @@ public class NavigationSteps {
         theActorCalled(caseworker).attemptsTo(
                 Open.browserOn().the(UserDetailsPage.class),
                 Click.on(UserDetailsPage.BAND_3_OPTION),
-                Click.on(UserDetailsPage.UPDATE_BUTTON)
+                Click.on(UserDetailsPage.SAVE_BUTTON)
         );
     }
 
@@ -122,7 +122,7 @@ public class NavigationSteps {
         theActorCalled(caseworker).attemptsTo(
                 Open.browserOn().the(UserDetailsPage.class),
                 Click.on(UserDetailsPage.BAND_4_OPTION),
-                Click.on(UserDetailsPage.UPDATE_BUTTON)
+                Click.on(UserDetailsPage.SAVE_BUTTON)
         );
     }
 
