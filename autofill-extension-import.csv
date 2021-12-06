@@ -3,25 +3,20 @@ Profile ID,Name,Site,Hotkey,,,
 c1,Manage recalls,,Option + Ƒ,,,
 ### AUTOFILL RULES ###,,,,,,
 Rule ID,Type,Name,Value,Site,Mode,Profile
-r123,0,"^probationOfficerName$","Dave Angel","localhost:3000/persons/A1234AA/recalls/9486bf7d-1331-439f-bafe-e511dc8bac45/probation-officer",0,
-r124,0,"^probationOfficerEmail$","dave.angel@probation.gov.uk","localhost:3000/persons/A1234AA/recalls/9486bf7d-1331-439f-bafe-e511dc8bac45/probation-officer",0,
-r125,0,"^probationOfficerPhoneNumber$","07393739393","localhost:3000/persons/A1234AA/recalls/9486bf7d-1331-439f-bafe-e511dc8bac45/probation-officer",0,
-r127,0,"^authorisingAssistantChiefOfficer$","Bob Monkfish","localhost:3000/persons/A1234AA/recalls/9486bf7d-1331-439f-bafe-e511dc8bac45/probation-officer",0,
-r128,2,"^localDeliveryUnit$","""CENTRAL_AUDIT_TEAM""","localhost:3000/persons/A1234AA/recalls/9486bf7d-1331-439f-bafe-e511dc8bac45/probation-officer",0,
 r1,0,"^day$","20","/persons/[^\/]+/recalls/[^\/]+/request-received",0,c1
-r2,0,"^month$","12","/persons/[^\/]+/recalls/[^\/]+/request-received",0,c1
-r3,0,"^year$","2020","/persons/[^\/]+/recalls/[^\/]+/request-received",0,c1
-r4,0,"^hour$","23","/persons/[^\/]+/recalls/[^\/]+/request-received",0,c1
+r2,0,"^month$","11","/persons/[^\/]+/recalls/[^\/]+/request-received",0,c1
+r3,0,"^year$","2021","/persons/[^\/]+/recalls/[^\/]+/request-received",0,c1
+r4,0,"^hour$","07","/persons/[^\/]+/recalls/[^\/]+/request-received",0,c1
 r5,0,"^minute$","04","/persons/[^\/]+/recalls/[^\/]+/request-received",0,c1
 r6,0,"^sentenceDateDay$","12","/persons/[^\/]+/recalls/[^\/]+/last-release",0,c1
 r7,0,"^sentenceDateMonth$","02","/persons/[^\/]+/recalls/[^\/]+/last-release",0,c1
 r8,0,"^sentenceDateYear$","2021","/persons/[^\/]+/recalls/[^\/]+/last-release",0,c1
 r9,0,"^licenceExpiryDateDay$","24","/persons/[^\/]+/recalls/[^\/]+/last-release",0,c1
 r10,0,"^licenceExpiryDateMonth$","10","/persons/[^\/]+/recalls/[^\/]+/last-release",0,c1
-r11,0,"^licenceExpiryDateYear$","2021","/persons/[^\/]+/recalls/[^\/]+/last-release",0,c1
+r11,0,"^licenceExpiryDateYear$","2022","/persons/[^\/]+/recalls/[^\/]+/last-release",0,c1
 r12,0,"^sentenceExpiryDateDay$","26","/persons/[^\/]+/recalls/[^\/]+/last-release",0,c1
 r13,0,"^sentenceExpiryDateMonth$","10","/persons/[^\/]+/recalls/[^\/]+/last-release",0,c1
-r14,0,"^sentenceExpiryDateYear$","2021","/persons/[^\/]+/recalls/[^\/]+/last-release",0,c1
+r14,0,"^sentenceExpiryDateYear$","2022","/persons/[^\/]+/recalls/[^\/]+/last-release",0,c1
 r15,0,"^sentencingCourt$","Blackpool County Court","/persons/[^\/]+/recalls/[^\/]+/last-release",0,c1
 r16,0,"^indexOffence$","Burglary","/persons/[^\/]+/recalls/[^\/]+/last-release",0,c1
 r18,0,"^lastReleaseDateDay$","12","/persons/[^\/]+/recalls/[^\/]+/last-release",0,c1
@@ -30,7 +25,6 @@ r20,0,"^lastReleaseDateYear$","2021","/persons/[^\/]+/recalls/[^\/]+/last-releas
 r21,0,"^conditionalReleaseDateDay$","14","/persons/[^\/]+/recalls/[^\/]+/last-release",0,c1
 r22,0,"^conditionalReleaseDateMonth$","05","/persons/[^\/]+/recalls/[^\/]+/last-release",0,c1
 r23,0,"^conditionalReleaseDateYear$","2022","/persons/[^\/]+/recalls/[^\/]+/last-release",0,c1
-r24,0,"^localPoliceForce$","Essex","/persons/[^\/]+/recalls/[^\/]+/prison-police",0,c1
 r25,3,"^vulnerabilityDiversity$","10","/persons/[^\/]+/recalls/[^\/]+/issues-needs",0,c1
 r26,3,"^contraband$","01","/persons/[^\/]+/recalls/[^\/]+/issues-needs",0,c1
 r27,2,"^mappaLevel$","""LEVEL_1""","/persons/[^\/]+/recalls/[^\/]+/issues-needs",0,c1
@@ -43,9 +37,9 @@ r70,0,"^probationOfficerPhoneNumber$","07393739393","/persons/[^\/]+/recalls/[^\
 r71,0,"^authorisingAssistantChiefOfficer$","Bob Monkfish","/persons/[^\/]+/recalls/[^\/]+/probation-officer",0,c1
 r72,2,"^localDeliveryUnit$","""CENTRAL_AUDIT_TEAM""","/persons/[^\/]+/recalls/[^\/]+/probation-officer",0,c1
 r73,0,"^recallNotificationEmailSentDateTimeDay$","12","/persons/[^\/]+/recalls/[^\/]+/assess-email",0,c1
-r74,0,"^recallNotificationEmailSentDateTimeMonth$","03","/persons/[^\/]+/recalls/[^\/]+/assess-email",0,c1
+r74,0,"^recallNotificationEmailSentDateTimeMonth$","11","/persons/[^\/]+/recalls/[^\/]+/assess-email",0,c1
 r75,0,"^recallNotificationEmailSentDateTimeYear$","2021","/persons/[^\/]+/recalls/[^\/]+/assess-email",0,c1
-r76,0,"^recallNotificationEmailSentDateTimeHour$","13","/persons/[^\/]+/recalls/[^\/]+/assess-email",0,c1
+r76,0,"^recallNotificationEmailSentDateTimeHour$","08","/persons/[^\/]+/recalls/[^\/]+/assess-email",0,c1
 r77,0,"^recallNotificationEmailSentDateTimeMinute$","14","/persons/[^\/]+/recalls/[^\/]+/assess-email",0,c1
 r78,3,"^confirmRecallNotificationEmailSent$","1","/persons/[^\/]+/recalls/[^\/]+/assess-email",0,c1
 r79,3,"^hasOtherPreviousConvictionMainName$","10","/persons/[^\/]+/recalls/[^\/]+/assess-email/pre-cons-name",0,c1
@@ -59,12 +53,6 @@ r87,0,"^licenceConditionsBreached$","(i) one
 r88,0,"^reasonsForRecallOtherDetail$","Explain..","/persons/[^\/]+/recalls/[^\/]+/assess-licence",0,c1
 r89,0,"^currentPrison$","Berwyn (HMP)","/persons/[^\/]+/recalls/[^\/]+/assess-prison",0,c1
 r90,2,"^currentPrison$","""BWI""","/persons/[^\/]+/recalls/[^\/]+/assess-prison",0,c1
-r91,0,"^recallNotificationEmailSentDateTimeDay$","12","/persons/[^\/]+/recalls/[^\/]+/assess-email",0,c1
-r92,0,"^recallNotificationEmailSentDateTimeMonth$","03","/persons/[^\/]+/recalls/[^\/]+/assess-email",0,c1
-r93,0,"^recallNotificationEmailSentDateTimeYear$","2021","/persons/[^\/]+/recalls/[^\/]+/assess-email",0,c1
-r94,0,"^recallNotificationEmailSentDateTimeHour$","13","/persons/[^\/]+/recalls/[^\/]+/assess-email",0,c1
-r95,0,"^recallNotificationEmailSentDateTimeMinute$","14","/persons/[^\/]+/recalls/[^\/]+/assess-email",0,c1
-r97,3,"^confirmRecallNotificationEmailSent$","1","/persons/[^\/]+/recalls/[^\/]+/assess-email",0,c1
 r98,0,"^differentNomsNumberDetail$","A345873","/persons/[^\/]+/recalls/[^\/]+/dossier-letter",0,c1
 r99,3,"^additionalLicenceConditions$","10","/persons/[^\/]+/recalls/[^\/]+/dossier-letter",0,c1
 r100,3,"^differentNomsNumber$","C1937HY","/persons/[^\/]+/recalls/[^\/]+/dossier-letter",0,c1
@@ -72,7 +60,7 @@ r101,0,"^additionalLicenceConditionsDetail$","one
 two","/persons/[^\/]+/recalls/[^\/]+/dossier-letter",0,c1
 r102,3,"^hasDossierBeenChecked$","1","/persons/[^\/]+/recalls/[^\/]+/dossier-download",0,c1
 r103,0,"^dossierEmailSentDateDay$","13","/persons/[^\/]+/recalls/[^\/]+/dossier-email",0,c1
-r104,0,"^dossierEmailSentDateMonth$","09","/persons/[^\/]+/recalls/[^\/]+/dossier-email",0,c1
+r104,0,"^dossierEmailSentDateMonth$","11","/persons/[^\/]+/recalls/[^\/]+/dossier-email",0,c1
 r105,0,"^dossierEmailSentDateYear$","2021","/persons/[^\/]+/recalls/[^\/]+/dossier-email",0,c1
 r106,3,"^confirmDossierEmailSent$","1","/persons/[^\/]+/recalls/[^\/]+/dossier-email",0,c1
 r108,0,"^PART_A_RECALL_REPORT$","C:\fakepath\part_a_recall_report.pdf","/persons/[^\/]+/recalls/[^\/]+/upload-documents",0,c1
@@ -81,6 +69,13 @@ r110,0,"^PREVIOUS_CONVICTIONS_SHEET$","C:\fakepath\part_a_recall_report.pdf","/p
 r111,0,"^PRE_SENTENCING_REPORT$","C:\fakepath\part_a_recall_report.pdf","/persons/[^\/]+/recalls/[^\/]+/upload-documents",0,c1
 r126,0,"^localDeliveryUnit$","Central Audit Team","/persons/[^\/]+/recalls/[^\/]+/probation-officer",0,c1
 r129,2,"^sentencingCourt$","""BLKPCT""","/persons/[^\/]+/recalls/[^\/]+/last-release",0,c1
+r130,0,"^missingDocumentsDetail$","Chased","/persons/[^\/]+/recalls/[^\/]+/last-release/missing-documents",0,c1
+r131,3,"FIRST_LAST","1","/persons/[^\/]+/recalls/[^\/]+/licence-name",0,c1
+r132,3,"FIRST_MIDDLE_LAST","1","/persons/[^\/]+/recalls/[^\/]+/pre-cons-name",0,c1
+r133,0,"^localPoliceForceInput$","Essex Police","/persons/[^\/]+/recalls/[^\/]+/prison-police",0,c1
+r134,2,"^localPoliceForce$","""essex""","/persons/[^\/]+/recalls/[^\/]+/prison-police",0,c1
+r136,0,"^missingDocumentsDetail$","Chased the missing documents on 6/12/21
+Email uploaded","/persons/[^\/]+/recalls/[^\/]+/missing-documents",0,c1
 ### AUTOFILL OPTIONS ###,,,,,,
 advanced,"[]",,,,,
 exceptions,"[]",,,,,
