@@ -13,5 +13,5 @@ public class UserDetailsPage extends PpudPage {
     public static final Target BAND_3_OPTION = Target.the("band 3 radio button").located(By.id("caseworkerBand"));
     public static final Target BAND_4_OPTION = Target.the("band 4+ radio button").located(By.id("caseworkerBand-2"));
     public static final Target SIGNATURE = Target.the("signature").located(By.id("signature"));
-    public static final Target UPDATE_BUTTON = getTargetByDataQa("saveButton");
+    public static final Target UPDATE_BUTTON = getTargetByDataQa("updateButton");
 }
