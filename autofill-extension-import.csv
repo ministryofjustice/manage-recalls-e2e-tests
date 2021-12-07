@@ -72,10 +72,10 @@ r129,2,"^sentencingCourt$","""BLKPCT""","/persons/[^\/]+/recalls/[^\/]+/last-rel
 r130,0,"^missingDocumentsDetail$","Chased","/persons/[^\/]+/recalls/[^\/]+/last-release/missing-documents",0,c1
 r131,3,"FIRST_LAST","1","/persons/[^\/]+/recalls/[^\/]+/licence-name",0,c1
 r132,3,"FIRST_MIDDLE_LAST","1","/persons/[^\/]+/recalls/[^\/]+/pre-cons-name",0,c1
-r133,0,"^localPoliceForceInput$","Essex Police","/persons/[^\/]+/recalls/[^\/]+/prison-police",0,c1
-r134,2,"^localPoliceForce$","""essex""","/persons/[^\/]+/recalls/[^\/]+/prison-police",0,c1
 r136,0,"^missingDocumentsDetail$","Chased the missing documents on 6/12/21
 Email uploaded","/persons/[^\/]+/recalls/[^\/]+/missing-documents",0,c1
+r137,0,"^localPoliceForceIdInput$","City of London Police","/persons/[^\/]+/recalls/[^\/]+/prison-police",0,c1
+r138,2,"^localPoliceForceId$","""city-of-london""","/persons/[^\/]+/recalls/[^\/]+/prison-police",0,c1
 ### AUTOFILL OPTIONS ###,,,,,,
 advanced,"[]",,,,,
 exceptions,"[]",,,,,
