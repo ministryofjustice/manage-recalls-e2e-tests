@@ -666,10 +666,7 @@ public class NavigationSteps {
 
     @When("{word} navigates to view the change history for the recall")
     public void navigateToChangeHistory(String caseworker) {
-        Actor actor = theActorCalled(caseworker);
-        String recallId = actor.recall("RECALL_ID");
-
-        actor.attemptsTo(
+        theActorCalled(caseworker).attemptsTo(
                 Click.on(CreateDossierDetails.VIEW_CHANGE_HISTORY_BUTTON),
                 Ensure.thatTheCurrentPage().title().isEqualTo(ChangeHistoryPage.TITLE),
                 Ensure.that(ChangeHistoryPage.UPLOADED_PART_A_USER).text().isEqualTo("Maria Badger")
