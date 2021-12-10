@@ -280,7 +280,6 @@ public class NavigationSteps {
                 Upload.theFile(licencePdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
                 ScreenshotAndWait.forMillis(250),
                 Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("LICENCE")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds(),
-                Refresh.page(),
                 Upload.theFile(testPdfPath).to(UploadRecallDocumentsPage.DOCUMENT_UPLOAD),
                 ScreenshotAndWait.forMillis(250),
                 Wait.until(WebElementQuestion.the(UploadRecallDocumentsPage.getTargetForCategoryDropdown("UNCATEGORISED")), WebElementStateMatchers.isVisible()).forNoLongerThan(10).seconds(),
