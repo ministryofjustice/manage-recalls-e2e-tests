@@ -670,6 +670,7 @@ public class NavigationSteps {
                 Click.on(CreateDossierDetails.VIEW_CHANGE_HISTORY_BUTTON),
                 Ensure.thatTheCurrentPage().title().isEqualTo(ChangeHistoryPage.TITLE),
                 Ensure.that(ChangeHistoryPage.UPLOADED_PART_A_USER).text().isEqualTo("Maria Badger"),
+                Ensure.that(ChangeHistoryPage.GENERATED_DOSSIER_LINK).isDisplayed(),
                 Click.on(ChangeHistoryPage.UPLOADED_PART_A_HISTORY_LINK),
                 Ensure.thatTheCurrentPage().title().isEqualTo(ChangeHistoryDocumentCategoryPage.TITLE)
         );
