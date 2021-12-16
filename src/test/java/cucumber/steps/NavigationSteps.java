@@ -153,8 +153,9 @@ public class NavigationSteps {
 
     @Then("{word} opens the recall notification")
     public void clickOnRecallNotificationLink(String caseworker) {
-        openDocumentInTab(caseworker, RecallNotificationDownloadPage.DOWNLOAD_RECALL_NOTIFICATION_LINK);
-        theActorCalled(caseworker).attemptsTo(
+        Actor actor = theActorCalled(caseworker);
+        openDocumentInTab(RecallNotificationDownloadPage.DOWNLOAD_RECALL_NOTIFICATION_LINK, actor);
+        actor.attemptsTo(
                 Click.on(RecallNotificationDownloadPage.CONTINUE_BUTTON)
         );
     }
@@ -504,8 +505,8 @@ public class NavigationSteps {
         actor.attemptsTo(
                 Ensure.thatTheCurrentPage().title().isEqualTo(RecallCheckAnswersPage.TITLE)
         );
-        openDocumentInTab(caseworker, DocumentDetails.RECALL_DOCUMENT_LINK_PART_A);
-        openDocumentInTab(caseworker, DocumentDetails.RECALL_DOCUMENT_LINK_LICENCE);
+        openDocumentInTab(DocumentDetails.RECALL_DOCUMENT_LINK_PART_A, actor);
+        openDocumentInTab(DocumentDetails.RECALL_DOCUMENT_LINK_LICENCE, actor);
         actor.attemptsTo(
                 Click.on(RecallCheckAnswersPage.CONTINUE_BUTTON)
         );
@@ -529,13 +530,92 @@ public class NavigationSteps {
         );
     }
 
-    @Then("{word} is able to see the documents uploaded during booking")
-    public void confirmDocumentsUploadedDuringBooking(String caseworker) {
-        theActorCalled(caseworker).attemptsTo(
-                //Upload documents
+    @Then("{word} is able to see the documents uploaded and generated during booking")
+    public void confirmDocumentsUploadedAndGeneratedDuringBooking(String caseworker) {
+        Actor actor = theActorCalled(caseworker);
+        actor.attemptsTo(
+                //Uploaded documents
                 Ensure.that(DocumentDetails.RECALL_DOCUMENT_LINK_PART_A).text().isEqualTo("Part A.pdf"),
-                Ensure.that(DocumentDetails.RECALL_DOCUMENT_LINK_LICENCE).text().isEqualTo("Licence.pdf")
+                Ensure.that(DocumentDetails.RECALL_DOCUMENT_LINK_LICENCE).text().isEqualTo("Licence.pdf"),
+                Ensure.that(DocumentDetails.RECALL_DOCUMENT_LINK_PREVIOUS_CONVICTIONS_SHEET).text().isEqualTo("Pre Cons.pdf")
         );
+
+        //REMOVE once links are on the view recall page
+        new AssessARecallPage().open("view.recall", withParameters(sessionVariableCalled(NOMS_NUMBER), actor.recall("RECALL_ID")));
+        actor.attemptsTo(
+                //Generated documents
+                Ensure.that(DocumentDetails.RECALL_DOCUMENT_LINK_REVOCATION_ORDER).text().endsWith("REVOCATION ORDER.pdf"),
+                Ensure.that(DocumentDetails.RECALL_DOCUMENT_LINK_RECALL_NOTIFICATION).text().startsWith("IN CUSTODY RECALL")
+            );
+    }
+
+
+    private void regenerateDocument(Actor actor,String documentName, Target changeLink, String title, Target detailsBox,
+                                    Target continueButton, Target versionDetail, Target details, Target documentLink) {
+        actor.attemptsTo(
+                Click.on(changeLink),
+                Ensure.thatTheCurrentPage().title().isEqualTo(title),
+                Enter.theValue("Recreating " + documentName).into(detailsBox),
+                Click.on(continueButton),
+                Ensure.thatTheCurrentPage().title().isEqualTo(ViewRecallPage.TITLE),
+                Ensure.that(versionDetail).text().isEqualTo("version 2"),
+                Ensure.that(details).text().isEqualTo("Recreating " + documentName)
+        );
+        openDocumentInTab(documentLink, actor);
+    }
+
+    @Then("{word} can regenerate the revocation order and recall notification")
+    public void regenerateRevocationOrderAndRecallNotification(String caseworker) {
+        Actor actor = theActorCalled(caseworker);
+        regenerateDocument(
+                actor,
+                "Recall Notification",
+                DocumentDetails.RECALL_DOCUMENT_CHANGE_LINK_RECALL_NOTIFICATION,
+                CreateANewRecallNotificationPage.TITLE,
+                CreateANewRecallNotificationPage.DETAILS,
+                CreateANewRecallNotificationPage.CONTINUE_BUTTON,
+                DocumentDetails.RECALL_DOCUMENT_VERSION_RECALL_NOTIFICATION,
+                DocumentDetails.RECALL_DOCUMENT_DETAILS_RECALL_NOTIFICATION,
+                DocumentDetails.RECALL_DOCUMENT_LINK_RECALL_NOTIFICATION
+                );
+        regenerateDocument(
+                actor,
+                "Revocation Order",
+                DocumentDetails.RECALL_DOCUMENT_CHANGE_LINK_REVOCATION_ORDER,
+                CreateANewRevocationOrderPage.TITLE,
+                CreateANewRevocationOrderPage.DETAILS,
+                CreateANewRevocationOrderPage.CONTINUE_BUTTON,
+                DocumentDetails.RECALL_DOCUMENT_VERSION_REVOCATION_ORDER,
+                DocumentDetails.RECALL_DOCUMENT_DETAILS_REVOCATION_ORDER,
+                DocumentDetails.RECALL_DOCUMENT_LINK_REVOCATION_ORDER
+                );
+    }
+
+    @Then("{word} can regenerate the reasons for recall and dossier")
+    public void regenerateReasonsForRecallAndDossier(String caseworker) {
+        Actor actor = theActorCalled(caseworker);
+        regenerateDocument(
+                actor,
+                "Reasons for Recall",
+                DocumentDetails.RECALL_DOCUMENT_CHANGE_LINK_REASONS_FOR_RECALL,
+                CreateANewReasonsForRecallPage.TITLE,
+                CreateANewReasonsForRecallPage.DETAILS,
+                CreateANewReasonsForRecallPage.CONTINUE_BUTTON,
+                DocumentDetails.RECALL_DOCUMENT_VERSION_REASONS_FOR_RECALL,
+                DocumentDetails.RECALL_DOCUMENT_DETAILS_REASONS_FOR_RECALL,
+                DocumentDetails.RECALL_DOCUMENT_LINK_REASONS_FOR_RECALL
+                );
+        regenerateDocument(
+                actor,
+                "Dossier",
+                DocumentDetails.RECALL_DOCUMENT_CHANGE_LINK_DOSSIER,
+                CreateANewDossierPage.TITLE,
+                CreateANewDossierPage.DETAILS,
+                CreateANewDossierPage.CONTINUE_BUTTON,
+                DocumentDetails.RECALL_DOCUMENT_VERSION_DOSSIER,
+                DocumentDetails.RECALL_DOCUMENT_DETAILS_DOSSIER,
+                DocumentDetails.RECALL_DOCUMENT_LINK_DOSSIER
+                );
     }
 
     @Then("{word} can download the email")
@@ -574,8 +654,9 @@ public class NavigationSteps {
 
     @Then("{word} is able to see the recall information before creating a dossier")
     public void confirmRecallDetailsBeforeDossier(String caseworker) {
-        openDocumentInTab(caseworker, CreateDossierDetails.REVOCATION_ORDER_DOCUMENT_LINK);
-        theActorCalled(caseworker).attemptsTo(
+        Actor actor = theActorCalled(caseworker);
+        openDocumentInTab(CreateDossierDetails.REVOCATION_ORDER_DOCUMENT_LINK, actor);
+        actor.attemptsTo(
                 Ensure.that(CreateDossierDetails.DOSSIER_DUE_DATE).text().isEqualTo("Overdue: Due on 7 December 2020"),
                 Ensure.that(RecallAssessmentDetails.CURRENT_PRISON).text().isEqualTo("Ashfield (HMP)"),
                 Ensure.that(AssessARecallPage.RECALL_STATUS).text().isEqualTo("DOSSIER IN PROGRESS"),
@@ -585,11 +666,12 @@ public class NavigationSteps {
 
     @Then("{word} can open the dossier and letter")
     public void canDownloadTheDossier(String caseworker) {
-        theActorCalled(caseworker).attemptsTo(
+        Actor actor = theActorCalled(caseworker);
+        actor.attemptsTo(
                 Ensure.thatTheCurrentPage().title().isEqualTo(CreateDossierDownloadDossierAndLetterPage.TITLE)
         );
-        openDocumentInTab(caseworker, CreateDossierDownloadDossierAndLetterPage.DOWNLOAD_DOSSIER_LINK);
-        openDocumentInTab(caseworker, CreateDossierDownloadDossierAndLetterPage.DOWNLOAD_LETTER_LINK);
+        openDocumentInTab(CreateDossierDownloadDossierAndLetterPage.DOWNLOAD_DOSSIER_LINK, actor);
+        openDocumentInTab(CreateDossierDownloadDossierAndLetterPage.DOWNLOAD_LETTER_LINK, actor);
     }
 
     @When("{word} has reviewed the dossier")
@@ -689,8 +771,7 @@ public class NavigationSteps {
         return file.exists() && file.delete();
     }
 
-    private void openDocumentInTab(String caseworker, Target link) {
-        Actor actor = theActorCalled(caseworker);
+    private void openDocumentInTab(Target link, Actor actor) {
         actor.attemptsTo(
                 Click.on(link)
         );

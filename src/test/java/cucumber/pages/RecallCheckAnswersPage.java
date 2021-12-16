@@ -52,6 +52,22 @@ public class RecallCheckAnswersPage extends PpudPage {
         public static final Target RECALL_DOCUMENT_LINK_LICENCE = getTargetByDataQa("uploadedDocument-LICENCE");
         public static final Target RECALL_DOCUMENT_LINK_PREVIOUS_CONVICTIONS_SHEET = getTargetByDataQa("uploadedDocument-PREVIOUS_CONVICTIONS_SHEET");
         public static final Target RECALL_DOCUMENT_LINK_PRE_SENTENCING_REPORT = getTargetByDataQa("uploadedDocument-PRE_SENTENCING_REPORT");
+        public static final Target RECALL_DOCUMENT_LINK_RECALL_NOTIFICATION = getTargetByDataQa("appGeneratedDocuments-RECALL_NOTIFICATION");
+        public static final Target RECALL_DOCUMENT_CHANGE_LINK_RECALL_NOTIFICATION = getTargetByDataQa("appGeneratedDocuments-RECALL_NOTIFICATION-Change");
+        public static final Target RECALL_DOCUMENT_VERSION_RECALL_NOTIFICATION = getTargetByDataQa("appGeneratedDocuments-RECALL_NOTIFICATION-version");
+        public static final Target RECALL_DOCUMENT_DETAILS_RECALL_NOTIFICATION = getTargetByDataQa("appGeneratedDocuments-RECALL_NOTIFICATION-details");
+        public static final Target RECALL_DOCUMENT_LINK_REVOCATION_ORDER = getTargetByDataQa("appGeneratedDocuments-REVOCATION_ORDER");
+        public static final Target RECALL_DOCUMENT_CHANGE_LINK_REVOCATION_ORDER = getTargetByDataQa("appGeneratedDocuments-REVOCATION_ORDER-Change");
+        public static final Target RECALL_DOCUMENT_VERSION_REVOCATION_ORDER = getTargetByDataQa("appGeneratedDocuments-REVOCATION_ORDER-version");
+        public static final Target RECALL_DOCUMENT_DETAILS_REVOCATION_ORDER = getTargetByDataQa("appGeneratedDocuments-REVOCATION_ORDER-details");
+        public static final Target RECALL_DOCUMENT_LINK_REASONS_FOR_RECALL = getTargetByDataQa("appGeneratedDocuments-REASONS_FOR_RECALL");
+        public static final Target RECALL_DOCUMENT_CHANGE_LINK_REASONS_FOR_RECALL = getTargetByDataQa("appGeneratedDocuments-REASONS_FOR_RECALL-Change");
+        public static final Target RECALL_DOCUMENT_VERSION_REASONS_FOR_RECALL = getTargetByDataQa("appGeneratedDocuments-REASONS_FOR_RECALL-version");
+        public static final Target RECALL_DOCUMENT_DETAILS_REASONS_FOR_RECALL = getTargetByDataQa("appGeneratedDocuments-REASONS_FOR_RECALL-details");
+        public static final Target RECALL_DOCUMENT_LINK_DOSSIER = getTargetByDataQa("appGeneratedDocuments-DOSSIER");
+        public static final Target RECALL_DOCUMENT_CHANGE_LINK_DOSSIER = getTargetByDataQa("appGeneratedDocuments-DOSSIER-Change");
+        public static final Target RECALL_DOCUMENT_VERSION_DOSSIER = getTargetByDataQa("appGeneratedDocuments-DOSSIER-version");
+        public static final Target RECALL_DOCUMENT_DETAILS_DOSSIER = getTargetByDataQa("appGeneratedDocuments-DOSSIER-details");
         public static final Target OTHER = getTargetByDataQa("uploadedDocument-OTHER");
     }
 
