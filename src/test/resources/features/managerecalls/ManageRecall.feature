@@ -37,7 +37,8 @@ Feature: Manage Recalls
     ### confirm the details captured during the recall assessment journey are displayed
     When Maria navigates to view the details captured during assessment
     Then Maria is able to see the details captured during assessment
-    And Maria is able to see the documents uploaded during booking
+    And Maria is able to see the documents uploaded and generated during booking
+    And Maria can regenerate the revocation order and recall notification
     ### create a dossier
     When Maria changes their caseworker band to 3
     And Maria navigates to the recall to create a dossier
@@ -53,5 +54,6 @@ Feature: Manage Recalls
     And Maria navigates to view the details captured during dossier creation
     Then Maria is able to see the details captured during dossier creation
     And Maria can download the dossier email
+    And Maria can regenerate the reasons for recall and dossier
     ### change history
     And Maria navigates to view the change history for the recall
