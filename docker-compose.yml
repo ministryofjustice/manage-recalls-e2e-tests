@@ -20,7 +20,7 @@ services:
       - manage-recalls-e2e
 
   hmpps-auth:
-    image: quay.io/hmpps/hmpps-auth
+    image: quay.io/hmpps/hmpps-auth:2021-12-16.12506.3e1e93a
     networks:
       - manage-recalls-e2e
     container_name: hmpps-auth-e2e
