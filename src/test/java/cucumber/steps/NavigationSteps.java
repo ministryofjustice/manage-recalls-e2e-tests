@@ -358,6 +358,7 @@ public class NavigationSteps {
                 Click.on(RecallAssessmentDetails.PART_A_CHANGE_LINK),
                 Ensure.thatTheCurrentPage().title().isEqualTo(UploadANewDocumentPage.TITLE),
                 Upload.theFile(Path.of("src/test/resources/files/test.pdf")).to(UploadANewDocumentPage.DOCUMENT_UPLOAD),
+                Enter.theValue("Details changed").into(UploadANewDocumentPage.DETAILS),
                 Click.on(UploadANewDocumentPage.CONTINUE_BUTTON),
                 Ensure.thatTheCurrentPage().title().isEqualTo(AssessARecallPage.TITLE),
                 Ensure.that(RecallAssessmentDetails.PART_A_VERSION).hasText("version 2")
