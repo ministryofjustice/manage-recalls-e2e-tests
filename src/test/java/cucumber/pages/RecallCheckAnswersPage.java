@@ -68,6 +68,10 @@ public class RecallCheckAnswersPage extends PpudPage {
         public static final Target RECALL_DOCUMENT_CHANGE_LINK_DOSSIER = getTargetByDataQa("appGeneratedDocuments-DOSSIER-Change");
         public static final Target RECALL_DOCUMENT_VERSION_DOSSIER = getTargetByDataQa("appGeneratedDocuments-DOSSIER-version");
         public static final Target RECALL_DOCUMENT_DETAILS_DOSSIER = getTargetByDataQa("appGeneratedDocuments-DOSSIER-details");
+        public static final Target RECALL_DOCUMENT_LINK_LETTER_TO_PRISON = getTargetByDataQa("appGeneratedDocuments-LETTER_TO_PRISON");
+        public static final Target RECALL_DOCUMENT_CHANGE_LINK_LETTER_TO_PRISON = getTargetByDataQa("appGeneratedDocuments-LETTER_TO_PRISON-Change");
+        public static final Target RECALL_DOCUMENT_VERSION_LETTER_TO_PRISON = getTargetByDataQa("appGeneratedDocuments-LETTER_TO_PRISON-version");
+        public static final Target RECALL_DOCUMENT_DETAILS_LETTER_TO_PRISON = getTargetByDataQa("appGeneratedDocuments-LETTER_TO_PRISON-details");
         public static final Target OTHER = getTargetByDataQa("uploadedDocument-OTHER");
     }
 
