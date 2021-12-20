@@ -592,7 +592,7 @@ public class NavigationSteps {
                 );
     }
 
-    @Then("{word} can regenerate the reasons for recall and dossier")
+    @Then("{word} can regenerate the reasons for recall, dossier and letter to prison")
     public void regenerateReasonsForRecallAndDossier(String caseworker) {
         Actor actor = theActorCalled(caseworker);
         regenerateDocument(
@@ -617,6 +617,17 @@ public class NavigationSteps {
                 DocumentDetails.RECALL_DOCUMENT_DETAILS_DOSSIER,
                 DocumentDetails.RECALL_DOCUMENT_LINK_DOSSIER
                 );
+        regenerateDocument(
+                actor,
+                "Letter to prison",
+                DocumentDetails.RECALL_DOCUMENT_CHANGE_LINK_LETTER_TO_PRISON,
+                CreateANewLetterPage.TITLE,
+                CreateANewLetterPage.DETAILS,
+                CreateANewLetterPage.CONTINUE_BUTTON,
+                DocumentDetails.RECALL_DOCUMENT_VERSION_LETTER_TO_PRISON,
+                DocumentDetails.RECALL_DOCUMENT_DETAILS_LETTER_TO_PRISON,
+                DocumentDetails.RECALL_DOCUMENT_LINK_LETTER_TO_PRISON
+        );
     }
 
     @Then("{word} can download the email")
