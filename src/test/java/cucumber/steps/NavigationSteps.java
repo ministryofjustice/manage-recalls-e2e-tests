@@ -428,7 +428,7 @@ public class NavigationSteps {
         theActorCalled(caseworker).attemptsTo(
                 Ensure.thatTheCurrentPage().title().startsWith(AssessARecallPage.TITLE),
                 Ensure.that(AssessARecallPage.RECALL_ASSESSMENT_DUE_TEXT).text().isEqualTo("Overdue: recall assessment was due on 6 December 2020 by 15:33"),
-                Ensure.that(AssessARecallPage.RECALL_STATUS).text().isEqualTo("IN ASSESSMENT"),
+                Ensure.that(AssessARecallPage.RECALL_STATUS).text().isEqualTo("ASSESSMENT IN PROGRESS"),
                 Click.on(AssessARecallPage.CONTINUE_BUTTON)
         );
     }
@@ -521,7 +521,7 @@ public class NavigationSteps {
     @Then("{word} is able to see the details captured during assessment")
     public void confirmRecallDetailsCapturedDuringAssessment(String caseworker) {
         theActorCalled(caseworker).attemptsTo(
-                Ensure.that(AssessARecallPage.RECALL_STATUS).text().isEqualTo("RECALL NOTIFICATION ISSUED"),
+                Ensure.that(AssessARecallPage.RECALL_STATUS).text().isEqualTo("ASSESSMENT COMPLETE"),
                 Ensure.that(RecallAssessmentDetails.ASSESSED_BY_USERNAME).text().isEqualTo(sessionVariableCalled("loggedInUserDisplayName")),
                 Ensure.that(RecallAssessmentDetails.BOOKED_BY_USERNAME).text().isEqualTo(sessionVariableCalled("loggedInUserDisplayName")),
                 Ensure.that(RecallAssessmentDetails.AGREE_WITH_RECALL_RECOMMENDATION_ADDITIONAL_TEXT).text().isEqualTo("yes, agree with the fixed term recall"),
@@ -722,7 +722,7 @@ public class NavigationSteps {
     @Then("{word} is able to see the details captured during dossier creation")
     public void confirmDetailsCapturedDuringDossierCreation(String caseworker) {
         theActorCalled(caseworker).attemptsTo(
-                Ensure.that(AssessARecallPage.RECALL_STATUS).text().isEqualTo("DOSSIER ISSUED"),
+                Ensure.that(AssessARecallPage.RECALL_STATUS).text().isEqualTo("DOSSIER COMPLETE"),
                 Ensure.that(CreateDossierDetails.DOSSIER_CREATED_BY_USERNAME).text().isEqualTo(sessionVariableCalled("loggedInUserDisplayName")),
                 Ensure.that(CreateDossierDetails.ADDITIONAL_LICENCE_CONDITIONS).text().isEqualTo("Licence condition 14(a)"),
                 Ensure.that(CreateDossierDetails.DIFFERENT_NOMIS_NUMBER).text().isEqualTo("A4321AA"),
