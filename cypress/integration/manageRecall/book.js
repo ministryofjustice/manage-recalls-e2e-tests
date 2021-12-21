@@ -24,7 +24,7 @@ When('Maria searches for the environment specific NOMS number', () => {
 })
 
 When('Maria clicks on the Book a recall link', () => {
-    cy.clickButton('Book a recall')
+    cy.clickButton('Booka recall')
 })
 
 When('Maria enters the licence name', () => {
