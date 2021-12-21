@@ -46,6 +46,9 @@ function getCucumberReportMaps() {
 
 //Adding screenshots to the respective failed test steps in the feature files
 function addScreenshots() {
+    if (!fs.existsSync(screenshotsDir)) {
+        return
+    }
 
     const prependPathSegment = pathSegment => location => path.join(pathSegment, location)
 
