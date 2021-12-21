@@ -1,0 +1,12 @@
+{
+  "baseUrl": "http://localhost:3000",
+  "chromeWebSecurity": false,
+  "testFiles": "**/*.{feature,features}",
+  "video": false,
+  "reporterOptions": {
+    "reportDir": "cypress/report",
+    "charts": true,
+    "reportPageTitle": "Manage a recall E2E tests",
+    "embeddedScreenshots": true
+  }
+}

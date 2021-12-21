@@ -58,6 +58,7 @@ jobs:
           command: docker-compose stop
 
   deploy-check:
+    resource_class: xlarge
     docker:
       - image: quay.io/hmpps/manage-recalls-e2e-tests:latest
     environment:
@@ -83,6 +84,23 @@ jobs:
       - store_artifacts:
           path: target/site/serenity/
           destination: deploy-serenity-report
+      - run:
+          name: "Run Cypress tests [<<pipeline.parameters.e2e_environment>>]"
+          command: |
+            set +e
+            npm i
+            npx cypress run --env USERNAME=${SERENITY_USERNAME_<<pipeline.parameters.e2e_environment>>},PASSWORD=${SERENITY_PASSWORD_<<pipeline.parameters.e2e_environment>>},NOMS_NUMBER=${NOMS_NUMBER_<<pipeline.parameters.e2e_environment>>} --config baseUrl=https://manage-recalls-<<pipeline.parameters.e2e_environment>>.hmpps.service.justice.gov.uk
+            npm run cypress:report
+            export E2E_RESULT=$?
+            set -e
+            ./report-results-to-dashboard.sh
+            exit $E2E_RESULT
+      - store_artifacts:
+          path: cypress/screenshots
+          destination: screenshots
+      - store_artifacts:
+          path: cypress/reports
+          destination: reports
 
 workflows:
   version: 2
