@@ -565,7 +565,7 @@ public class NavigationSteps {
         openDocumentInTab(documentLink, actor);
     }
 
-    @Then("{word} can regenerate the revocation order and recall notification")
+    @Then("{word} can regenerate the recall notification and revocation order")
     public void regenerateRevocationOrderAndRecallNotification(String caseworker) {
         Actor actor = theActorCalled(caseworker);
         regenerateDocument(
@@ -590,6 +590,11 @@ public class NavigationSteps {
                 DocumentDetails.RECALL_DOCUMENT_DETAILS_REVOCATION_ORDER,
                 DocumentDetails.RECALL_DOCUMENT_LINK_REVOCATION_ORDER
                 );
+        actor.attemptsTo(
+                //When recreating a revocation order, it also recreates recall notification
+                Ensure.that(DocumentDetails.RECALL_DOCUMENT_VERSION_RECALL_NOTIFICATION).text().isEqualTo("version 3"),
+                Ensure.that(DocumentDetails.RECALL_DOCUMENT_DETAILS_RECALL_NOTIFICATION).text().isEqualTo("Recreating Revocation Order")
+        );
     }
 
     @Then("{word} can regenerate the reasons for recall, dossier and letter to prison")
