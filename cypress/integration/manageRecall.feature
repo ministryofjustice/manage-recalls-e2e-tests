@@ -20,22 +20,21 @@ Feature: Manage Recalls
     Then Maria completes the booking
     And Maria confirms they can't assess the recall as a band 3
 #    ### Assess the recall
-#    When Maria changes their caseworker band to 4+
-#    And Maria begins to assess the recall that they have just booked
-#    And Maria adds a new version of the Part A
-#    And Maria starts the assessment process for the recall
-#    And Maria confirms the recall length of 28 days
-#    And Maria submits the licence breach details
-#    And Maria submits the current prison details
-#    And Maria opens the recall notification
-#    And Maria records the issuance of recall notification
-#    Then Maria can see that the recall is assessed
-#    And Maria can see that they are unassigned from the recall
-#    ### confirm the details captured during the recall assessment journey are displayed
-#    When Maria navigates to view the details captured during assessment
-#    Then Maria is able to see the details captured during assessment
-#    And Maria is able to see the documents uploaded and generated during booking
-#    And Maria can regenerate the revocation order and recall notification
+    When Maria changes their caseworker band to 4+
+    And Maria begins to assess the recall that they have just booked
+    And Maria adds a new version of the Part A
+    And Maria starts the assessment process for the recall
+    And Maria confirms the recall length of 28 days
+    And Maria submits the licence breach details
+    And Maria submits the current prison details
+    And Maria opens the recall notification
+    And Maria records the issuance of recall notification
+    Then Maria can see that the recall is assessed
+    And Maria can see that they are unassigned from the recall
+    ### confirm the details captured during the recall assessment journey are displayed
+    When Maria confirms the details captured during assessment
+    And Maria is able to see the documents generated during booking
+    And Maria can regenerate the revocation order and recall notification
 #    ### create a dossier
 #    When Maria changes their caseworker band to 3
 #    And Maria navigates to the recall to create a dossier

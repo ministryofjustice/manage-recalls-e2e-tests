@@ -1,4 +1,4 @@
-import {splitIsoDateToParts} from "./utils";
+import {exactMatchIgnoreWhitespace, splitIsoDateToParts} from "./utils";
 import {recall} from "../fixtures/recall";
 
 const userName = Cypress.env('USERNAME') || 'PPUD_USER'
@@ -18,32 +18,32 @@ Cypress.Commands.add('pageHeading', () =>
     cy.get('h1').invoke('text').then(text => text.trim())
 )
 
-// cy.getIdsFromUrl().then(({ nomsNumber, recallId })=> {
-//     cy.log(`NOMS number: ${nomsNumber}`)
-//     cy.log(`Recall ID: ${recallId}`)
-// })
-Cypress.Commands.add('getIdsFromUrl', () =>
+Cypress.Commands.add('getRecallIdFromUrl', () =>
     cy.location('pathname').then(path => {
         const re = /\/persons\/(?<nomsNumber>[A-Z0-9]+)\/recalls\/(?<recallId>[^\/]+)/
         const {groups} = path.match(re)
-        return {
-            nomsNumber: groups.nomsNumber,
-            recallId: groups.recallId
-        }
+        return groups.recallId
     })
 )
 
 
 // =============================== NAVIGATE ===============================
 
+const clickElement = (label, tagName, opts = {parent: 'body'}) => {
+    if (label.qaAttr) {
+        cy.get(opts.parent).find(`${tagName}[data-qa="${label.qaAttr}"]`).click()
+    } else {
+        cy.get(opts.parent).find(tagName).contains(label).click()
+    }
+}
+
 Cypress.Commands.add('clickButton', (label, opts = {parent: 'body'}) =>
-    cy.get(opts.parent).find('button').contains(label).click()
+    clickElement(label, 'button', opts)
 )
 
-Cypress.Commands.add('clickLink', (label, opts = {parent: 'body'}) =>
-    cy.get(opts.parent).find('a').contains(label).click()
-)
-
+Cypress.Commands.add('clickLink', (label, opts = {parent: 'body'}) => {
+    clickElement(label, 'a', opts)
+})
 
 // =============================== GET TEXT ===============================
 
@@ -83,11 +83,29 @@ Cypress.Commands.add('selectRadio', (groupLabel, value, opts = {}) => {
                 cy
                     .wrap($fieldset)
                     .find(`[value=${value}]`)
-                    .invoke('attr', 'id')
-                    .then(id => cy.get(`[for="${id}"]`).click())
+                    .check()
             } else {
                 cy.wrap($fieldset).contains('label', value).click()
             }
+        })
+
+})
+
+
+Cypress.Commands.add('selectCheckboxes', (groupLabel, values, opts = {}) => {
+    cy.get(opts.parent || 'body').contains('legend', groupLabel)
+        .parent('fieldset')
+        .then($fieldset => {
+            values.forEach(value => {
+                if (opts.findByValue) {
+                    cy
+                        .wrap($fieldset)
+                        .find(`[value=${value}]`)
+                        .check()
+                } else {
+                    cy.wrap($fieldset).contains('label', value).click()
+                }
+            })
         })
 
 })
@@ -115,8 +133,6 @@ Cypress.Commands.add('selectFromDropdown', (label, option, opts = {parent: 'body
 Cypress.Commands.add('downloadPdf', (linkText) => {
     return cy.contains('a', linkText)
         .then($link => {
-            $link[0].setAttribute('download', 'download')
-            cy.wrap($link).click()
             const url = $link.attr('href')
             return cy.request({
                 url, encoding: 'base64',
@@ -165,8 +181,16 @@ Cypress.Commands.add('recallInfo', (label, opts = {}) =>
     cy
         .get(opts.parent || 'body')
         .find('.govuk-summary-list__key')
-        .contains(label)
+        .contains(exactMatchIgnoreWhitespace(label))
         .next('.govuk-summary-list__value')
         .invoke('text')
         .then(text => text.trim())
+)
+
+// ================================ GET RECALL FROM LIST ================================
+Cypress.Commands.add('getRecallItemFromList', ({recallId, columnQaAttr}, opts = {}) =>
+    cy
+        .get(opts.parent || 'body')
+        .find(`[data-qa="recall-id-${recallId}"]`)
+        .find(`[data-qa="${columnQaAttr}"]`).invoke('text')
 )

@@ -1,14 +1,15 @@
-import {Given, When} from "cypress-cucumber-preprocessor/steps";
+import {When} from "cypress-cucumber-preprocessor/steps";
 import {recall, caseworker, nomsNumber} from "../../fixtures";
 import {booleanToYesNo, formatIsoDate} from "../../support/utils";
 
-Given('Maria enters their user details', () => {
+When('Maria enters their user details', () => {
     cy.visitPage('/user-details')
     cy.fillInput('First name', caseworker.firstName, {clearExistingText: true})
     cy.fillInput('Last name', caseworker.lastName, {clearExistingText: true})
     cy.fillInput('Email address', caseworker.email, {clearExistingText: true})
     cy.fillInput('Phone number', caseworker.phoneNumber, {clearExistingText: true})
-    cy.selectRadio('Caseworker band', caseworker.caseworkerBand, {findByValue: true})
+    cy.selectRadio('Caseworker band', 'Band 3')
+    cy.uploadFile({field: 'signature', file: 'signature.jpg'})
     cy.clickButton('Save')
     cy.clickLink('Recalls')
     cy.pageHeading().should('equal', 'Recalls')
@@ -51,8 +52,8 @@ When('Maria submits the sentence, offence and release details', () => {
     cy.enterDateTimeFromRecall('sentenceExpiryDate')
     const {years, months, days} = recall.sentenceLength
     cy.fillInputGroup({'Years': years, 'Months': months, 'Days': days}, {parent: '#sentenceLength'})
-    cy.selectFromAutocomplete('Sentencing court', 'Aberdare County Court')
-    cy.selectFromAutocomplete('Releasing prison', 'Ashwell (HMP)')
+    cy.selectFromAutocomplete('Sentencing court', recall.sentencingCourtLabel)
+    cy.selectFromAutocomplete('Releasing prison', recall.lastReleasePrisonLabel)
     cy.fillInput('Index offence', recall.indexOffence)
     cy.fillInput('Booking number', recall.bookingNumber)
     cy.enterDateTimeFromRecall('lastReleaseDate')
@@ -61,7 +62,7 @@ When('Maria submits the sentence, offence and release details', () => {
 })
 
 When('Maria submits the police contact details', () => {
-    cy.selectFromAutocomplete('What is the name of the local police force?', 'Cumbria Constabulary')
+    cy.selectFromAutocomplete('What is the name of the local police force?', recall.localPoliceForceLabel)
     cy.clickButton('Continue')
 })
 
@@ -72,7 +73,7 @@ When('Maria submits any vulnerability and contraband related details for the off
         cy.selectRadio(`Do you think ${firstLastName} will bring contraband into prison?`, booleanToYesNo(recall.contraband))
     )
     cy.fillInput('Provide more detail', recall.contrabandDetail, {parent: '#conditional-contraband'})
-    cy.selectFromDropdown('MAPPA level', 'Level 1')
+    cy.selectFromDropdown('MAPPA level', recall.mappaLevelLabel)
     cy.clickButton('Continue')
 })
 
@@ -80,7 +81,7 @@ When('Maria submits the probation officer details', () => {
     cy.fillInput('Name', recall.probationOfficerName)
     cy.fillInput('Email address', recall.probationOfficerEmail)
     cy.fillInput('Phone number', recall.probationOfficerPhoneNumber)
-    cy.selectFromAutocomplete('Local Delivery Unit (LDU)', 'PS - Cumbria')
+    cy.selectFromAutocomplete('Local Delivery Unit (LDU)', recall.localDeliveryUnitLabel)
     cy.fillInput('Assistant Chief Officer (ACO) that signed-off the recall', recall.authorisingAssistantChiefOfficer)
     cy.clickButton('Continue')
 })
@@ -117,27 +118,31 @@ When('Maria can check their answers', () => {
     cy.recallInfo('Licence expiry date').should('equal', formatIsoDate(recall.licenceExpiryDate))
     cy.recallInfo('Sentence expiry date').should('equal', formatIsoDate(recall.sentenceExpiryDate))
     cy.recallInfo('Length of sentence').should('equal', '2 years 3 months') // TODO - format from recall value
-    cy.recallInfo('Sentencing court').should('equal', 'Aberdare County Court')
+    cy.recallInfo('Sentencing court').should('equal', recall.sentencingCourtLabel)
     cy.recallInfo('Index offence').should('equal', recall.indexOffence)
-    cy.recallInfo('Releasing prison').should('equal', 'Ashwell (HMP)')
+    cy.recallInfo('Releasing prison').should('equal', recall.lastReleasePrisonLabel)
     cy.recallInfo('Booking number').should('equal', recall.bookingNumber)
     cy.recallInfo('Latest release date').should('equal', formatIsoDate(recall.lastReleaseDate, {dateOnly: true}))
     cy.recallInfo('Conditional release date').should('equal', formatIsoDate(recall.conditionalReleaseDate, {dateOnly: true}))
 
     // Local police force
-    cy.recallInfo('Name', {parent: '#police'}).should('equal', 'Cumbria Constabulary')
+    cy.recallInfo('Name', {parent: '#police'}).should('equal', recall.localPoliceForceLabel)
 
     // Issues or needs
     cy.recallInfo('Vulnerability and diversity').should('equal', recall.vulnerabilityDiversityDetail)
     cy.recallInfo('Contraband').should('equal', recall.contrabandDetail)
-    cy.recallInfo('MAPPA level').should('equal', 'Level 1')
+    cy.recallInfo('MAPPA level').should('equal', recall.mappaLevelLabel)
 
     // Probation details
     cy.getText('probationOfficerName').should('equal', recall.probationOfficerName)
     cy.getText('probationOfficerEmail').should('equal', recall.probationOfficerEmail)
     cy.getText('probationOfficerPhoneNumber').should('equal', recall.probationOfficerPhoneNumber)
-    cy.recallInfo('Local Delivery Unit').should('equal', 'PS - Cumbria')
+    cy.recallInfo('Local Delivery Unit').should('equal', recall.localDeliveryUnitLabel)
     cy.recallInfo('ACO').should('equal', recall.authorisingAssistantChiefOfficer)
+
+    // Uploaded documents
+    cy.recallInfo('Part A recall report').should('equal', 'Part A.pdf')
+    cy.recallInfo('Licence').should('equal', 'Licence.pdf')
 
     // Missing documents
     cy.recallInfo('Previous convictions sheet').should('equal', 'Missing')
@@ -173,9 +178,9 @@ When('Maria completes the booking', () => {
 })
 
 When('Maria confirms they can\'t assess the recall as a band 3', () => {
-    cy.getIdsFromUrl().then(({ recallId }) => {
-        cy.clickLink('Recalls')
+    cy.getRecallIdFromUrl().as('recallId')
+    cy.clickLink('Recalls')
+    cy.get('@recallId').then(recallId => {
         cy.getElement({qaAttr: `recall-id-${recallId}`}).should('not.exist')
     })
-
 })

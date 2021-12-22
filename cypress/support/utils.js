@@ -66,3 +66,46 @@ export const padWithZeroes = (value) => {
 }
 
 export const booleanToYesNo = bool => (bool ? 'Yes' : 'No')
+
+export const exactMatchIgnoreWhitespace = str => new RegExp(`^\\s*${str}\\s*$`, 'g')
+
+export const getIsoDateForMinutesAgo = (minutes) => {
+  const now = DateTime.utc()
+  return now.minus({ minutes }).toISO()
+}
+
+export const formatPersonName = ({ firstName = '', lastName = '' }) =>
+    `${lastName?.toUpperCase()} ${firstName?.toUpperCase()}`
+
+export const formatBookingNumber = (bookingNumber) => (bookingNumber ? ` ${bookingNumber.toUpperCase()}` : '')
+
+export const getGeneratedDocFileName = ({
+                                          firstName,
+                                          lastName,
+                                          bookingNumber,
+                                          category,
+                                        }) => {
+  const details = `${formatPersonName({ firstName, lastName })}${formatBookingNumber(bookingNumber)}`
+  switch (category) {
+    case 'RECALL_NOTIFICATION':
+      return `IN CUSTODY RECALL ${details}.pdf`
+    case 'DOSSIER':
+      return `${details} RECALL DOSSIER.pdf`
+    case 'LETTER_TO_PRISON':
+      return `${details} LETTER TO PRISON.pdf`
+    case 'REVOCATION_ORDER':
+      return `${details} REVOCATION ORDER.pdf`
+    case 'REASONS_FOR_RECALL':
+      return `${details} REASONS FOR RECALL.pdf`
+    default:
+      return 'document.pdf'
+  }
+}
+
+export const splitFullName = (fullName) => {
+  const split = fullName.split(' ')
+  return {
+    firstName: split[0],
+    lastName: split[1],
+  }
+}
