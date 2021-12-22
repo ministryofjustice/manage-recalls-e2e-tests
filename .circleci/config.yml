@@ -96,9 +96,13 @@ jobs:
       - run:
           name: "Run Cypress tests [<<pipeline.parameters.e2e_environment>>]"
           command: |
+            set +e
             npm i
             npx cypress run --env USERNAME=${SERENITY_USERNAME_<<pipeline.parameters.e2e_environment>>},PASSWORD=${SERENITY_PASSWORD_<<pipeline.parameters.e2e_environment>>},NOMS_NUMBER=${NOMS_NUMBER_<<pipeline.parameters.e2e_environment>>} --config baseUrl=https://manage-recalls-<<pipeline.parameters.e2e_environment>>.hmpps.service.justice.gov.uk
+            export E2E_RESULT=$?
             npm run cypress:report
+            set -e
+            exit $E2E_RESULT
       - store_artifacts:
           path: cypress/screenshots
           destination: screenshots
