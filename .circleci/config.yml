@@ -88,6 +88,7 @@ jobs:
     resource_class: xlarge
     docker:
       - image: quay.io/hmpps/manage-recalls-e2e-tests:latest
+    working_directory: /mnt/ramdisk
     environment:
       ENVIRONMENT: <<pipeline.parameters.e2e_environment>>
     steps:
