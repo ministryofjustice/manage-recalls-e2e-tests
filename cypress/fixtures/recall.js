@@ -1,4 +1,5 @@
 export const recall = {
+  "recallType": "Fixed term",
   "agreeWithRecall": "YES",
   "agreeWithRecallDetail": "Reasons...",
   "previousConvictionMainName": "Walter Holt",
@@ -43,7 +44,7 @@ export const recall = {
   "additionalLicenceConditions": true,
   "additionalLicenceConditionsDetail": "one, two",
   "differentNomsNumber": true,
-  "differentNomsNumberDetail": "AC3408303",
+  "differentNomsNumberDetail": "A1234AA",
   "recallNotificationEmailSentDateTime": "2021-08-15T13:04:00.000Z",
   "dossierEmailSentDate": "2021-09-08",
   "hasDossierBeenChecked": true,

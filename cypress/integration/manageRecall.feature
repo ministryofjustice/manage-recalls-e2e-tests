@@ -19,7 +19,7 @@ Feature: Manage Recalls
     And Maria downloads the documents
     Then Maria completes the booking
     And Maria confirms they can't assess the recall as a band 3
-#    ### Assess the recall
+    ### Assess the recall
     When Maria changes their caseworker band to 4+
     And Maria begins to assess the recall that they have just booked
     And Maria adds a new version of the Part A
@@ -35,21 +35,19 @@ Feature: Manage Recalls
     When Maria confirms the details captured during assessment
     And Maria is able to see the documents generated during booking
     And Maria can regenerate the revocation order and recall notification
-#    ### create a dossier
-#    When Maria changes their caseworker band to 3
-#    And Maria navigates to the recall to create a dossier
-#    Then Maria is able to see the recall information before creating a dossier
-#    And Maria submits the information for the prison letter
-#    And Maria has checked and created the reasons for recall document
-#    And Maria can open the dossier and letter
-#    And Maria has reviewed the dossier
-#    And Maria records that the dossier was emailed
-#    Then Maria gets a confirmation that the dossier creation is complete
-#    And Maria can see that they are unassigned from the recall after dossier creation is complete
-#    ### confirm the details captured during the dossier creation journey are displayed
-#    And Maria navigates to view the details captured during dossier creation
-#    Then Maria is able to see the details captured during dossier creation
-#    And Maria can download the dossier email
-#    And Maria can regenerate the reasons for recall and dossier
-#    ### change history
-#    And Maria navigates to view the change history for the recall
+    ### create a dossier
+    When Maria changes their caseworker band to 3
+    And Maria navigates to the recall to create a dossier
+    Then Maria is able to see the recall information before creating a dossier
+    And Maria submits the information for the prison letter
+    And Maria has checked and created the reasons for recall document
+    And Maria can open the dossier and letter
+    And Maria has reviewed the dossier
+    And Maria records that the dossier was emailed
+    Then Maria sees confirmation that the dossier creation is complete
+    ### confirm the details captured during the dossier creation journey are displayed
+    And Maria confirms the details captured during dossier creation
+    And Maria can download the dossier email
+    And Maria can regenerate the reasons for recall and dossier
+    ### change history
+    And Maria navigates to view the change history for the recall

@@ -1,8 +1,6 @@
-import {Given, When} from "cypress-cucumber-preprocessor/steps";
-import {recall, caseworker, nomsNumber} from "../../fixtures";
+import {When} from "cypress-cucumber-preprocessor/steps";
+import {recall, caseworker} from "../../fixtures";
 import {
-    booleanToYesNo,
-    formatIsoDate,
     getGeneratedDocFileName,
     getIsoDateForMinutesAgo,
     splitFullName
@@ -19,6 +17,7 @@ When('Maria begins to assess the recall that they have just booked', () => {
     cy.get('@recallId').then(recallId => {
         cy.clickButton({qaAttr: `assess-recall-${recallId}`})
     })
+    cy.getText('recallStatus').should('equal', 'Assessment in progress')
 })
 
 When('Maria adds a new version of the Part A', () => {
@@ -71,6 +70,7 @@ When('Maria can see that the recall is assessed', () => {
         cy.pageHeading().should('equal', `Recall assessed for ${firstLastName}`)
     })
 })
+
 When('Maria can see that they are unassigned from the recall', () => {
     cy.clickLink('Assess another recall')
     cy.get('@recallId').then(recallId => {
@@ -107,8 +107,6 @@ When('Maria is able to see the documents generated during booking', () => {
 })
 
 When('Maria can regenerate the revocation order and recall notification', () => {
-    // cy.visitPage('/persons/A1234AA/recalls/8008c294-f906-41f6-a953-d0d3253acaf6/view-recall')
-    // cy.getRecallIdFromUrl().as('recallId') // TODO - REMOVE
     // recall notification
     cy.clickLink('Change Recall notification')
     cy.fillInput('Provide more detail', 'Details have changed')

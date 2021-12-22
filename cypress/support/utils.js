@@ -74,6 +74,10 @@ export const getIsoDateForMinutesAgo = (minutes) => {
   return now.minus({ minutes }).toISO()
 }
 
+export const getIsoDateForToday= () => {
+  return DateTime.utc().toISODate()
+}
+
 export const formatPersonName = ({ firstName = '', lastName = '' }) =>
     `${lastName?.toUpperCase()} ${firstName?.toUpperCase()}`
 

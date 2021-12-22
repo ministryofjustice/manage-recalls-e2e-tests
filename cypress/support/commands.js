@@ -48,7 +48,7 @@ Cypress.Commands.add('clickLink', (label, opts = {parent: 'body'}) => {
 // =============================== GET TEXT ===============================
 
 Cypress.Commands.add('getText', (qaAttr) =>
-    cy.get(`[data-qa="${qaAttr}"]`).invoke('text')
+    cy.get(`[data-qa="${qaAttr}"]`).invoke('text').then(text => text.trim())
 )
 
 // ============================ GET ELEMENT ===============================
@@ -91,7 +91,6 @@ Cypress.Commands.add('selectRadio', (groupLabel, value, opts = {}) => {
 
 })
 
-
 Cypress.Commands.add('selectCheckboxes', (groupLabel, values, opts = {}) => {
     cy.get(opts.parent || 'body').contains('legend', groupLabel)
         .parent('fieldset')
@@ -109,7 +108,6 @@ Cypress.Commands.add('selectCheckboxes', (groupLabel, values, opts = {}) => {
         })
 
 })
-
 
 // ============================ DROPDOWN / AUTOCOMPLETE ===============================
 
@@ -141,6 +139,11 @@ Cypress.Commands.add('downloadPdf', (linkText) => {
         .then((response) =>
             cy.task('readPdf', response.body).then(pdf => pdf.text)
         )
+})
+
+Cypress.Commands.add('downloadEmail', (target, opts = {parent: 'body'}) => {
+    clickElement(target, 'a', opts)
+    // TODO - check download folder
 })
 
 Cypress.Commands.add('suggestedCategoryFor', (fileName) => {
