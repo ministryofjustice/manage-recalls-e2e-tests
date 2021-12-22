@@ -84,7 +84,6 @@ jobs:
           path: target/site/serenity/
           destination: deploy-serenity-report
 
-
   deploy-check-cypress:
     resource_class: xlarge
     docker:
