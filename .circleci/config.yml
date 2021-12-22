@@ -108,6 +108,10 @@ jobs:
       - store_artifacts:
           path: cypress/reports
           destination: reports
+      - persist_to_workspace:
+          root: .
+          paths:
+            - node_modules
 
 workflows:
   version: 2
