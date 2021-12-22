@@ -1,6 +1,6 @@
 export const caseworker = {
-    "firstName": "Barry",
-    "lastName": "Caseworker",
-    "email": "barry@justice.gov.uk",
-    "phoneNumber": "07387383883"
+    "firstName": "Maria",
+    "lastName": "Badger",
+    "email": "maria.badger@thebadgers.org",
+    "phoneNumber": "09876543210"
 }
