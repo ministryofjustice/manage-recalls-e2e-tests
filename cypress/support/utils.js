@@ -3,6 +3,9 @@ import { DateTime, Settings } from 'luxon'
 Settings.throwOnInvalid = true
 
 export const europeLondon = 'Europe/London'
+const datePresentationFormat = 'd MMMM yyyy'
+const datePresentationNoYearFormat = 'd MMM'
+const timePresentationFormat = 'HH:mm'
 
 export const isDefined = (val) => typeof val !== 'undefined'
 
@@ -21,6 +24,24 @@ export const splitIsoDateToParts = (isoDate) => {
     return paddedDate
   } catch (err) {
     return undefined
+  }
+}
+
+export const formatIsoDate = (isoDate, { dateOnly } = {}) => {
+  const dateAndTimePresentationFormat = "d MMMM yyyy' at 'HH:mm"
+  if (!isDefined(isoDate)) {
+    return undefined
+  }
+  try {
+    const includeTime = isoDate.length > 10 && !dateOnly
+    const dateTime = getDateTimeInEuropeLondon(isoDate)
+
+    if (includeTime) {
+      return dateTime.toFormat(dateAndTimePresentationFormat)
+    }
+    return dateTime.toFormat(datePresentationFormat)
+  } catch (err) {
+    return ''
   }
 }
 
@@ -43,3 +64,5 @@ export const padWithZeroes = (value) => {
   const padded = value.toString()
   return padded.length < 2 ? `0${padded}` : padded
 }
+
+export const booleanToYesNo = bool => (bool ? 'Yes' : 'No')

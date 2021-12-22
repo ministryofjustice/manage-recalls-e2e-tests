@@ -1,34 +1,11 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-
-import {splitIsoDateToParts} from "./date-utils";
+import {splitIsoDateToParts} from "./utils";
 import {recall} from "../fixtures/recall";
 
 const userName = Cypress.env('USERNAME') || 'PPUD_USER'
 const password = Cypress.env('PASSWORD') || 'password123456'
+
+
+// =============================== PAGE ===============================
 
 Cypress.Commands.add('visitPage', (url) => {
     cy.visit(url)
@@ -41,11 +18,11 @@ Cypress.Commands.add('pageHeading', () =>
     cy.get('h1').invoke('text').then(text => text.trim())
 )
 
-// cy.getIds().then(({ nomsNumber, recallId })=> {
+// cy.getIdsFromUrl().then(({ nomsNumber, recallId })=> {
 //     cy.log(`NOMS number: ${nomsNumber}`)
 //     cy.log(`Recall ID: ${recallId}`)
 // })
-Cypress.Commands.add('getIds', () =>
+Cypress.Commands.add('getIdsFromUrl', () =>
     cy.location('pathname').then(path => {
         const re = /\/persons\/(?<nomsNumber>[A-Z0-9]+)\/recalls\/(?<recallId>[^\/]+)/
         const {groups} = path.match(re)
@@ -56,7 +33,9 @@ Cypress.Commands.add('getIds', () =>
     })
 )
 
-// CLICK STUFF
+
+// =============================== NAVIGATE ===============================
+
 Cypress.Commands.add('clickButton', (label, opts = {parent: 'body'}) =>
     cy.get(opts.parent).find('button').contains(label).click()
 )
@@ -65,17 +44,27 @@ Cypress.Commands.add('clickLink', (label, opts = {parent: 'body'}) =>
     cy.get(opts.parent).find('a').contains(label).click()
 )
 
+
+// =============================== GET TEXT ===============================
+
 Cypress.Commands.add('getText', (qaAttr) =>
     cy.get(`[data-qa="${qaAttr}"]`).invoke('text')
 )
 
-// COMPLETE FORM INPUTS
+// ============================ GET ELEMENT ===============================
+
+Cypress.Commands.add('getElement', ({qaAttr}) =>
+    cy.get(`[data-qa="${qaAttr}"]`)
+)
+
+// ============================ FILL FORM INPUTS ===============================
+
 Cypress.Commands.add('fillInput', (label, text, opts = {}) => {
     cy.get(opts.parent || 'body').contains('label', label)
         .invoke('attr', 'for')
         .then((id) =>
             cy.get('#' + id)
-                .then($input => opts.clearExistingText ? cy.wrap($input).clear({ force: true }).type(text) : cy.wrap($input).type(text))
+                .then($input => opts.clearExistingText ? cy.wrap($input).clear({force: true}).type(text) : cy.wrap($input).type(text))
         )
 })
 
@@ -83,26 +72,28 @@ Cypress.Commands.add('fillInputGroup', (values, opts = {parent: 'body'}) => {
     Object.entries(values).forEach(([label, text]) => cy.fillInput(label, text, opts))
 })
 
-Cypress.Commands.add('selectRadio', (groupLabel, optionLabel, opts = {parent: 'body'}) => {
-    cy.get(opts.parent).contains('legend', groupLabel)
-        .parent('fieldset')
-        .contains('label', optionLabel).click()
-})
-//
-// Cypress.Commands.add('selectRadio', (groupLabel, value, opts = {}) => {
-//     cy.get(opts.parent || 'body').contains('legend', groupLabel)
-//         .parent('fieldset')
-//         .then($fieldset => {
-//             if (opts.findByValue) {
-//                 cy.wrap($fieldset).find(`[value=${value}]`, value).click()
-//             } else {
-//                 cy.wrap($fieldset).contains('label', value).click()
-//             }
-//         })
-//
-// })
 
-// DROPDOWNS
+// ============================ RADIO BUTTONS ===============================
+
+Cypress.Commands.add('selectRadio', (groupLabel, value, opts = {}) => {
+    cy.get(opts.parent || 'body').contains('legend', groupLabel)
+        .parent('fieldset')
+        .then($fieldset => {
+            if (opts.findByValue) {
+                cy
+                    .wrap($fieldset)
+                    .find(`[value=${value}]`)
+                    .invoke('attr', 'id')
+                    .then(id => cy.get(`[for="${id}"]`).click())
+            } else {
+                cy.wrap($fieldset).contains('label', value).click()
+            }
+        })
+
+})
+
+
+// ============================ DROPDOWN / AUTOCOMPLETE ===============================
 
 // TODO - look up ID using from recall object using passed text
 Cypress.Commands.add('selectFromAutocomplete', (label, text, opts = {parent: 'body'}) => {
@@ -118,7 +109,9 @@ Cypress.Commands.add('selectFromDropdown', (label, option, opts = {parent: 'body
         })
 })
 
-// UPLOADS
+
+// ================================== UPLOAD / DOWNLOAD ===============================
+
 Cypress.Commands.add('downloadPdf', (linkText) => {
     return cy.contains('a', linkText)
         .then($link => {
@@ -142,11 +135,16 @@ Cypress.Commands.add('suggestedCategoryFor', (fileName) => {
         )
 })
 
-Cypress.Commands.add('uploadFile', ({field, file, encoding }) => {
-    cy.get(`[name="${field}"]`).attachFile({filePath:`../uploads/${file}`, encoding})
+Cypress.Commands.add('uploadFile', ({field, file, encoding}) => {
+    cy.get(`[name="${field}"]`).attachFile({filePath: `../uploads/${file}`, encoding})
 })
 
-// DATES
+Cypress.Commands.add('uploadPDF', ({field, file}) => {
+    cy.uploadFile({field, file, encoding: 'base64'})
+})
+
+// =================================== DATES ================================
+
 Cypress.Commands.add('enterDateTimeFromRecall', (propertyName) => {
     cy.enterDateTime(recall[propertyName], {parent: `#${propertyName}`})
 })
@@ -161,3 +159,14 @@ Cypress.Commands.add('enterDateTime', (isoDateTime, opts = {parent: 'body'}) => 
         cy.fillInput('Minute', minute, opts)
     }
 })
+
+// ================================ RECALL INFO ================================
+Cypress.Commands.add('recallInfo', (label, opts = {}) =>
+    cy
+        .get(opts.parent || 'body')
+        .find('.govuk-summary-list__key')
+        .contains(label)
+        .next('.govuk-summary-list__value')
+        .invoke('text')
+        .then(text => text.trim())
+)
