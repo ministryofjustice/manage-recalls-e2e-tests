@@ -179,9 +179,6 @@ When('Maria completes the booking', () => {
 })
 
 When('Maria confirms they can\'t assess the recall as a band 3', () => {
-    cy.clickLink({qaAttr: 'header-user-name'})
-    cy.selectRadio('Caseworker band', 'Band 3')
-    cy.clickButton('Save')
     cy.clickLink('Recalls')
     cy.get('@recallId').then(recallId => {
         cy.getElement({qaAttr: `recall-id-${recallId}`}).should('not.exist')
