@@ -175,10 +175,13 @@ When('Maria completes the booking', () => {
     cy.get('@firstLastName').then((firstLastName) => {
         cy.pageHeading().should('equal', `Recall booked for ${firstLastName}`)
     })
+    cy.getRecallIdFromUrl().as('recallId')
 })
 
 When('Maria confirms they can\'t assess the recall as a band 3', () => {
-    cy.getRecallIdFromUrl().as('recallId')
+    cy.clickLink({qaAttr: 'header-user-name'})
+    cy.selectRadio('Caseworker band', 'Band 3')
+    cy.clickButton('Save')
     cy.clickLink('Recalls')
     cy.get('@recallId').then(recallId => {
         cy.getElement({qaAttr: `recall-id-${recallId}`}).should('not.exist')
