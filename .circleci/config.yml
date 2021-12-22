@@ -85,7 +85,7 @@ jobs:
           destination: deploy-serenity-report
 
   deploy-check-cypress:
-    resource_class: 2xlarge
+    resource_class: xlarge
     docker:
       - image: quay.io/hmpps/manage-recalls-e2e-tests:latest
     environment:
