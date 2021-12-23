@@ -85,7 +85,7 @@ jobs:
           destination: deploy-serenity-report
 
   deploy-check-cypress:
-    resource_class: xlarge
+    resource_class: large
     docker:
       - image: quay.io/hmpps/manage-recalls-e2e-tests:latest
     working_directory: /mnt/ramdisk
@@ -112,7 +112,7 @@ jobs:
           command: |
             set +e
             npm i
-            npx cypress run --env USERNAME=${SERENITY_USERNAME_<<pipeline.parameters.e2e_environment>>},PASSWORD=${SERENITY_PASSWORD_<<pipeline.parameters.e2e_environment>>},NOMS_NUMBER=${NOMS_NUMBER_<<pipeline.parameters.e2e_environment>>} --config baseUrl=https://manage-recalls-<<pipeline.parameters.e2e_environment>>.hmpps.service.justice.gov.uk
+            npx cypress run --env USERNAME=${CYPRESS_USERNAME_<<pipeline.parameters.e2e_environment>>},PASSWORD=${CYPRESS_PASSWORD_<<pipeline.parameters.e2e_environment>>},NOMS_NUMBER=${NOMS_NUMBER_<<pipeline.parameters.e2e_environment>>} --config baseUrl=https://manage-recalls-<<pipeline.parameters.e2e_environment>>.hmpps.service.justice.gov.uk
             export E2E_RESULT=$?
             npm run cypress:report
             set -e
