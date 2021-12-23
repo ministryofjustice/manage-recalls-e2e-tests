@@ -18,7 +18,7 @@ Feature: Manage Recalls
     And Maria uploads missing documents
     And Maria downloads the documents
     Then Maria completes the booking
-#    And Maria confirms they can't assess the recall as a band 3
+    And Maria confirms they can't assess the recall as a band 3
     ### Assess the recall
     When Maria changes their caseworker band to 4+
     And Maria begins to assess the recall that they have just booked
