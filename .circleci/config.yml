@@ -14,7 +14,7 @@ parameters:
 executors:
   local-docker:
     docker:
-      - image: cimg/python:3.9
+      - image: cypress/included:9.2.0
     working_directory: ~/app
 
 jobs:

@@ -1,4 +1,4 @@
-FROM cimg/node:16.13
+FROM cypress/included:9.2.0
 
 ADD . /home/circleci/project
 
