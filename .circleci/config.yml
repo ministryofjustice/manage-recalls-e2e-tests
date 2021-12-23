@@ -84,6 +84,46 @@ jobs:
           path: target/site/serenity/
           destination: deploy-serenity-report
 
+  deploy-check-cypress:
+    resource_class: large
+    docker:
+      - image: quay.io/hmpps/manage-recalls-e2e-tests:latest
+    working_directory: /mnt/ramdisk
+    environment:
+      ENVIRONMENT: <<pipeline.parameters.e2e_environment>>
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
+            - v1-deps-{{ .Branch }}
+            - v1-deps
+      - run:
+          name: Install Dependencies
+          command: npm ci
+      - save_cache:
+          key: v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
+          # cache NPM modules and the folder with the Cypress binary
+          paths:
+            - ~/.npm
+            - ~/.cache
+      - run:
+          name: "Run Cypress tests [<<pipeline.parameters.e2e_environment>>]"
+          command: |
+            set +e
+            npm i
+            npx cypress run --env USERNAME=${CYPRESS_USERNAME_<<pipeline.parameters.e2e_environment>>},PASSWORD=${CYPRESS_PASSWORD_<<pipeline.parameters.e2e_environment>>},NOMS_NUMBER=${NOMS_NUMBER_<<pipeline.parameters.e2e_environment>>} --config baseUrl=https://manage-recalls-<<pipeline.parameters.e2e_environment>>.hmpps.service.justice.gov.uk
+            export E2E_RESULT=$?
+            npm run cypress:report
+            set -e
+            exit $E2E_RESULT
+      - store_artifacts:
+          path: cypress/screenshots
+          destination: screenshots
+      - store_artifacts:
+          path: cypress/reports
+          destination: reports
+
 workflows:
   version: 2
   dev_and_local:
@@ -92,10 +132,12 @@ workflows:
     jobs:
       - local-check
       - deploy-check
+      - deploy-check-cypress
   deploy_only:
     when: << pipeline.parameters.only_run_deploy_check >>
     jobs:
       - deploy-check
+      - deploy-check-cypress
 
   build_docker:
     when:

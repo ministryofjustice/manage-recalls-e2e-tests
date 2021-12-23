@@ -3,3 +3,12 @@ build
 .gradle
 .idea/
 *.iml
+
+node_modules
+.DS_Store
+cypress/videos
+cypress/reports
+cypress/downloads
+cypress/screenshots
+cypress/cucumber-json
+cypress-dev.sh
