@@ -41,8 +41,7 @@ jobs:
             docker logs manage-recalls-ui-e2e > logs/manage-recalls-ui.log
             docker logs manage-recalls-api-e2e > logs/manage-recalls-api.log
             docker logs localstack_manage-recalls-e2e > logs/localstack_manage-recalls-e2e.log
-            docker cp manage-recalls-e2e-test-runner:/home/circleci/project/build/reports/tests/test/ test-report
-            docker cp manage-recalls-e2e-test-runner:/home/circleci/project/target/site/serenity/ serenity-report
+            docker cp manage-recalls-e2e-test-runner:/home/circleci/project/build/cypress/reports/ test-report
             exit $exit_code
       - store_artifacts:
           path: logs
@@ -111,7 +110,6 @@ jobs:
           name: "Run Cypress tests [<<pipeline.parameters.e2e_environment>>]"
           command: |
             set +e
-            npm i
             npx cypress run --env USERNAME=${CYPRESS_USERNAME_<<pipeline.parameters.e2e_environment>>},PASSWORD=${CYPRESS_PASSWORD_<<pipeline.parameters.e2e_environment>>},NOMS_NUMBER=${NOMS_NUMBER_<<pipeline.parameters.e2e_environment>>} --config baseUrl=https://manage-recalls-<<pipeline.parameters.e2e_environment>>.hmpps.service.justice.gov.uk
             export E2E_RESULT=$?
             npm run cypress:report
