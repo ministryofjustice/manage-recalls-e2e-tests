@@ -88,11 +88,24 @@ jobs:
     resource_class: xlarge
     docker:
       - image: quay.io/hmpps/manage-recalls-e2e-tests:latest
-    working_directory: /mnt/ramdisk
     environment:
       ENVIRONMENT: <<pipeline.parameters.e2e_environment>>
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
+            - v1-deps-{{ .Branch }}
+            - v1-deps
+      - run:
+          name: Install Dependencies
+          command: npm ci
+      - save_cache:
+          key: v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
+          # cache NPM modules and the folder with the Cypress binary
+          paths:
+            - ~/.npm
+            - ~/.cache
       - run:
           name: "Run Cypress tests [<<pipeline.parameters.e2e_environment>>]"
           command: |
@@ -109,10 +122,6 @@ jobs:
       - store_artifacts:
           path: cypress/reports
           destination: reports
-      - persist_to_workspace:
-          root: .
-          paths:
-            - node_modules
 
 workflows:
   version: 2
