@@ -59,7 +59,7 @@ When('Maria has reviewed the dossier', () => {
 When('Maria records that the dossier was emailed', () => {
     cy.selectCheckboxes('I have sent the email to all recipients', ['I have sent the email to all recipients'])
     cy.enterDateTime(getIsoDateForToday())
-    cy.uploadFile({field: 'dossierEmailFileName', file: 'email.msg', encoding: 'binary'})
+    cy.uploadEmail({field: 'dossierEmailFileName', file: 'email.msg'})
     cy.clickButton('Complete dossier creation')
 })
 

@@ -9,6 +9,7 @@ const password = Cypress.env('PASSWORD') || 'password123456'
 
 Cypress.Commands.add('visitPage', (url) => {
     cy.visit(url)
+    cy.pageHeading().should('equal', 'Sign in')
     cy.get('#username').type(userName)
     cy.get('#password').type(password)
     cy.get('#submit').click()
@@ -154,12 +155,20 @@ Cypress.Commands.add('suggestedCategoryFor', (fileName) => {
         )
 })
 
-Cypress.Commands.add('uploadFile', ({field, file, encoding}) => {
-    cy.get(`[name="${field}"]`).attachFile({filePath: `../uploads/${file}`, encoding})
+Cypress.Commands.add('uploadFile', ({field, file, encoding, mimeType}) => {
+    cy.get(`[name="${field}"]`).attachFile({filePath: `../uploads/${file}`, encoding, mimeType})
 })
 
-Cypress.Commands.add('uploadPDF', ({field, file}) => {
-    cy.uploadFile({field, file, encoding: 'base64'})
+Cypress.Commands.add('uploadPDF', ({ field, file }) => {
+    cy.uploadFile({ field, file, encoding: 'base64', mimeType: 'application/pdf' })
+})
+
+Cypress.Commands.add('uploadImage', ({ field, file }) => {
+    cy.uploadFile({ field, file, encoding: 'binary', mimeType: 'image/jpeg' })
+})
+
+Cypress.Commands.add('uploadEmail', ({ field }) => {
+    cy.uploadFile({ field, file: 'email.msg', encoding: 'binary', mimeType: 'application/octet-stream' })
 })
 
 // =================================== DATES ================================
@@ -177,6 +186,12 @@ Cypress.Commands.add('enterDateTime', (isoDateTime, opts = {parent: 'body'}) => 
         cy.fillInput('Hour', hour, opts)
         cy.fillInput('Minute', minute, opts)
     }
+})
+
+Cypress.Commands.add('enterDateTimeForToday', (opts = { parent: '#main-content' }) => {
+  cy.clickButton('Today', opts)
+  cy.fillInput('Hour', '00', opts)
+  cy.fillInput('Minute', '01', opts)
 })
 
 // ================================ RECALL INFO ================================
