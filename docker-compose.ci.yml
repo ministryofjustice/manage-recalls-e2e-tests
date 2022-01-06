@@ -19,19 +19,10 @@ services:
       - /bin/bash
       - -c
       - |
-        set -x
-        pwd
-        ls -la /e2e
-        ls -la ../
-        ls -la /
-      # - cypress
-      # - run
-      # - --config
-      # - baseUrl=http://manage-recalls-ui:3000
-      # - --browser
-      # - chrome
-      # - --key
-      # - e883dffd-b644-4431-989d-0181ae34d0e6
+        cypress run \
+          --config baseUrl=http://manage-recalls-ui:3000 \
+          --browser chrome \
+          --key e883dffd-b644-4431-989d-0181ae34d0e6
     working_dir: /e2e
     networks:
       - manage-recalls-e2e
