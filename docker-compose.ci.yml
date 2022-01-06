@@ -14,10 +14,10 @@ services:
     image: "cypress/included:8.5.0"
     environment:
       - DEBUG=cypress:*
-    entrypoint:
+    entrypoint: []
+    command:
       - cypress
       - run
-    command:
       - --config baseUrl=http://manage-recalls-ui:3000
       - --browser chrome
       - --key e883dffd-b644-4431-989d-0181ae34d0e6
