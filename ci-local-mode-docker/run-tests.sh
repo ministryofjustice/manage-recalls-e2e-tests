@@ -10,16 +10,13 @@ function wait_for() {
   done
 }
 
-manage_recalls_ui_url=http://manage-recalls-ui:3000/ping
-hmpps_auth_url=http://hmpps-auth:8080/auth/health
-
-wait_for "manage-recalls-ui" "${manage_recalls_ui_url}"
-wait_for "hmpps-auth" "${hmpps_auth_url}"
+wait_for "manage-recalls-ui" "http://manage-recalls-ui:3000/ping"
+wait_for "hmpps-auth" "http://hmpps-auth:8080/auth/health"
 
 sleep 2
 
 cypress run \
-  --config baseUrl=${manage_recalls_ui_url} \
+  --config baseUrl=http://manage-recalls-ui:3000 \
   --browser chrome \
   --record \
   --key e883dffd-b644-4431-989d-0181ae34d0e6
