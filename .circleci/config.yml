@@ -54,7 +54,7 @@ jobs:
   deploy-check:
     resource_class: large
     docker:
-      - image: quay.io/hmpps/manage-recalls-e2e-tests:latest
+      - image: cypress/included:8.5.0
     working_directory: /mnt/ramdisk
     environment:
       ENVIRONMENT: <<pipeline.parameters.e2e_environment>>
@@ -78,7 +78,7 @@ jobs:
           name: "Run Cypress tests [<<pipeline.parameters.e2e_environment>>]"
           command: |
             set +e
-            npx cypress run --env USERNAME=${SERENITY_USERNAME_<<pipeline.parameters.e2e_environment>>},PASSWORD=${SERENITY_PASSWORD_<<pipeline.parameters.e2e_environment>>},NOMS_NUMBER=${NOMS_NUMBER_<<pipeline.parameters.e2e_environment>>} --config baseUrl=https://manage-recalls-<<pipeline.parameters.e2e_environment>>.hmpps.service.justice.gov.uk
+            npx cypress run --env USERNAME=${SERENITY_USERNAME_<<pipeline.parameters.e2e_environment>>},PASSWORD=${SERENITY_PASSWORD_<<pipeline.parameters.e2e_environment>>},NOMS_NUMBER=${NOMS_NUMBER_<<pipeline.parameters.e2e_environment>>} --config baseUrl=https://manage-recalls-<<pipeline.parameters.e2e_environment>>.hmpps.service.justice.gov.uk --browser chrome
             export E2E_RESULT=$?
             npm run cypress:report
             set -e
