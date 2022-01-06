@@ -148,7 +148,7 @@ When('Maria can check their answers', () => {
     cy.recallInfo('Previous convictions sheet').should('equal', 'Missing')
     cy.recallInfo('OASys report').should('equal', 'Missing')
     cy.recallInfo('Details', {parent: '#missing-documents'}).should('equal', 'Chased')
-    cy.recallInfo('Email uploaded', {parent: '#missing-documents'}).should('equal', 'email.msg')
+    cy.recallInfo('Email uploaded', {parent: '#missing-documents'}).should('equal', 'Email')
 })
 
 When('Maria uploads missing documents', () => {

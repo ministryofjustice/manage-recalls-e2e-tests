@@ -76,7 +76,7 @@ public class RecallCheckAnswersPage extends PpudPage {
     }
 
     public static class MissingDocuments {
-        public static final Target ADD_LINK_FOR_PREVIOUS_CONVICTIONS_SHEET = getTargetByDataQa("uploadedDocument-PREVIOUS_CONVICTIONS_SHEET-Change");
-        public static final Target ADD_LINK_FOR_OASYS_RISK_ASSESSMENT = getTargetByDataQa("uploadedDocument-OASYS_RISK_ASSESSMENT-Change");
+        public static final Target ADD_LINK_FOR_PREVIOUS_CONVICTIONS_SHEET = getTargetByDataQa("missingDocument-PREVIOUS_CONVICTIONS_SHEET-Change");
+        public static final Target ADD_LINK_FOR_OASYS_RISK_ASSESSMENT = getTargetByDataQa("missingDocument-OASYS_RISK_ASSESSMENT-Change");
     }
 }
