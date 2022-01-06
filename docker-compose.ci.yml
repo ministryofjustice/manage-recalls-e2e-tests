@@ -11,6 +11,7 @@ services:
       dockerfile: ci-local-mode-docker/Dockerfile
       context: .
     container_name: manage-recalls-e2e-test-runner
-    depends_on: [manage-recalls-ui]
+    depends_on:
+      - manage-recalls-ui
     networks:
       - manage-recalls-e2e
