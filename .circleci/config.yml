@@ -25,6 +25,11 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
+          name: Build and pull docker containers
+          command: |
+            pwd
+            docker-compose -f docker-compose.yml -f docker-compose.ci.yml pull
+      - run:
           name: Start docker compose and run the end-to-end tests
           command: |
             set -x
