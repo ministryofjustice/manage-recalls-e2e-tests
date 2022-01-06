@@ -40,13 +40,15 @@ jobs:
             docker logs manage-recalls-ui-e2e > logs/manage-recalls-ui.log
             docker logs manage-recalls-api-e2e > logs/manage-recalls-api.log
             docker logs localstack_manage-recalls-e2e > logs/localstack_manage-recalls-e2e.log
+            mkdir screenshots
+            docker cp manage-recalls-e2e-test-runner:/e2e/cypress/screenshots/ screenshots/
             exit $exit_code
       - store_artifacts:
           path: logs
           destination: logs
       - store_artifacts:
-          path: test-report
-          destination: local-test-summary
+          path: screenshots
+          destination: screenshots
       - run:
           name: Stop docker containers
           command: docker-compose stop
