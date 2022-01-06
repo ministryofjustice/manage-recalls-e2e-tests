@@ -1,7 +1,7 @@
-FROM quay.io/hmpps/manage-recalls-e2e-tests:latest
+FROM cypress/included:8.5.0
 
-ADD . /home/circleci/project
+RUN mkdir /e2e
 
-WORKDIR /home/circleci/project
+ADD . /e2e
 
-CMD ["/home/circleci/project/gradlew", "clean", "test", "-Denvironment=ci-local", "-Dchrome.switches=\"--enable-logging;--v=1;--no-sandbox;--disable-dev-shm-usage;--verbose\""]
+WORKDIR /e2e
