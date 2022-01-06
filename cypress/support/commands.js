@@ -8,7 +8,7 @@ const password = Cypress.env('PASSWORD') || 'password123456'
 // =============================== PAGE ===============================
 
 Cypress.Commands.add('visitPage', (url) => {
-    cy.visit(url)
+    cy.visit(url, { headers: { "Accept-Encoding": "gzip, deflate", Connection: "Keep-Alive" } })
     cy.get('#username').type(userName)
     cy.get('#password').type(password)
     cy.get('#submit').click()

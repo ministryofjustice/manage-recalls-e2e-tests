@@ -7,10 +7,14 @@ services:
       - HMPPS_AUTH_EXTERNAL_URL=http://hmpps-auth:8080/auth
 
   manage-recalls-e2e-test-runner:
-    build:
-      dockerfile: ci-local-mode-docker/Dockerfile
-      context: .
     networks:
       - manage-recalls-e2e
     container_name: manage-recalls-e2e-test-runner
     depends_on: [manage-recalls-ui]
+    image: "cypress/included:8.5.0"
+    environment:
+      - DEBUG=cypress:*
+    entrypoint: cypress run --config baseUrl=http://manage-recalls-ui:3000 --browser chrome --key e883dffd-b644-4431-989d-0181ae34d0e6
+    working_dir: /e2e
+    volumes:
+      - ./:/e2e

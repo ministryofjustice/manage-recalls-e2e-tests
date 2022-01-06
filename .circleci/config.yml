@@ -27,7 +27,6 @@ jobs:
       - run:
           name: Build and pull docker containers
           command: |
-            docker pull quay.io/hmpps/manage-recalls-e2e-tests:latest
             docker-compose -f docker-compose.yml -f docker-compose.ci.yml build --no-cache
             docker-compose -f docker-compose.yml -f docker-compose.ci.yml pull
       - run:
@@ -41,8 +40,6 @@ jobs:
             docker logs manage-recalls-ui-e2e > logs/manage-recalls-ui.log
             docker logs manage-recalls-api-e2e > logs/manage-recalls-api.log
             docker logs localstack_manage-recalls-e2e > logs/localstack_manage-recalls-e2e.log
-            docker cp manage-recalls-e2e-test-runner:/home/circleci/project/build/reports/tests/test/ test-report
-            docker cp manage-recalls-e2e-test-runner:/home/circleci/project/target/site/serenity/ serenity-report
             exit $exit_code
       - store_artifacts:
           path: logs
@@ -50,41 +47,11 @@ jobs:
       - store_artifacts:
           path: test-report
           destination: local-test-summary
-      - store_artifacts:
-          path: serenity-report
-          destination: local-serenity-report
       - run:
           name: Stop docker containers
           command: docker-compose stop
 
   deploy-check:
-    docker:
-      - image: quay.io/hmpps/manage-recalls-e2e-tests:latest
-    environment:
-      ENVIRONMENT: <<pipeline.parameters.e2e_environment>>
-    steps:
-      - checkout
-      - run:
-          name: "Run Gradle tests [<<pipeline.parameters.e2e_environment>>]"
-          command: |
-            set +e
-            SERENITY_USERNAME=${SERENITY_USERNAME_<<pipeline.parameters.e2e_environment>>} \
-            SERENITY_PASSWORD=${SERENITY_PASSWORD_<<pipeline.parameters.e2e_environment>>} \
-            NOMS_NUMBER=${NOMS_NUMBER_<<pipeline.parameters.e2e_environment>>} \
-            ./gradlew test -Denvironment=${ENVIRONMENT}
-            export E2E_RESULT=$?
-            set -e
-
-            ./report-results-to-dashboard.sh
-            exit $E2E_RESULT
-      - store_artifacts:
-          path: build/reports/tests/test
-          destination: deploy-test-summary
-      - store_artifacts:
-          path: target/site/serenity/
-          destination: deploy-serenity-report
-
-  deploy-check-cypress:
     resource_class: large
     docker:
       - image: quay.io/hmpps/manage-recalls-e2e-tests:latest
@@ -111,8 +78,7 @@ jobs:
           name: "Run Cypress tests [<<pipeline.parameters.e2e_environment>>]"
           command: |
             set +e
-            npm i
-            npx cypress run --env USERNAME=${CYPRESS_USERNAME_<<pipeline.parameters.e2e_environment>>},PASSWORD=${CYPRESS_PASSWORD_<<pipeline.parameters.e2e_environment>>},NOMS_NUMBER=${NOMS_NUMBER_<<pipeline.parameters.e2e_environment>>} --config baseUrl=https://manage-recalls-<<pipeline.parameters.e2e_environment>>.hmpps.service.justice.gov.uk
+            npx cypress run --env USERNAME=${SERENITY_USERNAME_<<pipeline.parameters.e2e_environment>>},PASSWORD=${SERENITY_PASSWORD_<<pipeline.parameters.e2e_environment>>},NOMS_NUMBER=${NOMS_NUMBER_<<pipeline.parameters.e2e_environment>>} --config baseUrl=https://manage-recalls-<<pipeline.parameters.e2e_environment>>.hmpps.service.justice.gov.uk
             export E2E_RESULT=$?
             npm run cypress:report
             set -e
@@ -132,12 +98,10 @@ workflows:
     jobs:
       - local-check
       - deploy-check
-      - deploy-check-cypress
   deploy_only:
     when: << pipeline.parameters.only_run_deploy_check >>
     jobs:
       - deploy-check
-      - deploy-check-cypress
 
   build_docker:
     when:

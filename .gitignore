@@ -11,4 +11,5 @@ cypress/reports
 cypress/downloads
 cypress/screenshots
 cypress/cucumber-json
+cypress/logs
 cypress-dev.sh
