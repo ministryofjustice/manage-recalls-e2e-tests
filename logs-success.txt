@@ -1,0 +1,25 @@
+  cypress:network:agent addRequest called { isHttps: false, href: 'http://localhost:3000/user-details' } +549ms
+  cypress:network:agent addRequest called { isHttps: false, href: 'http://localhost:3000/login' } +33ms
+
+  cypress:network:agent addRequest called { isHttps: false, href: 'http://localhost:9090/auth/oauth/authorize?response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin%2Fcallback&state=XRurDySRwafma37bOgOAOvhc&client_id=ppud-ui-client' } +14ms
+  cypress:network:agent addRequest called { isHttps: false, href: 'http://localhost:9090/auth/sign-in?redirect_uri=http://localhost:3000/login/callback' } +59ms
+  cypress:network:agent addRequest called { isHttps: false, href: 'http://localhost:3000/user-details' } +3s
+  cypress:network:agent addRequest called { isHttps: false, href: 'http://localhost:3000/login' } +7ms
+
+  cypress:network:agent addRequest called { isHttps: false, href: 'http://localhost:9090/auth/oauth/authorize?response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin%2Fcallback&state=NXHmm7pNYs21I5w2Qc81HaEi&client_id=ppud-ui-client' } +9ms
+  cypress:network:agent addRequest called { isHttps: false, href: 'http://localhost:9090/auth/sign-in?redirect_uri=http://localhost:3000/login/callback' } +12ms
+
+  cypress:network:agent addRequest called { isHttps: false, href: 'http://localhost:9090/auth/sign-in' } +351ms
+  cypress:network:agent addRequest called { isHttps: false, href: 'http://localhost:9090/auth/oauth/authorize?response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin%2Fcallback&state=NXHmm7pNYs21I5w2Qc81HaEi&client_id=ppud-ui-client' } +1s
+  cypress:network:agent addRequest called { isHttps: false, href: 'http://localhost:3000/login/callback?code=Ruwlx0&state=NXHmm7pNYs21I5w2Qc81HaEi' } +105ms
+  cypress:network:agent addRequest called { isHttps: false, href: 'http://localhost:3000/user-details' } +263ms
+  
+{
+  authorizationURL: 'http://localhost:9090/auth/oauth/authorize',
+  tokenURL: 'http://localhost:9090/auth/oauth/token',
+  clientID: 'ppud-ui-client',
+  clientSecret: 'clientsecret',
+  callbackURL: 'http://localhost:3000/login/callback',
+  state: true,
+  customHeaders: { Authorization: 'Basic cHB1ZC11aS1jbGllbnQ6Y2xpZW50c2VjcmV0' }
+}

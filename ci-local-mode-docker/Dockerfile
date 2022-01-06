@@ -6,9 +6,8 @@ ADD . /e2e
 
 WORKDIR /e2e
 
-ENV DEBUG=cypress:*
-
-RUN npm ci
+RUN apt-get -y install redis-tools && \
+  npm ci
 
 ENTRYPOINT []
 CMD ["./ci-local-mode-docker/run-tests.sh"]

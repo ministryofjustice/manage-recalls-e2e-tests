@@ -1,0 +1,25 @@
+  cypress:network:agent addRequest called { isHttps: false, href: 'http://manage-recalls-ui:3000/user-details' } +678ms
+  cypress:network:agent addRequest called { isHttps: false, href: 'http://manage-recalls-ui:3000/login' } +58ms
+
+  cypress:network:agent addRequest called { isHttps: false, href: 'http://hmpps-auth:8080/auth/oauth/authorize?response_type=code&redirect_uri=http%3A%2F%2Fmanage-recalls-ui%3A3000%2Flogin%2Fcallback&state=S8FEfKZj7r8JRpqC6ppzAzSM&client_id=ppud-ui-client' } +18ms
+  cypress:network:agent addRequest called { isHttps: false, href: 'http://hmpps-auth:8080/auth/sign-in?redirect_uri=http://manage-recalls-ui:3000/login/callback' } +113ms
+  cypress:network:agent addRequest called { isHttps: false, href: 'http://manage-recalls-ui:3000/user-details' } +4s
+  cypress:network:agent addRequest called { isHttps: false, href: 'http://manage-recalls-ui:3000/login' } +16ms
+
+  cypress:network:agent addRequest called { isHttps: false, href: 'http://hmpps-auth:8080/auth/oauth/authorize?response_type=code&redirect_uri=http%3A%2F%2Fmanage-recalls-ui%3A3000%2Flogin%2Fcallback&state=iGLZRVYtCjzVr498W1GRZb9A&client_id=ppud-ui-client' } +19ms
+  cypress:network:agent addRequest called { isHttps: false, href: 'http://hmpps-auth:8080/auth/sign-in?redirect_uri=http://manage-recalls-ui:3000/login/callback' } +19ms
+
+  cypress:network:agent addRequest called { isHttps: false, href: 'http://hmpps-auth:8080/auth/sign-in' } +563ms
+  cypress:network:agent addRequest called { isHttps: false, href: 'http://hmpps-auth:8080/auth/oauth/authorize?response_type=code&redirect_uri=http%3A%2F%2Fmanage-recalls-ui%3A3000%2Flogin%2Fcallback&state=iGLZRVYtCjzVr498W1GRZb9A&client_id=ppud-ui-client' } +1s
+  cypress:network:agent addRequest called { isHttps: false, href: 'http://manage-recalls-ui:3000/login/callback?code=-IwIeu&state=iGLZRVYtCjzVr498W1GRZb9A' } +129ms
+  cypress:network:agent addRequest called { isHttps: false, href: 'http://manage-recalls-ui:3000/autherror' } +29ms
+
+{
+authorizationURL: 'http://hmpps-auth:8080/auth/oauth/authorize',
+tokenURL: 'http://hmpps-auth:8080/auth/oauth/token',
+clientID: 'ppud-ui-client',
+clientSecret: 'clientsecret',
+callbackURL: 'http://manage-recalls-ui:3000/login/callback',
+state: true,
+customHeaders: { Authorization: 'Basic cHB1ZC11aS1jbGllbnQ6Y2xpZW50c2VjcmV0' }
+}

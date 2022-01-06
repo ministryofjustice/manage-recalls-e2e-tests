@@ -5,6 +5,9 @@ services:
     environment:
       - INGRESS_URL=http://manage-recalls-ui:3000
       - HMPPS_AUTH_EXTERNAL_URL=http://hmpps-auth:8080/auth
+    working_dir: /ui
+    volumes:
+      - ../manage-recalls-ui:/ui
 
   manage-recalls-e2e-test-runner:
     build:
@@ -13,6 +16,5 @@ services:
     container_name: manage-recalls-e2e-test-runner
     depends_on:
       - manage-recalls-ui
-      - hmpps-auth
     networks:
       - manage-recalls-e2e

@@ -10,10 +10,21 @@ function wait_for() {
   done
 }
 
+function wait_for_redis() {
+  echo "Waiting for redis to be available..."
+  until [ "$(redis-cli -h redis -p 6379 ping)" == "PONG" ]; do
+    echo '.'
+    sleep 5
+  done
+}
+
+wait_for_redis
 wait_for "manage-recalls-ui" "http://manage-recalls-ui:3000/ping"
 wait_for "hmpps-auth" "http://hmpps-auth:8080/auth/health"
 
 sleep 2
+
+export DEBUG="cypress:network:*"
 
 cypress run \
   --config baseUrl=http://manage-recalls-ui:3000 \
