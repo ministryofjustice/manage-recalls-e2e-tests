@@ -102,7 +102,6 @@ When('Maria can regenerate the reasons for recall and dossier', () => {
 })
 
 When('Maria navigates to view the change history for the recall', () => {
-    cy.visitPage('http://localhost:3000/persons/A1234AA/recalls/b605354b-8848-4c66-9efe-0a5a867594ea/view-recall')
     cy.clickLink('View change history')
     cy.clickLink({qaAttr: 'viewHistory-PREVIOUS_CONVICTIONS_SHEET'})
     cy.pageHeading().should('equal', 'Uploaded document change history')
