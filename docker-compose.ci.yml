@@ -16,6 +16,11 @@ services:
       - DEBUG=cypress:*
     entrypoint: []
     command:
+      - ls
+      - -la
+      - "&&"
+      - pwd
+      - "&&"
       - cypress
       - run
       - --config
