@@ -14,8 +14,10 @@ services:
     image: "cypress/included:8.5.0"
     environment:
       - DEBUG=cypress:*
-    entrypoint: ls -la /e2e
-#    cypress run --config baseUrl=http://manage-recalls-ui:3000 --browser chrome --key e883dffd-b644-4431-989d-0181ae34d0e6
+    command:
+      - --config baseUrl=http://manage-recalls-ui:3000
+      - --browser chrome
+      - --key e883dffd-b644-4431-989d-0181ae34d0e6
     working_dir: /e2e
     volumes:
       - /home/circleci/app:/e2e
