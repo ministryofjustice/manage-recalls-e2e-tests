@@ -15,4 +15,5 @@ sleep 2
 cypress run \
   --config baseUrl=$manage_recalls_url \
   --browser chrome \
+  --record \
   --key e883dffd-b644-4431-989d-0181ae34d0e6
