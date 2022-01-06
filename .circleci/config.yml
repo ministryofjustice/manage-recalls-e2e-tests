@@ -102,13 +102,3 @@ workflows:
     when: << pipeline.parameters.only_run_deploy_check >>
     jobs:
       - deploy-check
-
-  build_docker:
-    when:
-      not: << pipeline.parameters.only_run_deploy_check >>
-    jobs:
-      - build-docker-approval:
-          type: approval
-      - hmpps/build_docker:
-          requires: [build-docker-approval]
-          dockerfile_dir: circle-ci-browser-docker
