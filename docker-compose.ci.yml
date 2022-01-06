@@ -13,5 +13,6 @@ services:
     container_name: manage-recalls-e2e-test-runner
     depends_on:
       - manage-recalls-ui
+      - hmpps-auth
     networks:
       - manage-recalls-e2e
