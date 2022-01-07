@@ -108,7 +108,7 @@ When('Maria navigates to view the change history for the recall', () => {
     cy.recallInfo('Document', { parent: '[data-qa="uploaded-1-row"]'}).should('equal', 'Pre Cons.pdf')
     cy.recallInfo('Document', { parent: '[data-qa="missing-1-row"]'}).should('equal', 'Missing')
     cy.recallInfo('Details', { parent: '[data-qa="missing-1-row"]'}).should('equal', 'Chased')
-    cy.recallInfo('Email uploaded', { parent: '[data-qa="missing-1-row"]'}).should('equal', 'Email')
+    cy.recallInfo('Email uploaded', { parent: '[data-qa="missing-1-row"]'}).should('equal', 'email.msg')
     cy.go('back')
     cy.clickLink({qaAttr: 'viewHistory-DOSSIER'})
     cy.pageHeading().should('equal', 'Generated document change history')
