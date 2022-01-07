@@ -770,8 +770,11 @@ public class NavigationSteps {
                 Ensure.thatTheCurrentPage().title().isEqualTo(ChangeHistoryPage.TITLE),
                 Ensure.that(ChangeHistoryPage.UPLOADED_PART_A_USER).text().isEqualTo("Maria Badger"),
                 Ensure.that(ChangeHistoryPage.GENERATED_DOSSIER_LINK).isDisplayed(),
-                Click.on(ChangeHistoryPage.UPLOADED_PART_A_HISTORY_LINK),
-                Ensure.thatTheCurrentPage().title().isEqualTo(ChangeHistoryDocumentCategoryPage.TITLE)
+                Click.on(ChangeHistoryPage.UPLOADED_PRE_CONS_HISTORY_LINK),
+                Ensure.thatTheCurrentPage().title().isEqualTo(ChangeHistoryDocumentCategoryPage.TITLE),
+                Ensure.that(ChangeHistoryDocumentCategoryPage.MISSING_DOCUMENT_TEXT).text().isEqualTo("Missing"),
+                Ensure.that(ChangeHistoryDocumentCategoryPage.MISSING_DOCUMENT_DETAILS).text().isEqualTo("Document is missing as not received from probation yet"),
+                Ensure.that(ChangeHistoryDocumentCategoryPage.EMAIL_UPLOADED).text().isEqualTo("email.msg")
         );
     }
 
