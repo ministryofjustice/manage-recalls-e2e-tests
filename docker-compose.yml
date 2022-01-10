@@ -70,7 +70,7 @@ services:
     networks:
       - manage-recalls-e2e
     container_name: manage-recalls-api-e2e
-    depends_on: [gotenberg, fake-prisoner-offender-search-api, fake-prison-register-api, fake-court-register-api, postgres, localstack]
+    depends_on: [gotenberg, fake-prisoner-offender-search-api, fake-prison-register-api, fake-court-register-api, postgres, minio]
     ports:
       - "9091:8080"
     healthcheck:
@@ -88,7 +88,7 @@ services:
       - POSTGRES_DBNAME=manage_recalls
       - POSTGRES_USERNAME=ppud_user
       - POSTGRES_PASSWORD=secret
-      - AWS_LOCAL_ENDPOINT=http://localstack:4566
+      - AWS_LOCAL_ENDPOINT=http://minio:4566
 
   manage-recalls-ui:
     image: quay.io/hmpps/manage-recalls-ui:latest
@@ -125,17 +125,20 @@ services:
       - POSTGRES_USER=ppud_user
       - POSTGRES_DB=manage_recalls
 
-  localstack:
-    build: ./localstack-docker
+  minio:
+    image: minio/minio:latest
+    container_name: minio_manage-recalls-e2e
     ports:
-      - "4566:4566"
-      - "4571:4571"
+      - 4566:4566
+      - 9001:9001
+    environment:
+      - MINIO_ROOT_USER=ANYTHING_GOES
+      - MINIO_ROOT_PASSWORD=ANYTHING_GOES
+      - MINIO_DEFAULT_BUCKETS=test-manage-recalls-api
     networks:
       - manage-recalls-e2e
-    container_name: localstack_manage-recalls-e2e
-    environment:
-      - SERVICES=s3
-      - INIT_SCRIPTS_PATH=/tmp/localstack
+    entrypoint: sh
+    command: -c 'mkdir -p /data/test-manage-recalls-api && /opt/bin/minio server /data --address ":4566" --console-address ":9001"'
 
   clamav:
     image: ghcr.io/ministryofjustice/hmpps-clamav-freshclammed
