@@ -40,7 +40,7 @@ jobs:
             mkdir logs
             docker logs manage-recalls-ui-e2e > logs/manage-recalls-ui.log
             docker logs manage-recalls-api-e2e > logs/manage-recalls-api.log
-            docker logs localstack_manage-recalls-e2e > logs/localstack_manage-recalls-e2e.log
+            docker logs minio_manage-recalls-e2e > logs/minio_manage-recalls-e2e.log
             docker cp manage-recalls-e2e-test-runner:/home/circleci/project/build/reports/tests/test/ test-report
             docker cp manage-recalls-e2e-test-runner:/home/circleci/project/target/site/serenity/ serenity-report
             exit $exit_code
@@ -95,14 +95,14 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
-            - v1-deps-{{ .Branch }}
-            - v1-deps
+            - v2-deps-{{ .Branch }}-{{ checksum "package.json" }}
+            - v2-deps-{{ .Branch }}
+            - v2-deps
       - run:
           name: Install Dependencies
           command: npm ci
       - save_cache:
-          key: v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
+          key: v2-deps-{{ .Branch }}-{{ checksum "package.json" }}
           # cache NPM modules and the folder with the Cypress binary
           paths:
             - ~/.npm

@@ -11,27 +11,26 @@ readonly MANAGE_RECALLS_UI_LOG_FILE="/tmp/${MANAGE_RECALLS_UI_NAME}-e2e.log"
 readonly MANAGE_RECALLS_API_LOG_FILE="/tmp/${MANAGE_RECALLS_API_NAME}-e2e.log"
 readonly LOCAL_DOCKER_COMPOSE_FILE=docker-compose.yml
 
-docker compose -f $LOCAL_DOCKER_COMPOSE_FILE build localstack
-docker compose -f $LOCAL_DOCKER_COMPOSE_FILE pull redis gotenberg hmpps-auth fake-prisoner-offender-search-api fake-prison-register-api fake-court-register-api postgres localstack
-docker compose -f $LOCAL_DOCKER_COMPOSE_FILE up redis gotenberg hmpps-auth fake-prisoner-offender-search-api fake-prison-register-api fake-court-register-api postgres localstack --remove-orphans -d
+docker compose -f $LOCAL_DOCKER_COMPOSE_FILE pull redis gotenberg hmpps-auth fake-prisoner-offender-search-api fake-prison-register-api fake-court-register-api postgres minio
+docker compose -f $LOCAL_DOCKER_COMPOSE_FILE up redis gotenberg hmpps-auth fake-prisoner-offender-search-api fake-prison-register-api fake-court-register-api postgres minio --remove-orphans -d
 
 npx kill-port 3000 8080
 
 pushd ${MANAGE_RECALLS_UI_DIR}
 npm run clean
 npm run build
-npm run start:e2e >> "${MANAGE_RECALLS_UI_LOG_FILE}" 2>&1 &
+npm run start:e2e >>"${MANAGE_RECALLS_UI_LOG_FILE}" 2>&1 &
 popd
 
 pushd ${MANAGE_RECALLS_API_DIR}
-SPRING_PROFILES_ACTIVE=dev ./gradlew bootRun >> "${MANAGE_RECALLS_API_LOG_FILE}" 2>&1 &
+SPRING_PROFILES_ACTIVE=dev ./gradlew bootRun >>"${MANAGE_RECALLS_API_LOG_FILE}" 2>&1 &
 popd
 
 printf "\nChecking hmpps-auth is running..."
 curl -s -4 --retry 40 --retry-delay 2 --retry-connrefused http://localhost:9090/auth/health/ping
 
 printf "\nChecking ${MANAGE_RECALLS_API_NAME} is running..."
-curl -s -4 --retry 20 --retry-delay 1 --retry-connrefused http://localhost:8080/health/ping
+curl -s -4 --retry 20 --retry-delay 2 --retry-connrefused http://localhost:8080/health/ping
 
 printf "\nChecking ${MANAGE_RECALLS_UI_NAME} is running..."
 curl -s -4 --retry 20 --retry-delay 1 --retry-connrefused http://localhost:3000/ping
