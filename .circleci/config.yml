@@ -18,11 +18,6 @@ jobs:
     resource_class: large
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v2-deps-{{ .Branch }}-{{ checksum "package.json" }}
-            - v2-deps-{{ .Branch }}
-            - v2-deps
       - run:
           name: Build and pull docker containers
           command: |
@@ -33,9 +28,19 @@ jobs:
           command: |
             set -x
             docker-compose up -d
+      - restore_cache:
+          keys:
+            - v2-deps-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}
+            - v2-deps-{{ arch }}-{{ .Branch }}
+            - v2-deps
       - run:
           name: Install NPM dependencies
           command: npm ci
+      - save_cache:
+          key: v2-deps-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}
+          paths:
+            - ~/.npm
+            - ~/.cache
       - run:
           name: Check HMPPS Auth is running
           command: |
