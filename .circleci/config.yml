@@ -51,7 +51,7 @@ jobs:
               -timeout 60s
       - run:
           name: Run Cypress tests
-          command: npx cypress run --config baseUrl=http://localhost:3000 --record false --key e883dffd-b644-4431-989d-0181ae34d0e6
+          command: npx cypress run --config baseUrl=http://localhost:3000 --record false --key e883dffd-b644-4431-989d-0181ae34d0e6 --browser chrome
       - run:
           name: "Failure: output container logs to console"
           command: |
