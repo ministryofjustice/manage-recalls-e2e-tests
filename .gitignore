@@ -3,7 +3,7 @@ build
 .gradle
 .idea/
 *.iml
-
+bin/
 node_modules
 .DS_Store
 cypress/videos
