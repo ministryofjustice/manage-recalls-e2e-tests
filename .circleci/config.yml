@@ -28,19 +28,9 @@ jobs:
           command: |
             set -x
             docker-compose up -d
-      - restore_cache:
-          keys:
-            - v2-deps-{{ .Branch }}-{{ checksum "package.json" }}
-            - v2-deps-{{ .Branch }}
-            - v2-deps
       - run:
           name: Install NPM dependencies
           command: npm ci
-      - save_cache:
-          key: v2-deps-{{ .Branch }}-{{ checksum "package.json" }}
-          paths:
-            - ~/.npm
-            - ~/.cache
       - run:
           name: Check HMPPS Auth is running
           command: |
