@@ -1,43 +1,12 @@
 # manage-recalls-e2e-tests
 A suite of tests to validate end-to-end functionality (PPUD Replacement)
 
-## One-off setup
-
-### Java
-
-Version 16 is required:
-
-```
-brew install openjdk@16
-```
-
-### Chromedriver
-A version of Chromedriver is required. One matching your local version of chrome is recommended.
-
-You can install either with Homebrew:
-```
-brew install chromedriver
-```
-
-Check - and allow to execute - with:
-```
-`which chromedriver` --version
-```
-This will likely result in a security prompt warning of downloaded software.
-You will need to allow it to execute via `System Preferences | Security and Privacy | General | Allow ...`.
-To upgrade with `brew`: `brew upgrade chromedriver`. 
-You can check your Chrome version via `Help | About ...`.  
-
-Then verify that it's on your path with `which chromedriver`.
-
-or, [download chromedriver](https://chromedriver.chromium.org/downloads). The `chromedriver` executable needs to be on your PATH (e.g. `export PATH=~/dev/chromedriver/:$PATH`)
-
 ### Source for login credentials
 
 Unfortunately at present it is necessary to switch credentials between local auth and auth in the dev environment.
 
 As e2e tests include login, valid user credentials and the necessary user role are required. 
-Credentials for the tests are loaded from environment variables "SERENITY_USERNAME" and "SERENITY_PASSWORD", 
+Credentials for the tests are loaded from environment variables "CYPRESS_USERNAME" and "CYPRESS_PASSWORD", 
 for local testing the code will default to the `PPUD_USER` when no env vars are specified, but if you want to run
 against dev you should add your own credentials as env vars.
 
@@ -64,9 +33,9 @@ There are multiple options for running these tests from your local:
 In this scenario the login credentials must be valid on the target environment. Hence, your env vars
 needs to reflect the same.  See above. Also, need to add a valid noms number if running against preprod/prod. Use `NOMS_NUMBER=X1234YZ`.
 
-Given valid credentials, to run against one of our deployed environments use simply:
+Given valid credentials, to run against dev environment use:
 ```
-./gradlew test -Denvironment={dev/preprod/prod}
+npx cypress open --env NOMS_NUMBER=A7826DY,USERNAME=[USER],PASSWORD=[PASSWORD] --config baseUrl=https://manage-recalls-dev.hmpps.service.justice.gov.uk
 ```
 
 It is also necessary for any data requirements implicit in the tests to be satisfied by our dependencies as deployed,
@@ -109,7 +78,7 @@ login once `hmpps-auth-e2e` has logged e.g. `Completed initialization`.
 
 Then, to run the tests versus local services, e.g. at a separate command prompt run:
 ```
-./gradlew clean test 
+npm run cypress
 ```
 
 ### 3. Run tests while developing the UI and/or API locally
@@ -120,7 +89,7 @@ The script `build.sh` achieves this by:
 * running `start-local-services.sh`
   * building and starting `manage-recalls-ui` and `manage-recalls-api` from   cloned source, as local siblings of this project,
   * starting remaining dependencies from docker images, and,
-* executing the e2e tests via gradle, as above (`./gradlew clean test`).
+* executing the e2e tests
 * running `stop-local-services.sh`
   * stops all the components started by `start-local-services.sh`
 
@@ -138,24 +107,18 @@ services running for these tests, which will then need to be stopped.
 
 Then use e.g. `./build.sh` as described above.
 
-### Running tests in Intellij
-To run or debug tests within IntelliJ/Idea it should be sufficient, 
-in edit of your Run Config template for `Cucumber Java`, to
-set `Main class` to `net.serenitybdd.cucumber.cli.Main`, set glue to `cucumber.steps`, 
-set the feature path to `manage-recalls-e2e-tests/src/test/resources/features`, 
-and set the classpath to `manage-recalls-e2e-tests.test`
-
-There is a run file in the `e2e.run` directory which can be opened and run via Intellij/Idea
-and achieves the above.
-
 ### Local login
 However you have started the services locally, if successful you should be able to login
 and investigate the UI/service at [manage-recalls](http://localhost:3000)
 with `PPUD_USER` / `password123456`. This user has the `MANAGE_RECALLS` role that allows access
 to the service.  See above re. valid credentials for other environments.
 
-### Viewing the reports
-Running the above command will produce a Serenity test report in the `target/site/serenity` directory. Go take a look!
+### Viewing a report
+```
+npm run cypress:report
+```
+
+will output a report to cypress/reports
 
 ## Autofill form filler chrome extension
 The `autofill-extension-import.csv` file in the repo root can be imported into the Autofill chrome extension
@@ -165,11 +128,3 @@ The `autofill-extension-import.csv` file in the repo root can be imported into t
 
 ## Changing the person that E2E tests run against
 On dev or pre-prod, change the NOMS_NUMBER_dev or NOMS_NUMBER_preprod env var accordingly ([CircleCI page](https://app.circleci.com/settings/project/github/ministryofjustice/manage-recalls-e2e-tests/environment-variables?return-to=https%3A%2F%2Fapp.circleci.com%2Fpipelines%2Fgithub%2Fministryofjustice%2Fmanage-recalls-e2e-tests))
-
-## Troubleshooting
-
-### Chromedriver version does not support Chrome version (running locally)
-
-1. upgrade chromedriver eg `brew upgrade chromedriver`
-2. on Mac, allow the updated file to be opened - `xattr -d com.apple.quarantine /usr/local/bin/chromedriver`
-

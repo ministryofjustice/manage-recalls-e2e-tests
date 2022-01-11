@@ -7,7 +7,7 @@ readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ./start-local-services.sh
 
 echo "Running e2e tests..."
-./gradlew clean test
+npm run cypress:ci
 
 ./stop-local-services.sh
 
