@@ -763,11 +763,32 @@ public class NavigationSteps {
         );
     }
 
-    @When("{word} navigates to view the change history for the recall")
-    public void navigateToChangeHistory(String caseworker) {
+    @When("{word} navigates to view the change history overview for the recall")
+    public void navigateToChangeHistoryOverview(String caseworker) {
         theActorCalled(caseworker).attemptsTo(
                 Click.on(CreateDossierDetails.VIEW_CHANGE_HISTORY_BUTTON),
-                Ensure.thatTheCurrentPage().title().isEqualTo(ChangeHistoryPage.TITLE),
+                Ensure.thatTheCurrentPage().title().isEqualTo(ChangeHistoryPage.TITLE)
+        );
+    }
+
+    @When("{word} navigates to view the change history details page for the fields for the recall")
+    public void navigateToChangeHistoryDetailsForFields(String caseworker) {
+        theActorCalled(caseworker).attemptsTo(
+                Click.on(ChangeHistoryPage.VIEW_HISTORY_LINK_FOR_CURRENT_PRISON),
+                Ensure.that(ChangeHistoryDetailsForFieldsPage.CURRENT_PRISON).text().isEqualTo("Ashfield (HMP)"),
+                Ensure.that(ChangeHistoryDetailsForFieldsPage.DATE_TME_THE_CURRENT_PRISON_WAS_UPDATED).text().isNotBlank(),
+                Ensure.that(ChangeHistoryDetailsForFieldsPage.USER_WHO_UPDATED_THE_CURRENT_PRISON).text().isEqualTo("Maria Badger")
+        );
+    }
+
+    @When("{word} navigates to view the change history details page for the documents for the recall")
+    public void navigateToChangeHistoryDetailsForDocuments(String caseworker) {
+        //The BACK button is not implemented yet on change history overview page and change history details pages, Hence directly browsing to the change history overview page
+        // Jira tickets for the above - https://dsdmoj.atlassian.net/browse/PUD-1271 https://dsdmoj.atlassian.net/browse/PUD-1272
+        new ChangeHistoryPage().open("open.changehistoryoverview", withParameters(sessionVariableCalled(NOMS_NUMBER), theActorCalled(caseworker).recall("RECALL_ID")));
+
+        theActorCalled(caseworker).attemptsTo(
+                Click.on(ChangeHistoryPage.DOCUMENTS_TAB),
                 Ensure.that(ChangeHistoryPage.UPLOADED_PART_A_USER).text().isEqualTo("Maria Badger"),
                 Ensure.that(ChangeHistoryPage.GENERATED_DOSSIER_LINK).isDisplayed(),
                 Click.on(ChangeHistoryPage.UPLOADED_PRE_CONS_HISTORY_LINK),

@@ -56,6 +56,4 @@ Feature: Manage Recalls
     And Maria can download the dossier email
     And Maria can regenerate the reasons for recall, dossier and letter to prison
     ### change history
-    And Maria navigates to view the change history overview for the recall
-    And Maria navigates to view the change history details page for the fields for the recall
-    And Maria navigates to view the change history details page for the documents for the recall
+    And Maria navigates to view the change history for the recall
