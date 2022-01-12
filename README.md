@@ -38,6 +38,8 @@ Given valid credentials, to run against dev environment use:
 npx cypress open --env NOMS_NUMBER=A7826DY,USERNAME=[USER],PASSWORD=[PASSWORD] --config baseUrl=https://manage-recalls-dev.hmpps.service.justice.gov.uk
 ```
 
+Change the NOMS_NUMBER var if running against pre-prod.
+
 It is also necessary for any data requirements implicit in the tests to be satisfied by our dependencies as deployed,
 e.g. the `prisoner-offender-search-api`.  How that will work across environments is TBD but `dev` and `pre-prod`
 are *not* maintained by similar processes, so we must expect data differences and data change over time between them.
