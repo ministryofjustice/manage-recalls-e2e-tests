@@ -11,83 +11,69 @@ parameters:
     type: string
     default: dev
 
-executors:
-  local-docker:
-    docker:
-      - image: cimg/python:3.9
-    working_directory: ~/app
-
 jobs:
   local-check:
-    executor: local-docker
+    machine:
+      image: ubuntu-2004:202111-02
+    resource_class: large
     steps:
       - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
       - run:
           name: Build and pull docker containers
           command: |
-            docker pull quay.io/hmpps/manage-recalls-e2e-tests:latest
-            docker-compose -f docker-compose.yml -f docker-compose.ci.yml build --no-cache
-            docker-compose -f docker-compose.yml -f docker-compose.ci.yml pull
+            docker-compose build
+            docker-compose pull
       - run:
-          name: Start docker compose and run the end-to-end tests
+          name: Docker compose
           command: |
             set -x
-            docker-compose -f docker-compose.yml -f docker-compose.ci.yml up --exit-code-from manage-recalls-e2e-test-runner manage-recalls-e2e-test-runner || {
-              export exit_code=1
-            }
-            mkdir logs
-            docker logs manage-recalls-ui-e2e > logs/manage-recalls-ui.log
-            docker logs manage-recalls-api-e2e > logs/manage-recalls-api.log
-            docker logs minio_manage-recalls-e2e > logs/minio_manage-recalls-e2e.log
-            docker cp manage-recalls-e2e-test-runner:/home/circleci/project/build/reports/tests/test/ test-report
-            docker cp manage-recalls-e2e-test-runner:/home/circleci/project/target/site/serenity/ serenity-report
-            exit $exit_code
-      - store_artifacts:
-          path: logs
-          destination: logs
-      - store_artifacts:
-          path: test-report
-          destination: local-test-summary
-      - store_artifacts:
-          path: serenity-report
-          destination: local-serenity-report
+            docker-compose up -d
+      - restore_cache:
+          keys:
+            - v2-deps-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}
+            - v2-deps-{{ arch }}-{{ .Branch }}
+            - v2-deps-{{ arch }}
+      - run:
+          name: Install NPM dependencies
+          command: npm ci
+      - save_cache:
+          key: v2-deps-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}
+          paths:
+            - ~/.npm
+            - ~/.cache
+      - run:
+          name: Check HMPPS Auth is running
+          command: |
+            docker run --network host \
+              docker.io/jwilder/dockerize \
+              -wait http://localhost:9090/auth/health \
+              -wait-retry-interval 2s \
+              -timeout 60s
+      - run:
+          name: Run Cypress tests
+          command: npx cypress run --config baseUrl=http://localhost:3000 --record false --key e883dffd-b644-4431-989d-0181ae34d0e6 --browser chrome
+      - run:
+          name: "Failure: output container logs to console"
+          command: |
+            docker-compose logs
+          when: on_fail
+      - run:
+          name: Cypress report
+          command: npm run cypress:report
       - run:
           name: Stop docker containers
           command: docker-compose stop
+      - store_artifacts:
+          path: cypress/screenshots
+          destination: screenshots
+      - store_artifacts:
+          path: cypress/reports
+          destination: reports
 
   deploy-check:
-    docker:
-      - image: quay.io/hmpps/manage-recalls-e2e-tests:latest
-    environment:
-      ENVIRONMENT: <<pipeline.parameters.e2e_environment>>
-    steps:
-      - checkout
-      - run:
-          name: "Run Gradle tests [<<pipeline.parameters.e2e_environment>>]"
-          command: |
-            set +e
-            SERENITY_USERNAME=${SERENITY_USERNAME_<<pipeline.parameters.e2e_environment>>} \
-            SERENITY_PASSWORD=${SERENITY_PASSWORD_<<pipeline.parameters.e2e_environment>>} \
-            NOMS_NUMBER=${NOMS_NUMBER_<<pipeline.parameters.e2e_environment>>} \
-            ./gradlew test -Denvironment=${ENVIRONMENT}
-            export E2E_RESULT=$?
-            set -e
-
-            ./report-results-to-dashboard.sh
-            exit $E2E_RESULT
-      - store_artifacts:
-          path: build/reports/tests/test
-          destination: deploy-test-summary
-      - store_artifacts:
-          path: target/site/serenity/
-          destination: deploy-serenity-report
-
-  deploy-check-cypress:
     resource_class: large
     docker:
-      - image: quay.io/hmpps/manage-recalls-e2e-tests:latest
+      - image: cypress/included:9.2.1
     working_directory: /mnt/ramdisk
     environment:
       ENVIRONMENT: <<pipeline.parameters.e2e_environment>>
@@ -103,7 +89,6 @@ jobs:
           command: npm ci
       - save_cache:
           key: v2-deps-{{ .Branch }}-{{ checksum "package.json" }}
-          # cache NPM modules and the folder with the Cypress binary
           paths:
             - ~/.npm
             - ~/.cache
@@ -111,8 +96,7 @@ jobs:
           name: "Run Cypress tests [<<pipeline.parameters.e2e_environment>>]"
           command: |
             set +e
-            npm i
-            npx cypress run --env USERNAME=${CYPRESS_USERNAME_<<pipeline.parameters.e2e_environment>>},PASSWORD=${CYPRESS_PASSWORD_<<pipeline.parameters.e2e_environment>>},NOMS_NUMBER=${NOMS_NUMBER_<<pipeline.parameters.e2e_environment>>} --config baseUrl=https://manage-recalls-<<pipeline.parameters.e2e_environment>>.hmpps.service.justice.gov.uk
+            npx cypress run --env USERNAME=${CYPRESS_USERNAME_<<pipeline.parameters.e2e_environment>>},PASSWORD=${CYPRESS_PASSWORD_<<pipeline.parameters.e2e_environment>>},NOMS_NUMBER=${NOMS_NUMBER_<<pipeline.parameters.e2e_environment>>} --config baseUrl=https://manage-recalls-<<pipeline.parameters.e2e_environment>>.hmpps.service.justice.gov.uk --browser chrome
             export E2E_RESULT=$?
             npm run cypress:report
             set -e
@@ -132,19 +116,7 @@ workflows:
     jobs:
       - local-check
       - deploy-check
-      - deploy-check-cypress
   deploy_only:
     when: << pipeline.parameters.only_run_deploy_check >>
     jobs:
       - deploy-check
-      - deploy-check-cypress
-
-  build_docker:
-    when:
-      not: << pipeline.parameters.only_run_deploy_check >>
-    jobs:
-      - build-docker-approval:
-          type: approval
-      - hmpps/build_docker:
-          requires: [build-docker-approval]
-          dockerfile_dir: circle-ci-browser-docker
