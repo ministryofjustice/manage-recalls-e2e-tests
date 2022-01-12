@@ -53,7 +53,7 @@ When('Maria submits the current prison details', () => {
 })
 
 When('Maria opens the recall notification', () => {
-    cy.downloadPdf('Recall notification (opens in new tab)').should('contain', '28 DAY FIXED TERM RECALL')
+    cy.downloadPdf('Recall notification').should('contain', '28 DAY FIXED TERM RECALL')
     cy.clickLink('Continue')
 })
 
