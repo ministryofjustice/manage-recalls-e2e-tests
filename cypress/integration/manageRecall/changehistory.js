@@ -6,7 +6,7 @@ When('Maria navigates to view the change history overview for the recall', () =>
     cy.pageHeading().should('equal', 'Change history')
 })
 
-When('Maria navigates to view the change history details page for the fields for the recall', () => {
+When('Maria navigates to view the change history details page for the current prison field for the recall', () => {
     cy.clickLink({qaAttr: 'viewHistory-currentPrison'})
     cy.getText('value').should('equal', 'Bedford (HMP)')
     cy.getText('dateAndTime').should('not.be.empty')
@@ -16,7 +16,7 @@ When('Maria navigates to view the change history details page for the fields for
 
 When('Maria navigates to view the change history details page for the documents for the recall', () => {
     cy.go('back')
-    cy.get('#tab_documents').click()
+    cy.clickLink('Documents')
     cy.clickLink({qaAttr: 'viewHistory-PREVIOUS_CONVICTIONS_SHEET'})
     cy.pageHeading().should('equal', 'Uploaded document change history')
     cy.recallInfo('Document', { parent: '[data-qa="uploaded-1-row"]'}).should('equal', 'Pre Cons.pdf')
