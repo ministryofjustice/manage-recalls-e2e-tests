@@ -101,15 +101,3 @@ When('Maria can regenerate the reasons for recall and dossier', () => {
     cy.recallInfo('Reasons for recall', { parent: '#generated-documents'}).should('contain', '(version 2)')
 })
 
-When('Maria navigates to view the change history for the recall', () => {
-    cy.clickLink('View change history')
-    cy.clickLink({qaAttr: 'viewHistory-PREVIOUS_CONVICTIONS_SHEET'})
-    cy.pageHeading().should('equal', 'Uploaded document change history')
-    cy.recallInfo('Document', { parent: '[data-qa="uploaded-1-row"]'}).should('equal', 'Pre Cons.pdf')
-    cy.recallInfo('Document', { parent: '[data-qa="missing-1-row"]'}).should('equal', 'Missing')
-    cy.recallInfo('Details', { parent: '[data-qa="missing-1-row"]'}).should('equal', 'Chased')
-    cy.recallInfo('Email uploaded', { parent: '[data-qa="missing-1-row"]'}).should('equal', 'email.msg')
-    cy.go('back')
-    cy.clickLink({qaAttr: 'viewHistory-DOSSIER'})
-    cy.pageHeading().should('equal', 'Generated document change history')
-})
