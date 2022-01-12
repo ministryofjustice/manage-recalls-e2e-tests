@@ -78,7 +78,7 @@ Processes started with the above will log to the terminal from which docker is r
 Note: starting particularly `hmpps-auth` can take several minutes; you should be able to
 login once `hmpps-auth-e2e` has logged e.g. `Completed initialization`.
 
-Then, to run the tests versus local services, e.g. at a separate command prompt run:
+Then, to run the tests in headful mode versus local services, e.g. at a separate command prompt run:
 ```
 npm run cypress
 ```
@@ -91,7 +91,7 @@ The script `build.sh` achieves this by:
 * running `start-local-services.sh`
   * building and starting `manage-recalls-ui` and `manage-recalls-api` from   cloned source, as local siblings of this project,
   * starting remaining dependencies from docker images, and,
-* executing the e2e tests
+* executing the e2e tests in headless mode
 * running `stop-local-services.sh`
   * stops all the components started by `start-local-services.sh`
 
