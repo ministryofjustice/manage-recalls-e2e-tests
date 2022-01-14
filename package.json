@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "cypress": "rm -rf cypress/downloads && npx cypress open",
-    "cypress:ci": "npx cypress run --browser chrome --record false --key e883dffd-b644-4431-989d-0181ae34d0e6",
+    "cypress:ci": "npx cypress run --browser chrome",
     "cypress:report": "node cypress/cucumber-report.js"
   },
   "author": "",
