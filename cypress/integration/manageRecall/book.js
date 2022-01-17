@@ -2,14 +2,22 @@ import {When} from "cypress-cucumber-preprocessor/steps";
 import {recall, caseworker, nomsNumber} from "../../fixtures";
 import {booleanToYesNo, formatIsoDate} from "../../support/utils";
 
-When('Maria enters their user details', () => {
+When('Maria signs in', () => {
     cy.visitPage('/user-details')
+})
+
+When('Maria signs out', () => {
+    cy.clickLink('Sign out')
+    cy.pageHeading().should('equal', 'Sign in')
+})
+
+When('Maria enters their user details', () => {
     cy.fillInput('First name', caseworker.firstName, {clearExistingText: true})
     cy.fillInput('Last name', caseworker.lastName, {clearExistingText: true})
     cy.fillInput('Email address', caseworker.email, {clearExistingText: true})
     cy.fillInput('Phone number', caseworker.phoneNumber, {clearExistingText: true})
     cy.selectRadio('Caseworker band', 'Band 3')
-    cy.uploadFile({field: 'signature', file: 'signature.jpg'})
+    cy.uploadImage({field: 'signature', file: 'signature.jpg'})
     cy.clickButton('Save')
     cy.clickLink('Recalls')
     cy.pageHeading().should('equal', 'Recalls')
@@ -42,7 +50,7 @@ When('Maria enters the pre-convictions name', () => {
 
 When('Maria submits the date and email of the recall request received from probation service', () => {
     cy.enterDateTimeFromRecall('recallEmailReceivedDateTime')
-    cy.uploadFile({field: 'recallRequestEmailFileName', file: 'email.msg', encoding: 'binary'})
+    cy.uploadEmail({field: 'recallRequestEmailFileName', file: 'email.msg'})
     cy.clickButton('Continue')
 })
 
@@ -95,7 +103,7 @@ When('Maria uploads some documents', () => {
 })
 
 When('Maria submits the reason for missing documents', () => {
-    cy.uploadFile({field: 'missingDocumentsEmailFileName', file: 'email.msg', encoding: 'binary'})
+    cy.uploadEmail({field: 'missingDocumentsEmailFileName', file: 'email.msg'})
     cy.fillInput('Provide more detail', 'Chased', {clearExistingText: true})
     cy.clickButton('Continue')
     cy.pageHeading().should('equal', 'Check the details before booking this recall')

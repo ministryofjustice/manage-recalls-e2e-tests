@@ -1,8 +1,9 @@
 Feature: Manage Recalls
 
   Scenario: Book and Assess a recall
-    Given Maria enters their user details
-    When Maria searches for the environment specific NOMS number
+    Given Maria signs in
+    And Maria enters their user details
+    And Maria searches for the environment specific NOMS number
     ### Book a recall
     And Maria clicks on the Book a recall link
     And Maria enters the licence name
@@ -53,3 +54,4 @@ Feature: Manage Recalls
     And Maria navigates to view the change history overview for the recall
     And Maria navigates to view the change history details page for the current prison field for the recall
     And Maria navigates to view the change history details page for the documents for the recall
+    And Maria signs out
