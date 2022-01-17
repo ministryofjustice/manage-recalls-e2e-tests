@@ -197,3 +197,12 @@ Cypress.Commands.add('getRecallItemFromList', ({recallId, columnQaAttr}, opts = 
         .find(`[data-qa="recall-id-${recallId}"]`)
         .find(`[data-qa="${columnQaAttr}"]`).invoke('text')
 )
+
+// ====================================== TABLES ================================
+Cypress.Commands.add('getRowValuesFromTable', ({ rowQaAttr }, opts = {}) =>
+    cy
+        .get(opts.parent || 'body')
+        .find(`[data-qa="${rowQaAttr}"]`)
+        .find('.govuk-table__cell')
+        .then($els => Cypress.$.makeArray($els).map(el => el.innerText.trim()))
+)
