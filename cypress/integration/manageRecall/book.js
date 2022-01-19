@@ -34,6 +34,13 @@ When('Maria clicks on the Book a recall link', () => {
     cy.clickButton('Book a recall')
 })
 
+When('Maria enters the custody status', () => {
+    cy.get('@firstLastName').then((firstLastName) =>
+        cy.selectRadio(`Is ${firstLastName} in custody?`, 'Yes')
+    )
+    cy.clickButton('Continue')
+})
+
 When('Maria enters the licence name', () => {
     cy.get('@firstLastName').then((firstLastName) =>
         cy.selectRadio(`How does ${firstLastName}\'s name appear on the licence?`, recall.licenceNameCategory, {findByValue: true})
