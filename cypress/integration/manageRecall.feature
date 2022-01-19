@@ -6,6 +6,7 @@ Feature: Manage Recalls
     And Maria searches for the environment specific NOMS number
     ### Book a recall
     And Maria clicks on the Book a recall link
+    And Maria enters the custody status
     And Maria enters the licence name
     And Maria enters the pre-convictions name
     And Maria submits the date and email of the recall request received from probation service
