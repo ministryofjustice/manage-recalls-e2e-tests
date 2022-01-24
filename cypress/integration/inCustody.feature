@@ -1,6 +1,6 @@
-Feature: Manage Recalls
+Feature: In custody
 
-  Scenario: Book and Assess a recall
+  Scenario: Book and assess a recall
     Given Maria signs in
     And Maria enters their user details
     And Maria searches for the environment specific NOMS number
@@ -8,7 +8,7 @@ Feature: Manage Recalls
     And Maria clicks on the Book a recall link
     And Maria enters the licence name
     And Maria enters the pre-convictions name
-    And Maria enters the custody status
+    And Maria confirms the person is in custody
     And Maria submits the date and email of the recall request received from probation service
     And Maria submits the sentence, offence and release details
     And Maria submits the police contact details

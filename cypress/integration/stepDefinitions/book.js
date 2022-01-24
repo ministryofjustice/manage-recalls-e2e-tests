@@ -34,9 +34,23 @@ When('Maria clicks on the Book a recall link', () => {
     cy.clickButton('Book a recall')
 })
 
-When('Maria enters the custody status', () => {
+When('Maria confirms the person is in custody', () => {
     cy.get('@firstLastName').then((firstLastName) =>
         cy.selectRadio(`Is ${firstLastName} in custody?`, 'Yes')
+    )
+    cy.clickButton('Continue')
+})
+
+When('Maria confirms the person is not in custody', () => {
+    cy.get('@firstLastName').then((firstLastName) =>
+        cy.selectRadio(`Is ${firstLastName} in custody?`, 'No')
+    )
+    cy.clickButton('Continue')
+})
+
+When('Maria confirms the person has a last known address', () => {
+    cy.get('@firstLastName').then((firstLastName) =>
+        cy.selectRadio(`Does ${firstLastName} have a last known address?`, 'Yes')
     )
     cy.clickButton('Continue')
 })
@@ -81,7 +95,7 @@ When('Maria submits the police contact details', () => {
     cy.clickButton('Continue')
 })
 
-When('Maria submits any vulnerability and contraband related details for the offender', () => {
+const issuesNeeds = () => {
     cy.selectRadio('Are there any vulnerability issues or diversity needs?', booleanToYesNo(recall.vulnerabilityDiversity))
     cy.fillInput('Provide more detail', recall.vulnerabilityDiversityDetail, {parent: '#conditional-vulnerabilityDiversity'})
     cy.get('@firstLastName').then((firstLastName) =>
@@ -89,6 +103,17 @@ When('Maria submits any vulnerability and contraband related details for the off
     )
     cy.fillInput('Provide more detail', recall.contrabandDetail, {parent: '#conditional-contraband'})
     cy.selectFromDropdown('MAPPA level', recall.mappaLevelLabel)
+}
+
+When('Maria submits any vulnerability and contraband related details for the offender', () => {
+   issuesNeeds()
+    cy.clickButton('Continue')
+})
+
+When('Maria submits any vulnerability, contraband and arrest issues for the offender', () => {
+    cy.selectRadio('Are there any arrest issues?', booleanToYesNo(recall.arrestIssues))
+    cy.fillInput('Provide more detail', recall.arrestIssuesDetail, {parent: '#conditional-arrestIssues'})
+    issuesNeeds()
     cy.clickButton('Continue')
 })
 
@@ -109,6 +134,10 @@ When('Maria uploads some documents', () => {
     cy.clickButton('Continue')
 })
 
+When('Maria does not upload any documents', () => {
+    cy.clickButton('Continue')
+})
+
 When('Maria submits the reason for missing documents', () => {
     cy.uploadEmail({field: 'missingDocumentsEmailFileName', file: 'email.msg'})
     cy.fillInput('Provide more detail', 'Chased', {clearExistingText: true})
@@ -122,6 +151,9 @@ When('Maria can check their answers', () => {
         cy.recallInfo('Name on pre-cons').should('equal', firstLastName)
     })
     cy.recallInfo('NOMIS').should('equal', nomsNumber)
+
+    // Custody details
+    cy.recallInfo('Custody status').should('equal', 'In custody')
 
     // Recall details
     cy.recallInfo('Recall email received').should('equal', formatIsoDate(recall.recallEmailReceivedDateTime))
@@ -164,6 +196,12 @@ When('Maria can check their answers', () => {
     cy.recallInfo('OASys report').should('equal', 'Missing')
     cy.recallInfo('Details', {parent: '#missing-documents'}).should('equal', 'Chased')
     cy.recallInfo('Email uploaded', {parent: '#missing-documents'}).should('equal', 'email.msg')
+})
+
+When('Maria can check their answers for the not in custody recall', () => {
+    // Custody details
+    cy.recallInfo('Custody status').should('equal', 'Not in custody')
+    cy.recallInfo('Arrest issues').should('equal', recall.arrestIssuesDetail)
 })
 
 When('Maria uploads missing documents', () => {

@@ -22,6 +22,8 @@ export const recall = {
   "contrabandDetail": "Intention to smuggle drugs",
   "vulnerabilityDiversity": true,
   "vulnerabilityDiversityDetail": "Various...",
+  "arrestIssues": true,
+  "arrestIssuesDetail": "Detail...",
   "mappaLevel": "LEVEL_1",
   "mappaLevelLabel": "Level 1",
   "sentenceLength": {

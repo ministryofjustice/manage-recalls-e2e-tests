@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "cypress": "rm -rf cypress/downloads && npx cypress open",
-    "cypress:ci": "npx cypress run --browser chrome",
+    "cypress:ci": "npx cypress run --browser chrome --spec ./cypress/integration/*.feature",
     "cypress:report": "node cypress/cucumber-report.js"
   },
   "author": "",
@@ -19,7 +19,8 @@
     "pdf-parse": "^1.1.1"
   },
   "cypress-cucumber-preprocessor": {
-    "nonGlobalStepDefinitions": true,
+    "step_definitions": "cypress/integration/stepDefinitions/",
+    "nonGlobalStepDefinitions": false,
     "cucumberJson": {
       "generate": true,
       "outputFolder": "cypress/cucumber-json",
