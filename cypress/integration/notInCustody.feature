@@ -1,6 +1,6 @@
-Feature: Manage a recall for offender who are not in custody
+Feature: Not in custody
 
-  Scenario: Book a recall for a person not in custody
+  Scenario: Book and assess a recall
     Given Maria signs in
     And Maria enters their user details
     And Maria searches for the environment specific NOMS number

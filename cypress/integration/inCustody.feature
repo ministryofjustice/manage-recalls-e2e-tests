@@ -1,6 +1,6 @@
-Feature: Manage Recalls
+Feature: In custody
 
-  Scenario: Book and Assess a recall for a person in custody
+  Scenario: Book and assess a recall
     Given Maria signs in
     And Maria enters their user details
     And Maria searches for the environment specific NOMS number
