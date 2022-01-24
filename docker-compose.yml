@@ -112,6 +112,7 @@ services:
       - SYSTEM_CLIENT_ID=system-client-id
       - SYSTEM_CLIENT_SECRET=system-client-secret
       - SESSION_SECRET=session-secret
+      - OS_PLACES_API_KEY=test
 
   postgres:
     image: postgres:13-alpine
