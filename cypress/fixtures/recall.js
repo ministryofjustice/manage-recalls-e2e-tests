@@ -31,6 +31,19 @@ export const recall = {
     "months": 3,
     "days": 0
   },
+  "lastKnownAddressOption": "YES",
+  "lastKnownAddresses": [
+    {
+      "line1": "345 Porchester Road",
+      "line2": "Southsea",
+      "town": "Portsmouth",
+      "postcode": "PO1 4OY",
+      "index": 0,
+      "lastKnownAddressId": "345",
+      "createdByUserName": "Bobby Badger",
+      "createdDateTime": "2021-03-12T12:24:03.000Z"
+    }
+  ],
   "bookingNumber": "12345C",
   "probationOfficerName": "Dave Angel",
   "probationOfficerPhoneNumber": "07473739388",
