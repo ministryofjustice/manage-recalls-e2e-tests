@@ -60,11 +60,12 @@ When('Maria looks up an address by postcode', () => {
     cy.clickButton('Find')
     cy.selectFromDropdown('16 addresses', 'THE OAKS, LYNN ROAD, WALTON HIGHWAY, WISBECH, PE14 7DF')
     cy.clickButton('Continue')
+    cy.go('back')
 })
 
 When('Maria types an address', () => {
-    cy.go('back')
-    cy.clickLink("I can't find the address in the list")
+    // cy.clickLink("I can't find the address in the list")
+    cy.clickLink("I can't find the postcode")
     const address = recall.lastKnownAddresses[0]
     cy.fillInput('Address line 1', address.line1)
     cy.fillInput('Address line 2', address.line2)

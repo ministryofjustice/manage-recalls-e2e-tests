@@ -8,7 +8,7 @@ Feature: Not in custody
     And Maria enters the pre-convictions name
     And Maria confirms the person is not in custody
     And Maria confirms the person has a last known address
-    And Maria looks up an address by postcode
+#    And Maria looks up an address by postcode
     And Maria types an address
     And Maria submits the date and email of the recall request received from probation service
     And Maria submits the sentence, offence and release details
