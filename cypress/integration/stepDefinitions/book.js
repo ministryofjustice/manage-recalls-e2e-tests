@@ -222,11 +222,11 @@ When('Maria can check their answers for the not in custody recall', () => {
     cy.recallInfo('Custody status').should('equal', 'Not in custody')
     cy.recallInfo('Arrest issues').should('equal', recall.arrestIssuesDetail)
     const address = recall.lastKnownAddresses[0]
-    cy.recallInfo('Address 1').should('contain', 'THE OAKS, LYNN ROAD')
-    cy.recallInfo('Address 2').should('contain', address.line1)
-    cy.recallInfo('Address 2').should('contain', address.line2)
-    cy.recallInfo('Address 2').should('contain', address.town)
-    cy.recallInfo('Address 2').should('contain', address.postcode)
+    // cy.recallInfo('Address 1').should('contain', 'THE OAKS, LYNN ROAD')
+    cy.recallInfo('Address').should('contain', address.line1)
+    cy.recallInfo('Address').should('contain', address.line2)
+    cy.recallInfo('Address').should('contain', address.town)
+    cy.recallInfo('Address').should('contain', address.postcode)
 })
 
 When('Maria uploads missing documents', () => {
