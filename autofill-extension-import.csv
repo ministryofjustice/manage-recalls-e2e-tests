@@ -76,6 +76,15 @@ r136,0,"^missingDocumentsDetail$","Chased the missing documents on 6/12/21
 Email uploaded","/persons/[^\/]+/recalls/[^\/]+/missing-documents",0,c1
 r137,0,"^localPoliceForceIdInput$","City of London Police","/persons/[^\/]+/recalls/[^\/]+/prison-police",0,c1
 r138,2,"^localPoliceForceId$","""city-of-london""","/persons/[^\/]+/recalls/[^\/]+/prison-police",0,c1
+r140,3,"^arrestIssues$","10","/persons/[^\/]+/recalls/[^\/]+/issues-needs",0,c1
+r144,0,"^arrestIssuesDetail$","Arrest issue detail...","/persons/[^\/]+/recalls/[^\/]+/issues-needs",0,c1
+r145,3,"^inCustody$","10","/persons/[^\/]+/recalls/[^\/]+/custody-status",0,c1
+r146,3,"^lastKnownAddressOption$","10","/persons/[^\/]+/recalls/[^\/]+/last-known-address",0,c1
+r147,0,"^postcode$","E151JZ","/persons/[^\/]+/recalls/[^\/]+/find-address",0,c1
+r148,0,"^line1$","345 Porchester Road","/persons/[^\/]+/recalls/[^\/]+/address-manual",0,c1
+r149,0,"^line2$","Southsea","/persons/[^\/]+/recalls/[^\/]+/address-manual",0,c1
+r150,0,"^town$","Portsmouth","/persons/[^\/]+/recalls/[^\/]+/address-manual",0,c1
+r151,0,"^postcode$","PO1 4OY","/persons/[^\/]+/recalls/[^\/]+/address-manual",0,c1
 ### AUTOFILL OPTIONS ###,,,,,,
 advanced,"[]",,,,,
 exceptions,"[]",,,,,
