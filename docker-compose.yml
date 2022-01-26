@@ -65,6 +65,17 @@ services:
       test: [ "CMD", "curl", "-f", "http://localhost:8080/health/ping" ]
     command: --verbose --local-response-templating
 
+  fake-os-places-api:
+    image: quay.io/hmpps/ppud-fake-os-places-api:latest
+    networks:
+      - manage-recalls-e2e
+    container_name: fake-os-places-api-e2e
+    ports:
+      - "9096:8080"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/health/ping" ]
+    command: --verbose --local-response-templating
+
   manage-recalls-api:
     image: quay.io/hmpps/manage-recalls-api:latest
     networks:
@@ -95,7 +106,7 @@ services:
     networks:
       - manage-recalls-e2e
     container_name: manage-recalls-ui-e2e
-    depends_on: [redis, hmpps-auth, manage-recalls-api]
+    depends_on: [redis, hmpps-auth, manage-recalls-api, fake-os-places-api]
     ports:
       - "3000:3000"
     healthcheck:
@@ -112,7 +123,8 @@ services:
       - SYSTEM_CLIENT_ID=system-client-id
       - SYSTEM_CLIENT_SECRET=system-client-secret
       - SESSION_SECRET=session-secret
-      - OS_PLACES_API_KEY=test
+      - OS_PLACES_API_URL=http://fake-os-places-api:8080/search/places/v1
+      - OS_PLACES_API_KEY=key
 
   postgres:
     image: postgres:13-alpine
