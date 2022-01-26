@@ -55,7 +55,17 @@ When('Maria confirms the person has a last known address', () => {
     cy.clickButton('Continue')
 })
 
-When('Maria enters the last known address', () => {
+When('Maria looks up an address by postcode', () => {
+    cy.fillInput('Postcode', 'PE14 7DF')
+    cy.clickButton('Find')
+    cy.selectFromDropdown('16 addresses', 'THE OAKS, LYNN ROAD, WALTON HIGHWAY, WISBECH, PE14 7DF')
+    cy.clickButton('Continue')
+    cy.go('back')
+})
+
+When('Maria types an address', () => {
+    // cy.clickLink("I can't find the address in the list")
+    cy.clickLink("I can't find the postcode")
     const address = recall.lastKnownAddresses[0]
     cy.fillInput('Address line 1', address.line1)
     cy.fillInput('Address line 2', address.line2)
@@ -212,6 +222,7 @@ When('Maria can check their answers for the not in custody recall', () => {
     cy.recallInfo('Custody status').should('equal', 'Not in custody')
     cy.recallInfo('Arrest issues').should('equal', recall.arrestIssuesDetail)
     const address = recall.lastKnownAddresses[0]
+    // cy.recallInfo('Address 1').should('contain', 'THE OAKS, LYNN ROAD')
     cy.recallInfo('Address').should('contain', address.line1)
     cy.recallInfo('Address').should('contain', address.line2)
     cy.recallInfo('Address').should('contain', address.town)
