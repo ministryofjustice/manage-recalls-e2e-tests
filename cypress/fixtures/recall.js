@@ -34,14 +34,16 @@ export const recall = {
   "lastKnownAddressOption": "YES",
   "lastKnownAddresses": [
     {
+      "fullAddress": "1, LYNN ROAD, WALTON HIGHWAY, WISBECH, PE14 7DF",
+      "line1": "1, LYNN ROAD",
+      "town": "WISBECH",
+      "postcode": "PE14 7DF"
+    },
+    {
       "line1": "345 Porchester Road",
       "line2": "Southsea",
       "town": "Portsmouth",
-      "postcode": "PO1 4OY",
-      "index": 0,
-      "lastKnownAddressId": "345",
-      "createdByUserName": "Bobby Badger",
-      "createdDateTime": "2021-03-12T12:24:03.000Z"
+      "postcode": "PO1 4OY"
     }
   ],
   "bookingNumber": "12345C",
