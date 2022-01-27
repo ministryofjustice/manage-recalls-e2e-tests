@@ -60,16 +60,25 @@ When('Maria looks up an address by postcode', () => {
     cy.clickButton('Find')
     cy.selectFromDropdown('16 addresses', '1, LYNN ROAD, WALTON HIGHWAY, WISBECH, PE14 7DF')
     cy.clickButton('Continue')
-    cy.go('back')
 })
 
 When('Maria types an address', () => {
-    cy.clickLink("I can't find the address in the list")
+    cy.pageHeading().should('equal', 'Address added')
+    cy.selectRadio('Do you want to add another address?', 'Yes')
+    cy.clickButton('Continue')
+    cy.clickLink("I can't find the postcode")
     const address = recall.lastKnownAddresses[0]
     cy.fillInput('Address line 1', address.line1)
     cy.fillInput('Address line 2', address.line2)
     cy.fillInput('Town or city', address.town)
     cy.fillInput('Postcode', address.postcode)
+    cy.clickButton('Continue')
+})
+
+When('Maria can see the addresses listed', () => {
+    cy.recallInfo('Address 1').should('contain', '1, LYNN ROAD')
+    cy.recallInfo('Address 2').should('contain', '345 Porchester Road')
+    cy.selectRadio('Do you want to add another address?', 'No')
     cy.clickButton('Continue')
 })
 
