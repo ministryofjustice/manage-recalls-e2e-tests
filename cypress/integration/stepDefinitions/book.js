@@ -82,6 +82,18 @@ When('Maria can see the addresses listed', () => {
     cy.clickButton('Continue')
 })
 
+When('Maria deletes one of the last known addresses', () => {
+    cy.clickLink("Change address 1")
+    cy.pageHeading().should('equal', 'Last known addresses')
+    cy.clickButton("Delete address 1")
+    const address = recall.lastKnownAddresses[0]
+    cy.recallInfo('Address').should('contain', address.line1)
+    cy.selectRadio('Do you want to add another address?', 'No')
+    cy.clickButton('Continue')
+    cy.pageHeading().should('equal', 'Check the details before booking this recall')
+    cy.recallInfo('Address').should('contain', address.line1)
+})
+
 When('Maria enters the licence name', () => {
     cy.get('@firstLastName').then((firstLastName) =>
         cy.selectRadio(`How does ${firstLastName}\'s name appear on the licence?`, recall.licenceNameCategory, {findByValue: true})
