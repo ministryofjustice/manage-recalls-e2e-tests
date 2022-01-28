@@ -56,9 +56,10 @@ When('Maria confirms the person has a last known address', () => {
 })
 
 When('Maria looks up an address by postcode', () => {
-    cy.fillInput('Postcode', 'PE14 7DF')
+    const address1 = recall.lastKnownAddresses[0]
+    cy.fillInput('Postcode', address1.postcode)
     cy.clickButton('Find')
-    cy.selectFromDropdown('16 addresses', '1, LYNN ROAD, WALTON HIGHWAY, WISBECH, PE14 7DF')
+    cy.selectFromDropdown('16 addresses', address1.fullAddress)
     cy.clickButton('Continue')
 })
 
@@ -67,19 +68,34 @@ When('Maria types an address', () => {
     cy.selectRadio('Do you want to add another address?', 'Yes')
     cy.clickButton('Continue')
     cy.clickLink("I can't find the postcode")
-    const address = recall.lastKnownAddresses[0]
-    cy.fillInput('Address line 1', address.line1)
-    cy.fillInput('Address line 2', address.line2)
-    cy.fillInput('Town or city', address.town)
-    cy.fillInput('Postcode', address.postcode)
+    const address2 = recall.lastKnownAddresses[1]
+    cy.fillInput('Address line 1', address2.line1)
+    cy.fillInput('Address line 2', address2.line2)
+    cy.fillInput('Town or city', address2.town)
+    cy.fillInput('Postcode', address2.postcode)
     cy.clickButton('Continue')
 })
 
 When('Maria can see the addresses listed', () => {
-    cy.recallInfo('Address 1').should('contain', '1, LYNN ROAD')
-    cy.recallInfo('Address 2').should('contain', '345 Porchester Road')
+    const addresses = recall.lastKnownAddresses
+    cy.recallInfo('Address 1').should('contain', addresses[0].line1)
+    cy.recallInfo('Address 2').should('contain', addresses[1].line1)
     cy.selectRadio('Do you want to add another address?', 'No')
     cy.clickButton('Continue')
+})
+
+When('Maria deletes one of the last known addresses', () => {
+    cy.clickLink("Change address 1")
+    cy.pageHeading().should('equal', 'Last known addresses')
+    cy.clickButton("Delete address 1")
+    const address2 = recall.lastKnownAddresses[1]
+    cy.recallInfo('Address').should('contain', address2.line1)
+    cy.selectRadio('Do you want to add another address?', 'No')
+    cy.clickButton('Continue')
+    cy.pageHeading().should('equal', 'Check the details before booking this recall')
+    cy.recallInfo('Address').should('contain', address2.line1)
+    const address1 = recall.lastKnownAddresses[0]
+    cy.recallInfo('Address').should('not.contain', address1.line1)
 })
 
 When('Maria enters the licence name', () => {
@@ -229,12 +245,15 @@ When('Maria can check their answers for the not in custody recall', () => {
     // Custody details
     cy.recallInfo('Custody status').should('equal', 'Not in custody')
     cy.recallInfo('Arrest issues').should('equal', recall.arrestIssuesDetail)
-    cy.recallInfo('Address 1').should('contain', '1, LYNN ROAD')
-    const address = recall.lastKnownAddresses[0]
-    cy.recallInfo('Address 2').should('contain', address.line1)
-    cy.recallInfo('Address 2').should('contain', address.line2)
-    cy.recallInfo('Address 2').should('contain', address.town)
-    cy.recallInfo('Address 2').should('contain', address.postcode)
+    const address1 = recall.lastKnownAddresses[0]
+    cy.recallInfo('Address 1').should('contain', address1.line1)
+    cy.recallInfo('Address 1').should('contain', address1.town)
+    cy.recallInfo('Address 1').should('contain', address1.postcode)
+    const address2 = recall.lastKnownAddresses[1]
+    cy.recallInfo('Address 2').should('contain', address2.line1)
+    cy.recallInfo('Address 2').should('contain', address2.line2)
+    cy.recallInfo('Address 2').should('contain', address2.town)
+    cy.recallInfo('Address 2').should('contain', address2.postcode)
 })
 
 When('Maria uploads missing documents', () => {

@@ -18,4 +18,5 @@ Feature: Not in custody
     And Maria submits the probation officer details
     And Maria does not upload any documents
     And Maria submits the reason for missing documents
-    Then Maria can check their answers for the not in custody recall
+    And Maria can check their answers for the not in custody recall
+    And Maria deletes one of the last known addresses
