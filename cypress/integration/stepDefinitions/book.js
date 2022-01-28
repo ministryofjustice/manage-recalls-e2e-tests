@@ -88,6 +88,7 @@ When('Maria deletes one of the last known addresses', () => {
     cy.clickLink("Change address 1")
     cy.pageHeading().should('equal', 'Last known addresses')
     cy.clickButton("Delete address 1")
+    cy.confirmationBanner().should('contain', 'The address has been deleted')
     const address2 = recall.lastKnownAddresses[1]
     cy.recallInfo('Address').should('contain', address2.line1)
     cy.selectRadio('Do you want to add another address?', 'No')
