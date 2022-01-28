@@ -58,6 +58,12 @@ Cypress.Commands.add('getElement', ({qaAttr}) =>
     cy.get(`[data-qa="${qaAttr}"]`)
 )
 
+// ========================== CONFIRMATION BANNER ===============================
+
+Cypress.Commands.add('confirmationBanner', () =>
+    cy.get(`.moj-banner--success`).invoke('text').then(text => text.trim())
+)
+
 // ============================ FILL FORM INPUTS ===============================
 
 Cypress.Commands.add('fillInput', (label, text, opts = {}) => {
