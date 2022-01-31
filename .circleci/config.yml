@@ -19,17 +19,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install correct node/npm
-          command: |
-            set +x
-            node_version=$(jq -r '.engines.node' < package.json)
-            nvm install $node_version
-            nvm use $node_version
-            echo $node_version > .node-version
-            node -v
-            npm install -g npm@$(jq -r '.engines.npm' < package.json)
-            npm -v
-      - run:
           name: Build and pull docker containers
           command: |
             docker-compose build
@@ -45,8 +34,13 @@ jobs:
             - v2-deps-{{ arch }}-{{ .Branch }}
             - v2-deps-{{ arch }}
       - run:
+          name: Install correct node/npm
+          command: .circleci/setup-nvm-node-npm.sh
+      - run:
           name: Install NPM dependencies
-          command: npm ci
+          command: |
+            .circleci/load-nvm.sh
+            npm ci
       - save_cache:
           key: v2-deps-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
@@ -62,7 +56,9 @@ jobs:
               -timeout 60s
       - run:
           name: Run Cypress tests
-          command: npx cypress run --config baseUrl=http://localhost:3000 --record false --key e883dffd-b644-4431-989d-0181ae34d0e6 --browser chrome
+          command: |
+            .circleci/load-nvm.sh
+            npx cypress run --config baseUrl=http://localhost:3000 --record false --key e883dffd-b644-4431-989d-0181ae34d0e6 --browser chrome
       - run:
           name: "Failure: output container logs to console"
           command: |
@@ -70,7 +66,9 @@ jobs:
           when: on_fail
       - run:
           name: Cypress report
-          command: npm run cypress:report
+          command: |
+            .circleci/load-nvm.sh
+            npm run cypress:report
       - run:
           name: Stop docker containers
           command: docker-compose stop
@@ -96,8 +94,13 @@ jobs:
             - v2-deps-{{ .Branch }}
             - v2-deps
       - run:
+          name: Install correct node/npm
+          command: .circleci/setup-nvm-node-npm.sh
+      - run:
           name: Install Dependencies
-          command: npm ci
+          command: |
+            .circleci/load-nvm.sh
+            npm ci
       - save_cache:
           key: v2-deps-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
@@ -106,6 +109,7 @@ jobs:
       - run:
           name: "Run Cypress tests [<<pipeline.parameters.e2e_environment>>]"
           command: |
+            .circleci/load-nvm.sh
             set +e
             npx cypress run --env USERNAME=${CYPRESS_USERNAME_<<pipeline.parameters.e2e_environment>>},PASSWORD=${CYPRESS_PASSWORD_<<pipeline.parameters.e2e_environment>>},NOMS_NUMBER=${NOMS_NUMBER_<<pipeline.parameters.e2e_environment>>} --config baseUrl=https://manage-recalls-<<pipeline.parameters.e2e_environment>>.hmpps.service.justice.gov.uk --browser chrome
             export E2E_RESULT=$?
