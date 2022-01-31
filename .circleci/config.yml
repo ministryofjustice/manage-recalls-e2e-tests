@@ -19,6 +19,17 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Install correct node/npm
+          command: |
+            set +x
+            node_version=$(jq -r '.engines.node' < package.json)
+            nvm install $node_version
+            nvm use $node_version
+            echo $node_version > .node-version
+            node -v
+            npm install -g npm@$(jq -r '.engines.npm' < package.json)
+            npm -v
+      - run:
           name: Build and pull docker containers
           command: |
             docker-compose build
