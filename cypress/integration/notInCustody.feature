@@ -20,3 +20,13 @@ Feature: Not in custody
     And Maria submits the reason for missing documents
     And Maria can check their answers for the not in custody recall
     And Maria deletes one of the last known addresses
+    Then Maria completes the booking
+    ### Assess the recall
+    When Maria changes their caseworker band to 4+
+    And Maria begins to assess the recall that they have just booked
+    And Maria starts the assessment process for the recall
+    And Maria confirms the recall length of 28 days
+    And Maria submits the licence breach details
+    And Maria confirms the person is not in custody
+    And Maria opens the recall notification
+
