@@ -1,7 +1,9 @@
 version: 2.1
 
 orbs:
+  browser-tools: circleci/browser-tools@1.2
   hmpps: ministryofjustice/hmpps@3.2
+  node: circleci/node@5.0.0
 
 parameters:
   only_run_deploy_check:
@@ -34,8 +36,20 @@ jobs:
             - v2-deps-{{ arch }}-{{ .Branch }}
             - v2-deps-{{ arch }}
       - run:
+          name: Install correct node/npm
+          command: |
+            node_version=$(jq -r '.engines.node' <package.json)
+            nvm install $node_version
+            nvm alias default $node_version
+            node -v
+
+            npm install -g npm@$(jq -r '.engines.npm' <package.json)
+            npm -v
+      - run:
           name: Install NPM dependencies
-          command: npm ci
+          command: |
+            nvm use $(jq -r '.engines.node' <package.json)
+            npm ci
       - save_cache:
           key: v2-deps-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
@@ -51,7 +65,9 @@ jobs:
               -timeout 60s
       - run:
           name: Run Cypress tests
-          command: npx cypress run --config baseUrl=http://localhost:3000 --record false --key e883dffd-b644-4431-989d-0181ae34d0e6 --browser chrome
+          command: |
+            nvm use $(jq -r '.engines.node' <package.json)
+            npx cypress run --config baseUrl=http://localhost:3000 --record false --key e883dffd-b644-4431-989d-0181ae34d0e6 --browser chrome
       - run:
           name: "Failure: output container logs to console"
           command: |
@@ -59,7 +75,9 @@ jobs:
           when: on_fail
       - run:
           name: Cypress report
-          command: npm run cypress:report
+          command: |
+            nvm use $(jq -r '.engines.node' <package.json)
+            npm run cypress:report
       - run:
           name: Stop docker containers
           command: docker-compose stop
@@ -71,27 +89,20 @@ jobs:
           destination: reports
 
   deploy-check:
+    executor:
+      name: hmpps/node
+      tag: 16.13-browsers
     resource_class: large
-    docker:
-      - image: cypress/included:9.2.1
-    working_directory: /mnt/ramdisk
     environment:
       ENVIRONMENT: <<pipeline.parameters.e2e_environment>>
     steps:
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
       - checkout
-      - restore_cache:
-          keys:
-            - v2-deps-{{ .Branch }}-{{ checksum "package.json" }}
-            - v2-deps-{{ .Branch }}
-            - v2-deps
       - run:
-          name: Install Dependencies
-          command: npm ci
-      - save_cache:
-          key: v2-deps-{{ .Branch }}-{{ checksum "package.json" }}
-          paths:
-            - ~/.npm
-            - ~/.cache
+          name: Update NPM to match package.json
+          command: sudo npm install -g npm@$(jq -r '.engines.npm' < package.json)
+      - node/install-packages
       - run:
           name: "Run Cypress tests [<<pipeline.parameters.e2e_environment>>]"
           command: |
