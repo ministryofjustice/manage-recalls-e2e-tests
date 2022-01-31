@@ -37,11 +37,18 @@ jobs:
             - v2-deps-{{ arch }}
       - run:
           name: Install correct node/npm
-          command: .circleci/setup-nvm-node-npm.sh
+          command: |
+            node_version=$(jq -r '.engines.node' <package.json)
+            nvm install $node_version
+            nvm alias default $node_version
+            node -v
+
+            npm install -g npm@$(jq -r '.engines.npm' <package.json)
+            npm -v
       - run:
           name: Install NPM dependencies
           command: |
-            .circleci/load-nvm.sh
+            nvm use $(jq -r '.engines.node' <package.json)
             npm ci
       - save_cache:
           key: v2-deps-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}
@@ -59,7 +66,7 @@ jobs:
       - run:
           name: Run Cypress tests
           command: |
-            .circleci/load-nvm.sh
+            nvm use $(jq -r '.engines.node' <package.json)
             npx cypress run --config baseUrl=http://localhost:3000 --record false --key e883dffd-b644-4431-989d-0181ae34d0e6 --browser chrome
       - run:
           name: "Failure: output container logs to console"
@@ -69,7 +76,7 @@ jobs:
       - run:
           name: Cypress report
           command: |
-            .circleci/load-nvm.sh
+            nvm use $(jq -r '.engines.node' <package.json)
             npm run cypress:report
       - run:
           name: Stop docker containers
