@@ -8,6 +8,10 @@
     "cypress:ci": "npx cypress run --browser chrome --spec ./cypress/integration/*.feature",
     "cypress:report": "node cypress/cucumber-report.js"
   },
+  "engines": {
+    "node": "16.13.2",
+    "npm": "8.4.0"
+  },
   "author": "",
   "license": "ISC",
   "devDependencies": {
