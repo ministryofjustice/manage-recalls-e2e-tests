@@ -1,6 +1,7 @@
 version: 2.1
 
 orbs:
+  browser-tools: circleci/browser-tools@1.2
   hmpps: ministryofjustice/hmpps@3.2
   node: circleci/node@5.0.0
 
