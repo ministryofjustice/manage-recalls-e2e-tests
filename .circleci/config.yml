@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   hmpps: ministryofjustice/hmpps@3.2
+  node: circleci/node@5.0.0
 
 parameters:
   only_run_deploy_check:
@@ -80,36 +81,23 @@ jobs:
           destination: reports
 
   deploy-check:
+    executor:
+      name: hmpps/node
+      tag: 16.13-browsers
     resource_class: large
-    docker:
-      - image: cypress/included:9.2.1
-    working_directory: /mnt/ramdisk
     environment:
       ENVIRONMENT: <<pipeline.parameters.e2e_environment>>
     steps:
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
       - checkout
-      - restore_cache:
-          keys:
-            - v2-deps-{{ .Branch }}-{{ checksum "package.json" }}
-            - v2-deps-{{ .Branch }}
-            - v2-deps
       - run:
-          name: Install correct node/npm
-          command: .circleci/setup-nvm-node-npm.sh
-      - run:
-          name: Install Dependencies
-          command: |
-            .circleci/load-nvm.sh
-            npm ci
-      - save_cache:
-          key: v2-deps-{{ .Branch }}-{{ checksum "package.json" }}
-          paths:
-            - ~/.npm
-            - ~/.cache
+          name: Update NPM to match package.json
+          command: sudo npm install -g npm@$(jq -r '.engines.npm' < package.json)
+      - node/install-packages
       - run:
           name: "Run Cypress tests [<<pipeline.parameters.e2e_environment>>]"
           command: |
-            .circleci/load-nvm.sh
             set +e
             npx cypress run --env USERNAME=${CYPRESS_USERNAME_<<pipeline.parameters.e2e_environment>>},PASSWORD=${CYPRESS_PASSWORD_<<pipeline.parameters.e2e_environment>>},NOMS_NUMBER=${NOMS_NUMBER_<<pipeline.parameters.e2e_environment>>} --config baseUrl=https://manage-recalls-<<pipeline.parameters.e2e_environment>>.hmpps.service.justice.gov.uk --browser chrome
             export E2E_RESULT=$?
