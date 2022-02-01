@@ -79,7 +79,7 @@ When('Maria types an address', () => {
 When('Maria can see the addresses listed', () => {
     const addresses = recall.lastKnownAddresses
     cy.recallInfo('Address 1').should('contain', addresses[0].line1)
-    cy.recallInfo('Address 2').should('contain', addresses[1].line1)
+    cy.recallInfo('Address 2').should('contain', addresses[1].line1.toUpperCase())
     cy.selectRadio('Do you want to add another address?', 'No')
     cy.clickButton('Continue')
 })
@@ -90,13 +90,13 @@ When('Maria deletes one of the last known addresses', () => {
     cy.clickButton("Delete address 1")
     cy.confirmationBanner().should('contain', 'The address has been deleted')
     const address2 = recall.lastKnownAddresses[1]
-    cy.recallInfo('Address').should('contain', address2.line1)
+    cy.recallInfo('Address').should('contain', address2.line1.toUpperCase())
     cy.selectRadio('Do you want to add another address?', 'No')
     cy.clickButton('Continue')
     cy.pageHeading().should('equal', 'Check the details before booking this recall')
-    cy.recallInfo('Address').should('contain', address2.line1)
+    cy.recallInfo('Address').should('contain', address2.line1.toUpperCase())
     const address1 = recall.lastKnownAddresses[0]
-    cy.recallInfo('Address').should('not.contain', address1.line1)
+    cy.recallInfo('Address').should('not.contain', address1.line1.toUpperCase())
 })
 
 When('Maria enters the licence name', () => {
@@ -251,9 +251,9 @@ When('Maria can check their answers for the not in custody recall', () => {
     cy.recallInfo('Address 1').should('contain', address1.town)
     cy.recallInfo('Address 1').should('contain', address1.postcode)
     const address2 = recall.lastKnownAddresses[1]
-    cy.recallInfo('Address 2').should('contain', address2.line1)
-    cy.recallInfo('Address 2').should('contain', address2.line2)
-    cy.recallInfo('Address 2').should('contain', address2.town)
+    cy.recallInfo('Address 2').should('contain', address2.line1.toUpperCase())
+    cy.recallInfo('Address 2').should('contain', address2.line2.toUpperCase())
+    cy.recallInfo('Address 2').should('contain', address2.town.toUpperCase())
     cy.recallInfo('Address 2').should('contain', address2.postcode)
 })
 
