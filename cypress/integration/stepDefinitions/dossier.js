@@ -70,7 +70,7 @@ When('Maria sees confirmation that the dossier creation is complete', () => {
     cy.clickLink('Back to recalls')
     cy.clickLink('Completed')
     cy.get('@recallId').then(recallId => {
-        cy.getRecallItemFromList({recallId, columnQaAttr: 'assignedTo'}).should('equal', 'Dossier issued')
+        cy.getRecallItemFromList({recallId, columnQaAttr: 'status'}).should('equal', 'Dossier issued')
         cy.clickLink({qaAttr: `view-recall-${recallId}`})
     })
 })
