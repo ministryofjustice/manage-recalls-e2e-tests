@@ -29,4 +29,8 @@ Feature: Not in custody
     And Maria submits the licence breach details
     And Maria confirms the person is not in custody
     And Maria opens the not in custody recall notification
+    And Maria records the issuance of recall notification
+    Then Maria can see that the recall is assessed
+    And Maria can see that they are assigned to the recall on the Not in custody tab
+
 

@@ -83,6 +83,15 @@ When('Maria can see that they are unassigned from the recall', () => {
     })
 })
 
+When('Maria can see that they are assigned to the recall on the Not in custody tab', () => {
+    cy.clickLink('Assess another recall')
+    cy.clickLink('Not in custody')
+    const {firstName, lastName} = caseworker
+    cy.get('@recallId').then(recallId => {
+        cy.getRecallItemFromList({recallId, columnQaAttr: 'assignedTo'}).should('equal', `${firstName} ${lastName}`)
+    })
+})
+
 When('Maria confirms the details captured during assessment', () => {
     cy.get('@recallId').then(recallId => {
         cy.clickLink({qaAttr: `view-recall-${recallId}`})
