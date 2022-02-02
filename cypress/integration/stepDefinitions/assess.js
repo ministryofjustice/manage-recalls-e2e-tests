@@ -143,12 +143,13 @@ When('Maria adds a warrant reference number', () => {
     cy.getText('confirmation').should('equal', 'Warrant reference number has been added.')
     cy.clickLink('View')
     cy.recallInfo('Warrant reference number').should('equal', recall.warrantReferenceNumber)
+    cy.getRecallIdFromUrl().as('notInCustodyRecallId')
 })
 
 When('Maria confirms the person is awaiting return to custody', () => {
     cy.clickLink('Recalls')
     cy.clickLink('Not in custody')
-    cy.get('@recallId').then(recallId => {
+    cy.get('@notInCustodyRecallId').then(recallId => {
         cy.getRecallItemFromList({recallId, columnQaAttr: 'status'}).should('equal', 'Awaiting return to custody')
     })
 })
