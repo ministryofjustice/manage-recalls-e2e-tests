@@ -32,5 +32,5 @@ Feature: Not in custody
     And Maria records the issuance of recall notification
     Then Maria can see that the recall is assessed
     And Maria can see that they are assigned to the recall on the Not in custody tab
-
-
+    And Maria adds a warrant reference number
+    And Maria confirms the person is awaiting return to custody
