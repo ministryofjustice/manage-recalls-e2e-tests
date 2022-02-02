@@ -135,3 +135,20 @@ When('Maria can regenerate the revocation order and recall notification', () => 
     // recall notification was also recreated
     cy.recallInfo('Recall notification').should('contain', '(version 3)')
 })
+
+When('Maria adds a warrant reference number', () => {
+    cy.clickLink('Add warrant reference')
+    cy.fillInput('What is the warrant reference number?', recall.warrantReferenceNumber)
+    cy.clickButton('Continue')
+    cy.getText('confirmation').should('equal', 'Warrant reference number has been added.')
+    cy.clickLink('View')
+    cy.recallInfo('Warrant reference number').should('equal', recall.warrantReferenceNumber)
+})
+
+When('Maria confirms the person is awaiting return to custody', () => {
+    cy.clickLink('Recalls')
+    cy.clickLink('Not in custody')
+    cy.get('@recallId').then(recallId => {
+        cy.getRecallItemFromList({recallId, columnQaAttr: 'status'}).should('equal', 'Awaiting return to custody')
+    })
+})

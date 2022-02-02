@@ -67,4 +67,5 @@ export const recall = {
   "hasDossierBeenChecked": true,
   "recallAssessmentDueDateTime": "2020-08-06T15:33:57.000Z",
   "dossierTargetDate": "2020-12-14",
+  "warrantReferenceNumber": "04RC/6457367A74325"
 }
