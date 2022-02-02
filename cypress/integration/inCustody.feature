@@ -29,7 +29,7 @@ Feature: In custody
     And Maria confirms the recall length of 28 days
     And Maria submits the licence breach details
     And Maria submits the current prison details
-    And Maria opens the recall notification
+    And Maria opens the in custody recall notification
     And Maria records the issuance of recall notification
     Then Maria can see that the recall is assessed
     And Maria can see that they are unassigned from the recall

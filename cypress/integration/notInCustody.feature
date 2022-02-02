@@ -28,5 +28,5 @@ Feature: Not in custody
     And Maria confirms the recall length of 28 days
     And Maria submits the licence breach details
     And Maria confirms the person is not in custody
-    And Maria opens the recall notification
+    And Maria opens the not in custody recall notification
 
