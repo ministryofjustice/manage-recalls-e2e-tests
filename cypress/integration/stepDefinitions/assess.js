@@ -52,8 +52,13 @@ When('Maria submits the current prison details', () => {
     cy.clickButton('Continue')
 })
 
-When('Maria opens the recall notification', () => {
-    cy.downloadPdf('Recall notification').should('contain', '28 DAY FIXED TERM RECALL')
+When('Maria opens the in custody recall notification', () => {
+    cy.downloadPdf('Recall notification').should('contain', 'INFORMATION ONLY – OFFENDER IS IN CUSTODY')
+    cy.clickLink('Continue')
+})
+
+When('Maria opens the not in custody recall notification', () => {
+    cy.downloadPdf('Recall notification').should('contain', 'RECALL NOTIFICATION')
     cy.clickLink('Continue')
 })
 
