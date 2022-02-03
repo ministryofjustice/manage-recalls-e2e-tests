@@ -109,6 +109,7 @@ services:
     depends_on: [redis, hmpps-auth, manage-recalls-api, fake-os-places-api]
     ports:
       - "3000:3000"
+      - "3001:3001"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:3000/ping" ]
     environment:
@@ -139,7 +140,7 @@ services:
       - POSTGRES_DB=manage_recalls
 
   minio:
-    image: minio/minio:latest
+    image: minio/minio:RELEASE.2022-01-28T02-28-16Z
     container_name: minio_manage-recalls-e2e
     ports:
       - 4566:4566

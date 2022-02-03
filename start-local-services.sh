@@ -14,7 +14,7 @@ readonly LOCAL_DOCKER_COMPOSE_FILE=docker-compose.yml
 docker compose -f $LOCAL_DOCKER_COMPOSE_FILE pull redis gotenberg hmpps-auth fake-prisoner-offender-search-api fake-prison-register-api fake-court-register-api fake-os-places-api postgres minio
 docker compose -f $LOCAL_DOCKER_COMPOSE_FILE up redis gotenberg hmpps-auth fake-prisoner-offender-search-api fake-prison-register-api fake-court-register-api fake-os-places-api postgres minio --remove-orphans -d
 
-npx kill-port 3000 8080
+npx kill-port 3000 3001 8080
 
 pushd ${MANAGE_RECALLS_UI_DIR}
 npm run clean
@@ -26,14 +26,17 @@ pushd ${MANAGE_RECALLS_API_DIR}
 SPRING_PROFILES_ACTIVE=dev ./gradlew bootRun >>"${MANAGE_RECALLS_API_LOG_FILE}" 2>&1 &
 popd
 
-printf "\nChecking hmpps-auth is running..."
-curl -s -4 --retry 40 --retry-delay 2 --retry-connrefused http://localhost:9090/auth/health/ping
+function wait_for {
+  printf "\n\nWaiting for ${2} to be ready."
+  until curl -s --fail "${1}"; do
+    printf "."
+    sleep 2
+  done
+}
 
-printf "\nChecking ${MANAGE_RECALLS_API_NAME} is running..."
-curl -s -4 --retry 20 --retry-delay 2 --retry-connrefused http://localhost:8080/health/ping
-
-printf "\nChecking ${MANAGE_RECALLS_UI_NAME} is running..."
-curl -s -4 --retry 20 --retry-delay 1 --retry-connrefused http://localhost:3000/ping
+wait_for "http://localhost:9090/auth/health/ping" "hmpps-auth"
+wait_for "http://localhost:8080/health/ping" "${MANAGE_RECALLS_API_NAME}"
+wait_for "http://localhost:3000/ping" "${MANAGE_RECALLS_UI_NAME}"
 
 echo "Logs can be found by running:"
 echo "  less ${MANAGE_RECALLS_API_LOG_FILE}"
