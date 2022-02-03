@@ -109,6 +109,7 @@ services:
     depends_on: [redis, hmpps-auth, manage-recalls-api, fake-os-places-api]
     ports:
       - "3000:3000"
+      - "3001:3001"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:3000/ping" ]
     environment:

@@ -13,8 +13,7 @@ docker compose -f $DOCKER_COMPOSE_FILE stop
 
 pushd ${MANAGE_RECALLS_UI_DIR}
 echo "Stopping ${MANAGE_RECALLS_UI_NAME}"
-npx kill-port 3000
+npx kill-port 3000 3001
 echo "Stopping ${MANAGE_RECALLS_API_NAME}"
 npx kill-port 8080
 popd
-
