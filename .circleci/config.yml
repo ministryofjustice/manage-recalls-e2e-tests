@@ -12,6 +12,15 @@ parameters:
   e2e_environment:
     type: string
     default: dev
+  check-docker:
+    type: boolean
+    default: true
+  check-dev:
+    type: boolean
+    default: true
+  check-preprod:
+    type: boolean
+    default: false
 
 jobs:
   local-check:
@@ -92,7 +101,6 @@ jobs:
     executor:
       name: hmpps/node
       tag: 16.13-browsers
-    resource_class: large
     environment:
       ENVIRONMENT: <<pipeline.parameters.e2e_environment>>
     steps:
@@ -119,6 +127,38 @@ jobs:
           path: cypress/reports
           destination: reports
 
+  check-env:
+    executor:
+      name: hmpps/node
+      tag: 16.13-browsers
+    parameters:
+      environment:
+        type: string
+        default: dev
+    steps:
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
+      - checkout
+      - run:
+          name: Update NPM to match package.json
+          command: sudo npm install -g npm@$(jq -r '.engines.npm' < package.json)
+      - node/install-packages
+      - run:
+          name: "Run Cypress tests [<< parameters.environment >>]"
+          command: |
+            set +e
+            npx cypress run --env USERNAME=${CYPRESS_USERNAME_<< parameters.environment >>},PASSWORD=${CYPRESS_PASSWORD_<< parameters.environment >>},NOMS_NUMBER=${NOMS_NUMBER_<< parameters.environment >>} --config baseUrl=https://manage-recalls-<< parameters.environment >>.hmpps.service.justice.gov.uk --browser chrome
+            export E2E_RESULT=$?
+            npm run cypress:report
+            set -e
+            exit $E2E_RESULT
+      - store_artifacts:
+          path: cypress/screenshots
+          destination: screenshots
+      - store_artifacts:
+          path: cypress/reports
+          destination: reports
+
 workflows:
   version: 2
   dev_and_local:
@@ -127,7 +167,23 @@ workflows:
     jobs:
       - local-check
       - deploy-check
-  deploy_only:
-    when: << pipeline.parameters.only_run_deploy_check >>
+
+  check-docker:
+    when: << pipeline.parameters.check-docker >>
     jobs:
-      - deploy-check
+      - local-check:
+          name: check-docker
+
+  check-dev:
+    when: << pipeline.parameters.check-dev >>
+    jobs:
+      - check-env:
+          name: check-dev
+          environment: dev
+
+  check-preprod:
+    when: << pipeline.parameters.check-preprod >>
+    jobs:
+      - check-env:
+          name: check-preprod
+          environment: preprod
