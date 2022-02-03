@@ -20,6 +20,7 @@ Feature: In custody
     And Maria uploads missing documents
     And Maria downloads the documents
     Then Maria completes the booking
+    And Maria changes their caseworker band to 3
     And Maria confirms they can't assess the recall as a band 3
     ### Assess the recall
     When Maria changes their caseworker band to 4+
@@ -38,8 +39,7 @@ Feature: In custody
     And Maria is able to see the documents generated during booking
     And Maria can regenerate the revocation order and recall notification
     ### create a dossier
-    When Maria changes their caseworker band to 3
-    And Maria navigates to the recall to create a dossier
+    When Maria navigates to the recall to create a dossier
     Then Maria is able to see the recall information before creating a dossier
     And Maria submits the information for the prison letter
     And Maria has checked and created the reasons for recall document

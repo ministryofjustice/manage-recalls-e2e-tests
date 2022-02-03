@@ -2,6 +2,7 @@ Feature: Not in custody
 
   Scenario: Book and assess a recall
     Given Maria signs in
+    And Maria enters their user details
     And Maria searches for the environment specific NOMS number
     And Maria clicks on the Book a recall link
     And Maria enters the licence name
@@ -22,7 +23,6 @@ Feature: Not in custody
     And Maria deletes one of the last known addresses
     Then Maria completes the booking
     ### Assess the recall
-    When Maria changes their caseworker band to 4+
     And Maria begins to assess the recall that they have just booked
     And Maria starts the assessment process for the recall
     And Maria confirms the recall length of 28 days
