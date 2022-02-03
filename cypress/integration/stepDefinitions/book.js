@@ -16,7 +16,7 @@ When('Maria enters their user details', () => {
     cy.fillInput('Last name', caseworker.lastName, {clearExistingText: true})
     cy.fillInput('Email address', caseworker.email, {clearExistingText: true})
     cy.fillInput('Phone number', caseworker.phoneNumber, {clearExistingText: true})
-    cy.selectRadio('Caseworker band', 'Band 3')
+    cy.selectRadio('Caseworker band', 'Band 4+')
     cy.uploadImage({field: 'signature', file: 'signature.jpg'})
     cy.clickButton('Save')
     cy.clickLink('Recalls')
