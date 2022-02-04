@@ -12,6 +12,15 @@ parameters:
   e2e_environment:
     type: string
     default: dev
+  check-docker:
+    type: boolean
+    default: true
+  check-dev:
+    type: boolean
+    default: true
+  check-preprod:
+    type: boolean
+    default: false
 
 jobs:
   local-check:
@@ -88,13 +97,14 @@ jobs:
           path: cypress/reports
           destination: reports
 
-  deploy-check:
+  check-env:
     executor:
       name: hmpps/node
       tag: 16.13-browsers
-    resource_class: large
-    environment:
-      ENVIRONMENT: <<pipeline.parameters.e2e_environment>>
+    parameters:
+      environment:
+        type: string
+        default: dev
     steps:
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
@@ -104,12 +114,17 @@ jobs:
           command: sudo npm install -g npm@$(jq -r '.engines.npm' < package.json)
       - node/install-packages
       - run:
-          name: "Run Cypress tests [<<pipeline.parameters.e2e_environment>>]"
+          name: "Run Cypress tests [<< parameters.environment >>]"
           command: |
             set +e
-            npx cypress run --env USERNAME=${CYPRESS_USERNAME_<<pipeline.parameters.e2e_environment>>},PASSWORD=${CYPRESS_PASSWORD_<<pipeline.parameters.e2e_environment>>},NOMS_NUMBER=${NOMS_NUMBER_<<pipeline.parameters.e2e_environment>>} --config baseUrl=https://manage-recalls-<<pipeline.parameters.e2e_environment>>.hmpps.service.justice.gov.uk --browser chrome
+
+            ./scripts/do-exclusively \
+              --job check-<< parameters.environment >> \
+              npx cypress run --env USERNAME=${CYPRESS_USERNAME_<< parameters.environment >>},PASSWORD=${CYPRESS_PASSWORD_<< parameters.environment >>},NOMS_NUMBER=${NOMS_NUMBER_<< parameters.environment >>} --config baseUrl=https://manage-recalls-<< parameters.environment >>.hmpps.service.justice.gov.uk --browser chrome
+
             export E2E_RESULT=$?
             npm run cypress:report
+
             set -e
             exit $E2E_RESULT
       - store_artifacts:
@@ -126,8 +141,33 @@ workflows:
       not: << pipeline.parameters.only_run_deploy_check >>
     jobs:
       - local-check
-      - deploy-check
+      - check-env:
+          name: check-dev
+          environment: dev
+
   deploy_only:
     when: << pipeline.parameters.only_run_deploy_check >>
     jobs:
-      - deploy-check
+      - check-env:
+          name: check-dev
+          environment: dev
+
+  check-docker:
+    when: << pipeline.parameters.check-docker >>
+    jobs:
+      - local-check:
+          name: check-docker
+
+  check-dev:
+    when: << pipeline.parameters.check-dev >>
+    jobs:
+      - check-env:
+          name: check-dev
+          environment: dev
+
+  check-preprod:
+    when: << pipeline.parameters.check-preprod >>
+    jobs:
+      - check-env:
+          name: check-preprod
+          environment: preprod
