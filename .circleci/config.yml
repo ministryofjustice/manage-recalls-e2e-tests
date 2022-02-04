@@ -6,12 +6,6 @@ orbs:
   node: circleci/node@5.0.0
 
 parameters:
-  only_run_deploy_check:
-    type: boolean
-    default: false
-  e2e_environment:
-    type: string
-    default: dev
   check-docker:
     type: boolean
     default: true
@@ -23,7 +17,7 @@ parameters:
     default: false
 
 jobs:
-  local-check:
+  check-docker:
     machine:
       image: ubuntu-2004:202111-02
     resource_class: large
@@ -101,6 +95,7 @@ jobs:
     executor:
       name: hmpps/node
       tag: 16.13-browsers
+    resource_class: large
     parameters:
       environment:
         type: string
@@ -120,7 +115,10 @@ jobs:
 
             ./scripts/do-exclusively \
               --job check-<< parameters.environment >> \
-              npx cypress run --env USERNAME=${CYPRESS_USERNAME_<< parameters.environment >>},PASSWORD=${CYPRESS_PASSWORD_<< parameters.environment >>},NOMS_NUMBER=${NOMS_NUMBER_<< parameters.environment >>} --config baseUrl=https://manage-recalls-<< parameters.environment >>.hmpps.service.justice.gov.uk --browser chrome
+              npx cypress run \
+                --env USERNAME=${CYPRESS_USERNAME_<< parameters.environment >>},PASSWORD=${CYPRESS_PASSWORD_<< parameters.environment >>},NOMS_NUMBER=${NOMS_NUMBER_<< parameters.environment >>} \
+                --config baseUrl=https://manage-recalls-<< parameters.environment >>.hmpps.service.justice.gov.uk \
+                --browser chrome
 
             export E2E_RESULT=$?
             npm run cypress:report
@@ -136,27 +134,10 @@ jobs:
 
 workflows:
   version: 2
-  dev_and_local:
-    when:
-      not: << pipeline.parameters.only_run_deploy_check >>
-    jobs:
-      - local-check
-      - check-env:
-          name: check-dev
-          environment: dev
-
-  deploy_only:
-    when: << pipeline.parameters.only_run_deploy_check >>
-    jobs:
-      - check-env:
-          name: check-dev
-          environment: dev
-
   check-docker:
     when: << pipeline.parameters.check-docker >>
     jobs:
-      - local-check:
-          name: check-docker
+      - check-docker
 
   check-dev:
     when: << pipeline.parameters.check-dev >>
