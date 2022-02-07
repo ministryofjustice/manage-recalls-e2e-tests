@@ -109,16 +109,18 @@ jobs:
           command: sudo npm install -g npm@$(jq -r '.engines.npm' < package.json)
       - node/install-packages
       - run:
-          name: "Run Cypress tests [<< parameters.environment >>]"
+          name: Wait for exclusive lock [check-<< parameters.environment >>]
+          command:
+            ./scripts/do-exclusively --job check-<< parameters.environment >> echo "Kicking off cypress tests..."
+      - run:
+          name: Run Cypress tests [<< parameters.environment >>]
           command: |
             set +e
 
-            ./scripts/do-exclusively \
-              --job check-<< parameters.environment >> \
-              npx cypress run \
-                --env USERNAME=${CYPRESS_USERNAME_<< parameters.environment >>},PASSWORD=${CYPRESS_PASSWORD_<< parameters.environment >>},NOMS_NUMBER=${NOMS_NUMBER_<< parameters.environment >>} \
-                --config baseUrl=https://manage-recalls-<< parameters.environment >>.hmpps.service.justice.gov.uk \
-                --browser chrome
+            npx cypress run \
+              --env USERNAME=${CYPRESS_USERNAME_<< parameters.environment >>},PASSWORD=${CYPRESS_PASSWORD_<< parameters.environment >>},NOMS_NUMBER=${NOMS_NUMBER_<< parameters.environment >>} \
+              --config baseUrl=https://manage-recalls-<< parameters.environment >>.hmpps.service.justice.gov.uk \
+              --browser chrome
 
             export E2E_RESULT=$?
             npm run cypress:report
