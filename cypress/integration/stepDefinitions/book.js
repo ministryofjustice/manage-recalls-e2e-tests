@@ -197,7 +197,7 @@ When('Maria can check their answers', () => {
     cy.recallInfo('NOMIS').should('equal', nomsNumber)
 
     // Custody details
-    cy.recallInfo('Custody status').should('equal', 'In custody')
+    cy.recallInfo('Custody status at booking').should('equal', 'In custody')
 
     // Recall details
     cy.recallInfo('Recall email received').should('equal', formatIsoDate(recall.recallEmailReceivedDateTime))
@@ -244,7 +244,7 @@ When('Maria can check their answers', () => {
 
 When('Maria can check their answers for the not in custody recall', () => {
     // Custody details
-    cy.recallInfo('Custody status').should('equal', 'Not in custody')
+    cy.recallInfo('Custody status at booking').should('equal', 'Not in custody')
     cy.recallInfo('Arrest issues').should('equal', recall.arrestIssuesDetail)
     const address1 = recall.lastKnownAddresses[0]
     cy.recallInfo('Address 1').should('contain', address1.line1)
