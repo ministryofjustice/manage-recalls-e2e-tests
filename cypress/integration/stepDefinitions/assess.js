@@ -106,7 +106,7 @@ When('Maria confirms the details captured during assessment', () => {
     )
     cy.recallInfo('Recall assessed by').should('equal', `${firstName} ${lastName}`)
     cy.recallInfo('Assessment notes').should('equal', recall.agreeWithRecallDetail)
-    cy.recallInfo('Custody status').should('equal', 'In custody')
+    cy.recallInfo('Custody status at booking').should('equal', 'In custody')
     cy.recallInfo('Prison held in').should('equal', recall.currentPrisonLabel)
 })
 
@@ -151,5 +151,7 @@ When('Maria confirms the person is awaiting return to custody', () => {
     cy.clickLink('Not in custody')
     cy.get('@notInCustodyRecallId').then(recallId => {
         cy.getRecallItemFromList({recallId, columnQaAttr: 'status'}).should('equal', 'Awaiting return to custody')
+        cy.getElement({ qaAttr: `view-recall-${recallId}`}).click()
+        cy.recallInfo('Custody status at assessment').should('equal', 'Not in custody')
     })
 })
