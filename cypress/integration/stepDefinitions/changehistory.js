@@ -2,6 +2,7 @@ import {When} from "cypress-cucumber-preprocessor/steps";
 import {caseworker} from "../../fixtures";
 
 When('Maria navigates to view the change history overview for the recall', () => {
+    cy.clickButton('Actions')
     cy.clickLink('View change history')
     cy.pageHeading().should('equal', 'Change history')
     cy.getRowValuesFromTable({ parent: '#table-info-entered', rowQaAttr: 'currentPrison' }).then(rowValues => {
