@@ -5,31 +5,61 @@ A suite of tests to validate end-to-end functionality (PPUD Replacement)
 
 Unfortunately at present it is necessary to switch credentials between local auth and auth in the dev environment.
 
-As e2e tests include login, valid user credentials and the necessary user role are required. 
-Credentials for the tests are loaded from environment variables "CYPRESS_USERNAME" and "CYPRESS_PASSWORD", 
-for local testing the code will default to the `PPUD_USER` when no env vars are specified, but if you want to run
+As the E2E tests include login, valid user credentials and the necessary user role are required.
+
+Credentials for the tests are loaded from environment variables "CYPRESS_USERNAME" and "CYPRESS_PASSWORD",
+For local testing the code will default to the `PPUD_USER` when no env vars are specified, but if you want to run
 against dev you should add your own credentials as env vars.
 
-#### Credentials for local auth 
+#### Credentials for local auth
+
 When run versus local services these e2e tests run against the docker container `hmpps-auth-e2e`.  As that runs with
 `SPRING_PROFILES_ACTIVE=dev` in the current latest image *only* the above `PPUD_USER` user is
 pre-defined with the required role, `MANAGE_RECALLS`, and should be used.
 
 #### Credentials for environment auth
+
 In contrast with the deployed `dev` instance of `hmpps-auth`,
 i.e. [manage-recalls dev](https://manage-recalls-dev.hmpps.service.justice.gov.uk/)
 , all team members on the project should have a personal login with the appropriate role
-but `PPUD_USER` does not.  
+but `PPUD_USER` does not.
 
 We do also have a shared 'system' account which is valid versus `dev`:
 ```USERNAME=manage-recalls-test-user@digital.justice.gov.uk```
 Ask the Dev team for the password.
+
+#### CircleCI
+
+On CircleCI we have 3 different sets of credentials in use for each environment the tests are ran against:
+
+- `repo` - runs kicked off by changes in the E2E codebase
+- `api` - runs kicked off via the API pipelines
+- `ui` - runs kicked off via the UI pipelines
+
+This enables the tests to be ran in parallel depending on where they have been invoked from.
+
+The credentials are loaded from environment variables (stored in CircleCI) - `CYPRESS_USERNAME_<caller>_<environment>` and `CYPRESS_PASSWORD_<caller>_<environment>`.
+
+For the `dev` environment, the following user accounts are used:
+
+- `repo` - manage-recalls-test-user@digital.justice.gov.uk
+- `api` - manage-recalls-test-api-user@digital.justice.gov.uk
+- `ui` - manage-recalls-test-ui-user@digital.justice.gov.uk
+
+For the `preprod` environment, the following user accounts are used:
+
+- `repo` - darren.oakley@digital.justice.gov.uk
+- `api` - phil.segal@digital.justice.gov.uk
+- `ui` - jon.wyatt@digital.justice.gov.uk
+
+**NOTE: If any of the above members of the team leave, we will need to update the environment variables in CircleCI.**
 
 ## Running the tests
 
 There are multiple options for running these tests from your local:
 
 ### 1. Run against deployed services
+
 In this scenario the login credentials must be valid on the target environment. Hence, your env vars
 needs to reflect the same.  See above. Also, need to add a valid noms number if running against preprod/prod. Use `NOMS_NUMBER=X1234YZ`.
 
@@ -96,12 +126,12 @@ The script `build.sh` achieves this by:
   * stops all the components started by `start-local-services.sh`
 
 Having started those services any subset of these e2e tests can be run, developed etc.,
-whilst those services remain up.  
+whilst those services remain up.
 In the event of issues check the log files created by the script for each of `manage-recalls-ui` and `manage-recalls-api`.
 
 #### Steps
 
-Clone both [manage-recalls-ui](https://github.com/ministryofjustice/manage-recalls-ui) 
+Clone both [manage-recalls-ui](https://github.com/ministryofjustice/manage-recalls-ui)
 and [manage-recalls-api](https://github.com/ministryofjustice/manage-recalls-api).
 Build both locally (see readme's for commands). Check that the local build passes
 for both of those projects.  Potentially those builds will clash (e.g. wiremock port usage) with
