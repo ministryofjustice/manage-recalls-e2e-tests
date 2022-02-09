@@ -6,6 +6,9 @@ orbs:
   node: circleci/node@5.0.0
 
 parameters:
+  invoked-by:
+    type: string
+    default: repo
   check-docker:
     type: boolean
     default: true
@@ -109,16 +112,16 @@ jobs:
           command: sudo npm install -g npm@$(jq -r '.engines.npm' < package.json)
       - node/install-packages
       - run:
-          name: Wait for exclusive lock [check-<< parameters.environment >>]
+          name: Wait for exclusive lock [check-<< parameters.environment >>-<< pipeline.parameters.invoked-by >>]
           command:
-            ./scripts/do-exclusively --job check-<< parameters.environment >> echo "Kicking off cypress tests..."
+            ./scripts/do-exclusively --job check-<< parameters.environment >>-<< pipeline.parameters.invoked-by >> echo "Kicking off cypress tests..."
       - run:
-          name: Run Cypress tests [<< parameters.environment >>]
+          name: Run Cypress tests [<< parameters.environment >> - invoked by << pipeline.parameters.invoked-by >>]
           command: |
             set +e
 
             npx cypress run \
-              --env USERNAME=${CYPRESS_USERNAME_<< parameters.environment >>},PASSWORD=${CYPRESS_PASSWORD_<< parameters.environment >>},NOMS_NUMBER=${NOMS_NUMBER_<< parameters.environment >>} \
+              --env USERNAME=${CYPRESS_USERNAME_<< pipeline.parameters.invoked-by >>_<< parameters.environment >>},PASSWORD=${CYPRESS_PASSWORD_<< pipeline.parameters.invoked-by >>_<< parameters.environment >>},NOMS_NUMBER=${NOMS_NUMBER_<< parameters.environment >>} \
               --config baseUrl=https://manage-recalls-<< parameters.environment >>.hmpps.service.justice.gov.uk \
               --browser chrome
 
@@ -145,12 +148,12 @@ workflows:
     when: << pipeline.parameters.check-dev >>
     jobs:
       - check-env:
-          name: check-dev
+          name: check-dev-<< pipeline.parameters.invoked-by >>
           environment: dev
 
   check-preprod:
     when: << pipeline.parameters.check-preprod >>
     jobs:
       - check-env:
-          name: check-preprod
+          name: check-preprod-<< pipeline.parameters.invoked-by >>
           environment: preprod
