@@ -43,8 +43,8 @@ The credentials are loaded from environment variables (stored in CircleCI) - `CY
 For the `dev` environment, the following user accounts are used:
 
 - `repo` - manage-recalls-test-user@digital.justice.gov.uk
-- `api` - manage-recalls-test-api-user@digital.justice.gov.uk
-- `ui` - manage-recalls-test-ui-user@digital.justice.gov.uk
+- `api` - ppud-replacement-tech+e2eapi@digital.justice.gov.uk
+- `ui` - ppud-replacement-tech+e2eui@digital.justice.gov.uk
 
 For the `preprod` environment, the following user accounts are used:
 
