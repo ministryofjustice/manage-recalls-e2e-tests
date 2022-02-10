@@ -1,8 +1,12 @@
 import { DateTime } from "luxon";
 
 const tomorrow = DateTime.now().plus({ days: 1 });
-const sixMonthsTime = tomorrow.plus({ months: 6 });
-const nineMonthsTime = tomorrow.plus({ months: 9 });
+const yesterday = DateTime.now().minus({ days: 1 });
+const twoDaysAgo = DateTime.now().minus({ days: 2 });
+const sixMonthsTime = DateTime.now().plus({ months: 6 });
+const nineMonthsTime = DateTime.now().plus({ months: 9 });
+const fourYearsAgo = DateTime.now().minus({ years: 4 });
+const twoYearsAgo = DateTime.now().minus({ years: 2 });
 
 export const recall = {
   recallType: "Fixed term",
@@ -11,14 +15,14 @@ export const recall = {
   previousConvictionMainName: "Walter Holt",
   licenceNameCategory: "FIRST_LAST",
   previousConvictionMainNameCategory: "FIRST_LAST",
-  recallEmailReceivedDateTime: "2020-12-05T15:33:57.000Z",
+  recallEmailReceivedDateTime: yesterday.toISOTime(),
   lastReleasePrison: "KTI",
   lastReleasePrisonLabel: "Kennet (HMP)",
-  sentenceDate: "2019-08-03",
+  sentenceDate: fourYearsAgo.toISODate(),
   sentenceExpiryDate: tomorrow.toISODate(),
   licenceExpiryDate: sixMonthsTime.toISODate(),
   conditionalReleaseDate: nineMonthsTime.toISODate(),
-  lastReleaseDate: "2020-08-03",
+  lastReleaseDate: twoYearsAgo.toISODate(),
   localPoliceForceId: "devon-and-cornwall",
   localPoliceForceLabel: "Devon & Cornwall Police",
   sentencingCourt: "ABDRCT",
@@ -68,10 +72,10 @@ export const recall = {
   additionalLicenceConditionsDetail: "one, two",
   differentNomsNumber: true,
   differentNomsNumberDetail: "A1234AA",
-  recallNotificationEmailSentDateTime: "2021-08-15T13:04:00.000Z",
-  dossierEmailSentDate: "2021-09-08",
+  recallNotificationEmailSentDateTime: twoDaysAgo.toISOTime(),
+  dossierEmailSentDate: yesterday.toISODate(),
   hasDossierBeenChecked: true,
-  recallAssessmentDueDateTime: "2020-08-06T15:33:57.000Z",
+  recallAssessmentDueDateTime: tomorrow.toISOTime(),
   dossierTargetDate: tomorrow.toISODate(),
   warrantReferenceNumber: "04RC/6457367A74325",
 };
