@@ -2,11 +2,12 @@ import {When} from "cypress-cucumber-preprocessor/steps";
 
 When('Maria goes to the view recall page', () => {
     cy.clickLink('Recalls')
+    cy.clickLink('Not in custody')
     cy.get('@recallId').then(recallId => {
-        cy.clickButton({qaAttr: `assess-recall-${recallId}`})
+        cy.clickLink({qaAttr: `view-recall-${recallId}`})
     })
     cy.get('@firstLastName').then((firstLastName) =>
-        cy.pageHeading().should('equal', `Assess a recall for ${firstLastName}`)
+        cy.pageHeading().should('equal', `View the recall for ${firstLastName}`)
     )
 })
 

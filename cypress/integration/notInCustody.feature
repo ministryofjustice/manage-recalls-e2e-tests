@@ -22,6 +22,7 @@ Feature: Not in custody
     And Maria can check their answers for the not in custody recall
     And Maria deletes one of the last known addresses
     Then Maria completes the booking
+
     ### Assess the recall
     And Maria begins to assess the recall that they have just booked
     And Maria starts the assessment process for the recall
@@ -34,3 +35,8 @@ Feature: Not in custody
     And Maria can see that they are assigned to the recall on the Not in custody tab
     And Maria adds a warrant reference number
     And Maria confirms the person is awaiting return to custody
+
+    ### Rescind the recall
+    When Maria goes to the view recall page
+    And Maria rescinds the recall
+    Then Maria checks that the recall has been rescinded
