@@ -137,7 +137,9 @@ When('Maria can regenerate the revocation order and recall notification', () => 
 })
 
 When('Maria adds a warrant reference number', () => {
-    cy.clickLink('Add warrant reference')
+    cy.get('@recallId').then(recallId => {
+        cy.clickLink({qaAttr: `warrant-reference-${recallId}`})
+    })
     cy.fillInput('What is the warrant reference number?', recall.warrantReferenceNumber)
     cy.clickButton('Continue')
     cy.getText('confirmation').should('equal', 'Warrant reference number has been added.')
