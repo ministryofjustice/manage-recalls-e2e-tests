@@ -39,4 +39,6 @@ Feature: Not in custody
     ### Rescind the recall
     When Maria goes to the view recall page
     And Maria rescinds the recall
-    Then Maria checks that the recall has been rescinded
+    Then Maria checks that the rescind has been requested
+    And Maria updates the rescind
+    Then Maria checks that the rescind decision has been made
