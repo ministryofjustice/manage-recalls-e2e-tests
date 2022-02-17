@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   browser-tools: circleci/browser-tools@1.2
+  cypress: cypress-io/cypress@1.29.0
   hmpps: ministryofjustice/hmpps@3.2
   node: circleci/node@5.0.0
 
@@ -18,6 +19,12 @@ parameters:
   check-preprod:
     type: boolean
     default: false
+
+executors:
+  cypress:
+    docker:
+      - image: cypress/browsers:node16.13.2-chrome97-ff96
+    resource_class: large
 
 jobs:
   check-docker:
@@ -94,48 +101,18 @@ jobs:
           path: cypress/reports
           destination: reports
 
-  check-env:
+  do-exclusively:
     executor:
       name: hmpps/node
-      tag: 16.13-browsers
-    resource_class: large
     parameters:
       environment:
         type: string
-        default: dev
     steps:
-      - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
       - checkout
-      - run:
-          name: Update NPM to match package.json
-          command: sudo npm install -g npm@$(jq -r '.engines.npm' < package.json)
-      - node/install-packages
       - run:
           name: Wait for exclusive lock [check-<< parameters.environment >>-<< pipeline.parameters.invoked-by >>]
           command:
             ./scripts/do-exclusively --job check-<< parameters.environment >>-<< pipeline.parameters.invoked-by >> echo "Kicking off cypress tests..."
-      - run:
-          name: Run Cypress tests [<< parameters.environment >> - invoked by << pipeline.parameters.invoked-by >>]
-          command: |
-            set +e
-
-            npx cypress run \
-              --env USERNAME=${CYPRESS_USERNAME_<< pipeline.parameters.invoked-by >>_<< parameters.environment >>},PASSWORD=${CYPRESS_PASSWORD_<< pipeline.parameters.invoked-by >>_<< parameters.environment >>},NOMS_NUMBER=${NOMS_NUMBER_<< parameters.environment >>} \
-              --config baseUrl=https://manage-recalls-<< parameters.environment >>.hmpps.service.justice.gov.uk \
-              --browser chrome
-
-            export E2E_RESULT=$?
-            npm run cypress:report
-
-            set -e
-            exit $E2E_RESULT
-      - store_artifacts:
-          path: cypress/screenshots
-          destination: screenshots
-      - store_artifacts:
-          path: cypress/reports
-          destination: reports
 
 workflows:
   version: 2
@@ -147,13 +124,56 @@ workflows:
   check-dev:
     when: << pipeline.parameters.check-dev >>
     jobs:
-      - check-env:
-          name: check-dev-<< pipeline.parameters.invoked-by >>
+      - cypress/install: &cypress-install
+          executor: cypress
+          pre-steps:
+            - checkout
+            - run:
+                name: Update NPM to match package.json
+                command: apt install -y jq && npm install -g npm@$(jq -r '.engines.npm' < package.json)
+      - do-exclusively:
           environment: dev
+          requires:
+            - cypress/install
+      - cypress/run:
+          name: check-dev-<< pipeline.parameters.invoked-by >>
+          config: baseUrl=https://manage-recalls-dev.hmpps.service.justice.gov.uk
+          env: USERNAME=${CYPRESS_USERNAME_<< pipeline.parameters.invoked-by >>_dev},PASSWORD=${CYPRESS_PASSWORD_<< pipeline.parameters.invoked-by >>_dev},NOMS_NUMBER=${NOMS_NUMBER_dev}
+          executor: cypress
+          browser: chrome
+          parallel: true
+          parallelism: 2
+          record: true
+          group: check-dev
+          requires:
+            - do-exclusively
+          post-steps: &post-run-steps
+            - run: npm run cypress:report
+            - store_artifacts:
+                path: cypress/reports
+            - store_artifacts:
+                path: cypress/screenshots
 
   check-preprod:
     when: << pipeline.parameters.check-preprod >>
     jobs:
-      - check-env:
+      - cypress/install:
+          *cypress-install
+      - do-exclusively:
+          environment: dev
+          requires:
+            - cypress/install
+      - cypress/run:
           name: check-preprod-<< pipeline.parameters.invoked-by >>
-          environment: preprod
+          config: baseUrl=https://manage-recalls-preprod.hmpps.service.justice.gov.uk
+          env: USERNAME=${CYPRESS_USERNAME_<< pipeline.parameters.invoked-by >>_preprod},PASSWORD=${CYPRESS_PASSWORD_<< pipeline.parameters.invoked-by >>_preprod},NOMS_NUMBER=${NOMS_NUMBER_preprod}
+          executor: cypress
+          browser: chrome
+          parallel: true
+          parallelism: 2
+          record: true
+          group: check-preprod
+          requires:
+            - do-exclusively
+          post-steps:
+            *post-run-steps

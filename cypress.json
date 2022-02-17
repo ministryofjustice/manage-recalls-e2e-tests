@@ -1,5 +1,5 @@
 {
-  "projectId": "i8y9b5",
+  "projectId": "eo2e83",
   "baseUrl": "http://localhost:3000",
   "chromeWebSecurity": false,
   "testFiles": "**/*.{feature,features}",
