@@ -157,3 +157,16 @@ When('Maria confirms the person is awaiting return to custody', () => {
         cy.recallInfo('Custody status at assessment').should('equal', 'Not in custody')
     })
 })
+When('Maria adds a returned to custody date', () => {
+    cy.clickLink('Recalls')
+    cy.clickLink('Not in custody')
+    cy.get('@notInCustodyRecallId').then(recallId => {
+        cy.clickLink('Add RTC date', {parent: `[data-qa="recall-id-${recallId}"]`})
+    })
+    cy.enterDateTimeFromRecall('returnedToCustodyDateTime', { parent: '#returnedToCustodyDateTime' })
+    cy.enterDateTimeFromRecall('returnedToCustodyNotificationDateTime', {
+        parent: '#returnedToCustodyNotificationDateTime',
+    })
+    cy.clickButton('Save and return')
+    cy.getText('confirmation').should('equal', 'Recall updated and moved to the to do list')
+})
