@@ -12,7 +12,7 @@ services:
       - '6379:6379'
 
   gotenberg:
-    image: thecodingmachine/gotenberg:6
+    image: thecodingmachine/gotenberg:7.5.0
     container_name: gotenberg-e2e
     ports:
       - "9093:3000"
