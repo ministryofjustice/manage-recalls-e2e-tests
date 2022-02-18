@@ -5,18 +5,14 @@ import {booleanToYesNo, formatIsoDate} from "../../support/utils";
 const rescind = recall.rescindRecords[0]
 const emailFileName = 'email.msg';
 
-When('Maria goes to the view recall page', () => {
+When('Maria rescinds the recall', () => {
     cy.clickLink('Recalls')
-    cy.clickLink('Not in custody')
-    cy.get('@recallId').then(recallId => {
+    cy.get('@notInCustodyRecallId').then(recallId => {
         cy.clickLink({qaAttr: `view-recall-${recallId}`})
     })
     cy.get('@firstLastName').then((firstLastName) =>
         cy.pageHeading().should('equal', `View the recall for ${firstLastName}`)
     )
-})
-
-When('Maria rescinds the recall', () => {
   cy.clickButton('Actions')
   cy.clickLink('Rescind recall')
   cy.pageHeading().should('equal', 'Record a rescind request')

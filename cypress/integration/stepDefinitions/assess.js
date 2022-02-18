@@ -3,7 +3,8 @@ import {recall, caseworker} from "../../fixtures";
 import {
     getGeneratedDocFileName,
     getIsoDateForMinutesAgo,
-    splitFullName
+    splitFullName,
+    formatIsoDate
 } from "../../support/utils";
 
 When('Maria changes their caseworker band to 4+', () => {
@@ -156,4 +157,26 @@ When('Maria confirms the person is awaiting return to custody', () => {
         cy.getElement({ qaAttr: `view-recall-${recallId}`}).click()
         cy.recallInfo('Custody status at assessment').should('equal', 'Not in custody')
     })
+})
+When('Maria adds a returned to custody date', () => {
+    cy.clickLink('Recalls')
+    cy.clickLink('Not in custody')
+    cy.get('@notInCustodyRecallId').then(recallId => {
+        cy.clickLink('Add RTC date', {parent: `[data-qa="recall-id-${recallId}"]`})
+    })
+    cy.enterDateTimeFromRecall('returnedToCustodyDateTime', { parent: '#returnedToCustodyDateTime' })
+    cy.enterDateTimeFromRecall('returnedToCustodyNotificationDateTime', {
+        parent: '#returnedToCustodyNotificationDateTime',
+    })
+    cy.clickButton('Save and return')
+    cy.getText('confirmation').should('equal', 'Recall updated and moved to the to do list')
+    cy.get('@notInCustodyRecallId').then(recallId => {
+        cy.clickLink('View recall', {parent: `[data-qa="recall-id-${recallId}"]`})
+    })
+    cy.recallInfo('Custody status').should('equal', 'Returned to custody (RTC)')
+    cy.recallInfo('RTC date and time').should('equal', formatIsoDate(recall.returnedToCustodyDateTime))
+    cy.recallInfo('Found out RTC date and time').should(
+        'equal',
+        formatIsoDate(recall.returnedToCustodyNotificationDateTime)
+    )
 })

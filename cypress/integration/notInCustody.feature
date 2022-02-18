@@ -35,9 +35,9 @@ Feature: Not in custody
     And Maria can see that they are assigned to the recall on the Not in custody tab
     And Maria adds a warrant reference number
     And Maria confirms the person is awaiting return to custody
+    And Maria adds a returned to custody date
 
     ### Rescind the recall
-    When Maria goes to the view recall page
     And Maria rescinds the recall
     Then Maria checks that the rescind has been requested
     And Maria updates the rescind
