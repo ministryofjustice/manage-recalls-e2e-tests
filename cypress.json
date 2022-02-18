@@ -1,5 +1,4 @@
 {
-  "projectId": "i8y9b5",
   "baseUrl": "http://localhost:3000",
   "chromeWebSecurity": false,
   "testFiles": "**/*.{feature,features}",
@@ -9,5 +8,9 @@
     "charts": true,
     "reportPageTitle": "Manage a recall E2E tests",
     "embeddedScreenshots": true
+  },
+  "retries": {
+    "runMode": 2,
+    "openMode": 0
   }
 }
