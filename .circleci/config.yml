@@ -1,5 +1,7 @@
 version: 2.1
 
+_parallelism: &parallelism 2
+
 orbs:
   hmpps: ministryofjustice/hmpps@3.2
   node: circleci/node@5.0.0
@@ -23,17 +25,14 @@ jobs:
     machine:
       image: ubuntu-2004:202111-02
     resource_class: large
+    parallelism: *parallelism
     steps:
       - checkout
       - run:
-          name: Build and pull docker containers
+          name: Build, pull and run docker containers
           command: |
             docker-compose build
             docker-compose pull
-      - run:
-          name: Docker compose
-          command: |
-            set -x
             docker-compose up -d
       - restore_cache:
           keys:
@@ -41,7 +40,7 @@ jobs:
             - v2-deps-{{ arch }}-{{ .Branch }}
             - v2-deps-{{ arch }}
       - run:
-          name: Install correct node/npm
+          name: Install correct node/npm and dependencies
           command: |
             node_version=$(jq -r '.engines.node' <package.json)
             nvm install $node_version
@@ -50,10 +49,7 @@ jobs:
 
             npm install -g npm@$(jq -r '.engines.npm' <package.json)
             npm -v
-      - run:
-          name: Install NPM dependencies
-          command: |
-            nvm use $(jq -r '.engines.node' <package.json)
+
             npm ci
       - save_cache:
           key: v2-deps-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}
@@ -72,17 +68,28 @@ jobs:
           name: Run Cypress tests
           command: |
             nvm use $(jq -r '.engines.node' <package.json)
-            npx cypress run --config baseUrl=http://localhost:3000 --record false --key e883dffd-b644-4431-989d-0181ae34d0e6 --browser chrome
+
+            SPECS=$(circleci tests glob cypress/integration/*.feature | circleci tests split)
+            echo "Running feature spec(s): ${SPECS}"
+
+            set +e
+
+            npx cypress run \
+              --config baseUrl=http://localhost:3000 \
+              --browser chrome \
+              --record false \
+              --spec $SPECS
+
+            export E2E_RESULT=$?
+            npm run cypress:report
+
+            set -e
+            exit $E2E_RESULT
       - run:
           name: "Failure: output container logs to console"
           command: |
             docker-compose logs
           when: on_fail
-      - run:
-          name: Cypress report
-          command: |
-            nvm use $(jq -r '.engines.node' <package.json)
-            npm run cypress:report
       - run:
           name: Stop docker containers
           command: docker-compose stop
@@ -92,12 +99,14 @@ jobs:
       - store_artifacts:
           path: cypress/reports
           destination: reports
+      - store_test_results:
+          path: cypress/reports
 
   check-env:
     docker:
       - image: cypress/browsers:node16.13.2-chrome97-ff96
     resource_class: large
-    parallelism: 2
+    parallelism: *parallelism
     parameters:
       environment:
         type: string
@@ -124,6 +133,7 @@ jobs:
               --env USERNAME=${CYPRESS_USERNAME_<< pipeline.parameters.invoked-by >>_<< parameters.environment >>},PASSWORD=${CYPRESS_PASSWORD_<< pipeline.parameters.invoked-by >>_<< parameters.environment >>},NOMS_NUMBER=${NOMS_NUMBER_<< parameters.environment >>} \
               --config baseUrl=https://manage-recalls-<< parameters.environment >>.hmpps.service.justice.gov.uk \
               --browser chrome \
+              --record false \
               --spec $SPECS
 
             export E2E_RESULT=$?
