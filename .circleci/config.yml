@@ -1,7 +1,6 @@
 version: 2.1
 
 orbs:
-  browser-tools: circleci/browser-tools@1.2
   hmpps: ministryofjustice/hmpps@3.2
   node: circleci/node@5.0.0
 
@@ -95,21 +94,19 @@ jobs:
           destination: reports
 
   check-env:
-    executor:
-      name: hmpps/node
-      tag: 16.13-browsers
+    docker:
+      - image: cypress/browsers:node16.13.2-chrome97-ff96
     resource_class: large
+    parallelism: 4
     parameters:
       environment:
         type: string
         default: dev
     steps:
-      - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
       - checkout
       - run:
           name: Update NPM to match package.json
-          command: sudo npm install -g npm@$(jq -r '.engines.npm' < package.json)
+          command: apt install -y jq && npm install -g npm@$(jq -r '.engines.npm' < package.json)
       - node/install-packages
       - run:
           name: Wait for exclusive lock [check-<< parameters.environment >>-<< pipeline.parameters.invoked-by >>]
@@ -118,12 +115,17 @@ jobs:
       - run:
           name: Run Cypress tests [<< parameters.environment >> - invoked by << pipeline.parameters.invoked-by >>]
           command: |
+            echo $(circleci tests glob cypress/integration/*.feature)
+            SPECS=$(circleci tests glob cypress/integration/*.feature | circleci tests split)
+            echo $SPECS
+
             set +e
 
             npx cypress run \
               --env USERNAME=${CYPRESS_USERNAME_<< pipeline.parameters.invoked-by >>_<< parameters.environment >>},PASSWORD=${CYPRESS_PASSWORD_<< pipeline.parameters.invoked-by >>_<< parameters.environment >>},NOMS_NUMBER=${NOMS_NUMBER_<< parameters.environment >>} \
               --config baseUrl=https://manage-recalls-<< parameters.environment >>.hmpps.service.justice.gov.uk \
-              --browser chrome
+              --browser chrome \
+              --spec $SPECS
 
             export E2E_RESULT=$?
             npm run cypress:report
@@ -136,6 +138,8 @@ jobs:
       - store_artifacts:
           path: cypress/reports
           destination: reports
+      - store_test_results:
+          path: cypress/reports
 
 workflows:
   version: 2
