@@ -1,13 +1,14 @@
 Feature: Not in custody
-
-  Scenario: Book and assess a recall
+  Background:
     Given Maria signs in
     And Maria enters their user details
     And Maria searches for the environment specific NOMS number
     And Maria clicks on the Book a recall link
     And Maria enters the licence name
     And Maria enters the pre-convictions name
-    And Maria confirms the person is not in custody
+
+  Scenario: Book and assess a recall
+    When Maria confirms the person is not in custody
     And Maria confirms the person has a last known address
     And Maria looks up an address by postcode
     And Maria types an address
@@ -36,9 +37,3 @@ Feature: Not in custody
     And Maria adds a warrant reference number
     And Maria confirms the person is awaiting return to custody
     And Maria adds a returned to custody date
-
-    ### Rescind the recall
-    And Maria rescinds the recall
-    Then Maria checks that the rescind has been requested
-    And Maria updates the rescind
-    Then Maria checks that the rescind decision has been made

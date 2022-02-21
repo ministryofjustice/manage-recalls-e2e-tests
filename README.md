@@ -148,3 +148,6 @@ The `autofill-extension-import.csv` file in the repo root can be imported into t
 ## Changing the person that E2E tests run against
 
 On dev or pre-prod, change the NOMS_NUMBER_dev or NOMS_NUMBER_preprod env var accordingly ([CircleCI page](https://app.circleci.com/settings/project/github/ministryofjustice/manage-recalls-e2e-tests/environment-variables?return-to=https%3A%2F%2Fapp.circleci.com%2Fpipelines%2Fgithub%2Fministryofjustice%2Fmanage-recalls-e2e-tests))
+
+## Clicking on step definitions
+In Intellij, you need 'Cucumber for .js' plugin installed and then the step definitions are 'clickable'

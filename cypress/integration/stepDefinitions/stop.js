@@ -1,19 +1,23 @@
 import {When} from "cypress-cucumber-preprocessor/steps";
-import {recall} from "../../fixtures";
+import {caseworker, recall} from "../../fixtures";
 import {booleanToYesNo, formatIsoDate} from "../../support/utils";
 
 const rescind = recall.rescindRecords[0]
 const emailFileName = 'email.msg';
 
-When('Maria rescinds the recall', () => {
-    cy.clickLink('Recalls')
-    cy.get('@notInCustodyRecallId').then(recallId => {
-        cy.clickLink({qaAttr: `view-recall-${recallId}`})
-    })
-    cy.get('@firstLastName').then((firstLastName) =>
-        cy.pageHeading().should('equal', `View the recall for ${firstLastName}`)
-    )
+function viewRecallAndOpenActionsMenu() {
+  cy.clickLink('Recalls')
+  cy.get('@recallId').then(recallId => {
+      cy.clickLink({qaAttr: `view-recall-${recallId}`})
+  })
+  cy.get('@firstLastName').then((firstLastName) =>
+      cy.pageHeading().should('equal', `View the recall for ${firstLastName}`)
+  )
   cy.clickButton('Actions')
+}
+
+When('Maria rescinds the recall', () => {
+  viewRecallAndOpenActionsMenu()
   cy.clickLink('Rescind recall')
   cy.pageHeading().should('equal', 'Record a rescind request')
   cy.fillInput('Provide details about the rescind request', rescind.requestDetails)
@@ -28,6 +32,27 @@ When('Maria checks that the rescind has been requested', () => {
   cy.recallInfo('Rescind request details').should('equal', rescind.requestDetails)
   cy.recallInfo('Rescind request email').should('equal', emailFileName)
   cy.recallInfo('Rescind request received').should('equal', formatIsoDate(rescind.requestEmailReceivedDate))
+})
+
+When('Maria stops the recall', () => {
+  viewRecallAndOpenActionsMenu()
+  cy.clickLink('Stop recall')
+  cy.pageHeading().should('equal', 'Why are you stopping this recall?')
+  cy.selectFromDropdown('Why are you stopping this recall?', recall.stopReason)
+  cy.clickButton('Save and return')
+})
+
+When('Maria checks that the stop decision has been recorded', () => {
+  cy.clickLink('View')
+  cy.getText('recallStatus').should('equal', 'Stopped')
+  cy.getElement('Stop recall').should('not.exist')
+  cy.getText('confirmation').should('equal', 'Recall stopped.')
+  cy.clickLink('View')
+  cy.recallInfo('Reason recall stopped').should('equal', 'Deceased')
+
+  const {firstName, lastName} = caseworker
+  cy.recallInfo('Recall stopped by').should('equal', `${firstName} ${lastName}`)
+  cy.recallInfo('Recall stopped on').should('contain', formatIsoDate(Date.now()))
 })
 
 When('Maria updates the rescind', () => {
