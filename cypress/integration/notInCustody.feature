@@ -18,7 +18,7 @@ Feature: Not in custody
     And Maria submits the police contact details
     And Maria submits any vulnerability, contraband and arrest issues for the offender
     And Maria submits the probation officer details
-    And Maria does not upload any documents
+    And Maria uploads some documents
     And Maria submits the reason for missing documents
     And Maria can check their answers for the not in custody recall
     And Maria deletes one of the last known addresses
@@ -37,3 +37,9 @@ Feature: Not in custody
     And Maria adds a warrant reference number
     And Maria confirms the person is awaiting return to custody
     And Maria adds a returned to custody date
+
+    ### create a dossier
+    When Maria navigates to the recall to create a dossier
+    Then Maria is able to see the recall information before creating a dossier
+    And Maria submits the current prison details
+    And Maria submits the information for the prison letter

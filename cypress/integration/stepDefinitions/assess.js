@@ -146,13 +146,12 @@ When('Maria adds a warrant reference number', () => {
     cy.getText('confirmation').should('equal', 'Warrant reference number has been added.')
     cy.clickLink('View')
     cy.recallInfo('Warrant reference number').should('equal', recall.warrantReferenceNumber)
-    cy.getRecallIdFromUrl().as('notInCustodyRecallId')
 })
 
 When('Maria confirms the person is awaiting return to custody', () => {
     cy.clickLink('Recalls')
     cy.clickLink('Not in custody')
-    cy.get('@notInCustodyRecallId').then(recallId => {
+    cy.get('@recallId').then(recallId => {
         cy.getRecallItemFromList({recallId, columnQaAttr: 'status'}).should('equal', 'Awaiting return to custody')
         cy.getElement({ qaAttr: `view-recall-${recallId}`}).click()
         cy.recallInfo('Custody status at assessment').should('equal', 'Not in custody')
@@ -161,7 +160,7 @@ When('Maria confirms the person is awaiting return to custody', () => {
 When('Maria adds a returned to custody date', () => {
     cy.clickLink('Recalls')
     cy.clickLink('Not in custody')
-    cy.get('@notInCustodyRecallId').then(recallId => {
+    cy.get('@recallId').then(recallId => {
         cy.clickLink('Add RTC date', {parent: `[data-qa="recall-id-${recallId}"]`})
     })
     cy.enterDateTimeFromRecall('returnedToCustodyDateTime', { parent: '#returnedToCustodyDateTime' })
@@ -170,7 +169,7 @@ When('Maria adds a returned to custody date', () => {
     })
     cy.clickButton('Save and return')
     cy.getText('confirmation').should('equal', 'Recall updated and moved to the to do list')
-    cy.get('@notInCustodyRecallId').then(recallId => {
+    cy.get('@recallId').then(recallId => {
         cy.clickLink('View recall', {parent: `[data-qa="recall-id-${recallId}"]`})
     })
     cy.recallInfo('Custody status').should('equal', 'Returned to custody (RTC)')
