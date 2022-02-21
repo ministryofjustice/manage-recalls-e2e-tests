@@ -97,5 +97,6 @@ export const recall = {
   dossierTargetDate: tomorrow.toISODate(),
   warrantReferenceNumber: "04RC/6457367A74325",
   returnedToCustodyDateTime: '2022-01-22T13:45:33.000Z',
-  returnedToCustodyNotificationDateTime: '2022-01-23T08:22:06.000Z'
+  returnedToCustodyNotificationDateTime: '2022-01-23T08:22:06.000Z',
+  stopReason: 'DECEASED',
 };

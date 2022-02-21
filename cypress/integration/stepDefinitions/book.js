@@ -32,6 +32,7 @@ When('Maria searches for the environment specific NOMS number', () => {
 
 When('Maria clicks on the Book a recall link', () => {
     cy.clickButton('Book a recall')
+    cy.getRecallIdFromUrl().as('recallId')
 })
 
 When('Maria confirms the person is in custody', () => {
@@ -281,7 +282,6 @@ When('Maria completes the booking', () => {
     cy.get('@firstLastName').then((firstLastName) => {
         cy.pageHeading().should('equal', `Recall booked for ${firstLastName}`)
     })
-    cy.getRecallIdFromUrl().as('recallId')
 })
 
 When('Maria confirms they can\'t assess the recall as a band 3', () => {

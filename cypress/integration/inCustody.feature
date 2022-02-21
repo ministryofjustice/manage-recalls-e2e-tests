@@ -1,11 +1,13 @@
 Feature: In custody
 
-  Scenario: Book and assess a recall
+  Background:
     Given Maria signs in
     And Maria enters their user details
-    And Maria searches for the environment specific NOMS number
+
+  Scenario: Book and assess a recall
+    Given Maria searches for the environment specific NOMS number
     ### Book a recall
-    And Maria clicks on the Book a recall link
+    When Maria clicks on the Book a recall link
     And Maria enters the licence name
     And Maria enters the pre-convictions name
     And Maria confirms the person is in custody
