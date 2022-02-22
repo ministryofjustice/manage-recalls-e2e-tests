@@ -84,6 +84,7 @@ services:
     depends_on: [gotenberg, fake-prisoner-offender-search-api, fake-prison-register-api, fake-court-register-api, postgres, minio]
     ports:
       - "9091:8080"
+      - "9097:8081"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8080/health/ping" ]
     environment:
