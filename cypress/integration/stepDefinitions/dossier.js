@@ -25,6 +25,12 @@ When('Maria is able to see the recall information before creating a dossier', ()
     cy.clickLink('Create dossier')
 })
 
+When('Maria uploads the email sent to New Scotland Yard', () => {
+    cy.selectCheckboxes('I have sent the email', ['I have sent the email'])
+    cy.uploadEmail({field: 'nsyEmailFileName', file: 'email.msg'})
+    cy.clickButton('Continue')
+})
+
 When('Maria submits the information for the prison letter', () => {
     cy.selectRadio('Are there additional licence conditions?', booleanToYesNo(recall.additionalLicenceConditions))
     cy.fillInput('Provide more detail', recall.additionalLicenceConditionsDetail, {parent: '#conditional-additionalLicenceConditions'})
@@ -82,6 +88,10 @@ When('Maria confirms the details captured during dossier creation', () => {
     cy.recallInfo('Dossier created by').should('equal', `${firstName} ${lastName}`)
     cy.recallInfo('Dossier sent').should('equal', formatIsoDate(getIsoDateForToday(), {dateOnly: true}))
     // TODO - CHECK DIFFERENT NOMIS NUMBER
+})
+
+When('Maria confirms recall information for the "not in custody" recall', () => {
+    cy.recallInfo('NSY email uploaded').should('equal', 'email.msg')
 })
 
 When('Maria can download the dossier email', () => {
