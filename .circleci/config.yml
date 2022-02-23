@@ -137,10 +137,20 @@ jobs:
               --spec $SPECS
 
             export E2E_RESULT=$?
+
+            # Store results in the workspace for a collection step later
+            mkdir -p workspace/env-output
+            echo "${E2E_RESULT}" > "workspace/env-output/E2E_RESULT_${CIRCLE_NODE_INDEX}"
+            echo "${CIRCLE_NODE_TOTAL}" > "workspace/env-output/TOTAL_NODES"
+
             npm run cypress:report
 
-            set -e
-            exit $E2E_RESULT
+            # NOTE: We *always* exit cleanly here so we can report results, we'll use the exit code later
+            exit 0
+      - persist_to_workspace:
+          root: workspace
+          paths:
+            - env-output
       - store_artifacts:
           path: cypress/screenshots
           destination: screenshots
@@ -150,8 +160,47 @@ jobs:
       - store_test_results:
           path: cypress/reports
 
+  test-bash-scripts:
+    executor: hmpps/default
+    steps:
+      - checkout
+      - run: git submodule sync
+      - run: git submodule update --init
+      - run: ./test/bats/bin/bats test/
+
+  report-results:
+    executor: hmpps/default
+    parameters:
+      environment:
+        type: string
+        default: dev
+    steps:
+      - checkout
+      - attach_workspace:
+          at: workspace
+      - run:
+          name: Report results for << parameters.environment >>
+          command: |
+            export RESULTS_DIR=workspace/env-output
+            E2E_RESULT=$(./scripts/collect-results.sh)
+            echo "Overall E2E exit code: ${E2E_RESULT}"
+
+            echo "Reporting results to dashboard..."
+            SUCCESSFUL=false
+            if [ ${E2E_RESULT} -eq 0 ]; then
+              SUCCESSFUL=true
+            fi
+            ./scripts/report-results-to-dashboard.sh -e << parameters.environment >> -s ${SUCCESSFUL}
+
+            exit ${E2E_RESULT}
+
 workflows:
   version: 2
+  build:
+    when: << pipeline.parameters.check-docker >>
+    jobs:
+      - test-bash-scripts
+
   check-docker:
     when: << pipeline.parameters.check-docker >>
     jobs:
@@ -163,6 +212,10 @@ workflows:
       - check-env:
           name: check-dev-<< pipeline.parameters.invoked-by >>
           environment: dev
+      - report-results:
+          environment: dev
+          requires:
+            - check-dev-<< pipeline.parameters.invoked-by >>
 
   check-preprod:
     when: << pipeline.parameters.check-preprod >>
@@ -170,3 +223,7 @@ workflows:
       - check-env:
           name: check-preprod-<< pipeline.parameters.invoked-by >>
           environment: preprod
+      - report-results:
+          environment: preprod
+          requires:
+            - check-preprod-<< pipeline.parameters.invoked-by >>
