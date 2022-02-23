@@ -1,6 +1,6 @@
 version: 2.1
 
-_parallelism: &parallelism 2
+_parallelism: &parallelism 3
 
 orbs:
   hmpps: ministryofjustice/hmpps@3.2
