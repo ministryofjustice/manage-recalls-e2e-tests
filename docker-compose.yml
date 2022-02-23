@@ -43,6 +43,17 @@ services:
       test: [ "CMD", "curl", "-f", "http://localhost:8080/health/ping" ]
     command: --verbose
 
+  fake-prison-api:
+    image: quay.io/hmpps/ppud-fake-prison-api:latest
+    networks:
+      - manage-recalls-e2e
+    container_name: fake-prison-api-e2e
+    ports:
+      - "9097:8080"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/health/ping" ]
+    command: --verbose
+
   fake-prison-register-api:
     image: quay.io/hmpps/ppud-fake-prison-register-api:latest
     networks:
@@ -81,10 +92,10 @@ services:
     networks:
       - manage-recalls-e2e
     container_name: manage-recalls-api-e2e
-    depends_on: [gotenberg, fake-prisoner-offender-search-api, fake-prison-register-api, fake-court-register-api, postgres, minio]
+    depends_on: [gotenberg, fake-prisoner-offender-search-api, fake-prison-api, fake-prison-register-api, fake-court-register-api, postgres, minio]
     ports:
       - "9091:8080"
-      - "9097:8081"
+      - "9081:8081"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8080/health/ping" ]
     environment:
@@ -94,6 +105,7 @@ services:
       - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://hmpps-auth:8080/auth/.well-known/jwks.json
       - PRISONERSEARCH_ENDPOINT_URL=http://fake-prisoner-offender-search-api:8080
       - PRISONREGISTER_ENDPOINT_URL=http://fake-prison-register-api:8080
+      - PRISONAPI_ENDPOINT_URL=http://fake-prison-api:8080
       - COURTREGISTER_ENDPOINT_URL=http://fake-court-register-api:8080
       - GOTENBERG_ENDPOINT_URL=http://gotenberg:3000
       - POSTGRES_HOST=postgres:5432
@@ -101,6 +113,7 @@ services:
       - POSTGRES_USERNAME=ppud_user
       - POSTGRES_PASSWORD=secret
       - AWS_LOCAL_ENDPOINT=http://minio:4566
+      - RETURNTOCUSTODY_UPDATETHRESHOLDMINUTES=5
 
   manage-recalls-ui:
     image: quay.io/hmpps/manage-recalls-ui:latest
