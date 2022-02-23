@@ -20,8 +20,7 @@ When('Maria navigates to the recall to create a dossier', () => {
 })
 When('Maria is able to see the recall information before creating a dossier', () => {
     // TODO - check due date
-    // TODO - re-enable when status bug fixed
-    // cy.getText('recallStatus').should('equal', 'Dossier in progress')
+    cy.getText('recallStatus').should('equal', 'Dossier in progress')
     cy.clickLink('Create dossier')
 })
 
