@@ -3,11 +3,16 @@
   "chromeWebSecurity": false,
   "testFiles": "**/*.{feature,features}",
   "video": false,
+  "reporter": "cypress-multi-reporters",
   "reporterOptions": {
     "reportDir": "cypress/report",
     "charts": true,
     "reportPageTitle": "Manage a recall E2E tests",
-    "embeddedScreenshots": true
+    "embeddedScreenshots": true,
+    "reporterEnabled": "spec, mocha-junit-reporter",
+    "reporterOptions": {
+      "mochaFile": "cypress/junit/results-[hash].xml"
+    }
   },
   "retries": {
     "runMode": 2,
