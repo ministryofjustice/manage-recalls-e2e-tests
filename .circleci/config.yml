@@ -69,7 +69,7 @@ jobs:
           command: |
             nvm use $(jq -r '.engines.node' <package.json)
 
-            SPECS=$(circleci tests glob cypress/integration/*.feature | circleci tests split)
+            SPECS=$(circleci tests glob cypress/integration/*.feature | circleci tests split --split-by=timings | tr "\n" "," | tr " " ",")
             echo "Running feature spec(s): ${SPECS}"
 
             set +e
@@ -100,7 +100,7 @@ jobs:
           path: cypress/reports
           destination: reports
       - store_test_results:
-          path: cypress/reports
+          path: cypress/junit
 
   check-env:
     docker:
@@ -124,7 +124,7 @@ jobs:
       - run:
           name: Run Cypress tests [<< parameters.environment >> - invoked by << pipeline.parameters.invoked-by >>]
           command: |
-            SPECS=$(circleci tests glob cypress/integration/*.feature | circleci tests split)
+            SPECS=$(circleci tests glob cypress/integration/*.feature | circleci tests split --split-by=timings | tr "\n" "," | tr " " ",")
             echo "Running feature spec(s): ${SPECS}"
 
             set +e
@@ -158,7 +158,7 @@ jobs:
           path: cypress/reports
           destination: reports
       - store_test_results:
-          path: cypress/reports
+          path: cypress/junit
 
   test-bash-scripts:
     executor: hmpps/default

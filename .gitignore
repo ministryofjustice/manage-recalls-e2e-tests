@@ -12,6 +12,7 @@ cypress/logs
 cypress/reports
 cypress/screenshots
 cypress/videos
+cypress/junit
 logs
 node_modules
 screenshots
