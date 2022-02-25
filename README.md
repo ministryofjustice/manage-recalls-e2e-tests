@@ -145,6 +145,8 @@ The `autofill-extension-import.csv` file in the repo root can be imported into t
 * [Extension download](https://chrome.google.com/webstore/detail/autofill/nlmmgnhgdeffjkdckmikfpnddkbbfkkk)
 * To access the Autofill import CSV page, paste this URL in chrome address bar - chrome-extension://nlmmgnhgdeffjkdckmikfpnddkbbfkkk/options.html#importexport
 
+To activate the autofill feature on a Manage a recall form, press Option + F
+
 ## Changing the person that E2E tests run against
 
 On dev or pre-prod, change the NOMS_NUMBER_dev or NOMS_NUMBER_preprod env var accordingly ([CircleCI page](https://app.circleci.com/settings/project/github/ministryofjustice/manage-recalls-e2e-tests/environment-variables?return-to=https%3A%2F%2Fapp.circleci.com%2Fpipelines%2Fgithub%2Fministryofjustice%2Fmanage-recalls-e2e-tests))
