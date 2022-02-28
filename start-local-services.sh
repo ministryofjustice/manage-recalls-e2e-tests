@@ -35,8 +35,8 @@ function wait_for {
 }
 
 wait_for "http://localhost:9090/auth/health/ping" "hmpps-auth"
-wait_for "http://localhost:8081/health/ping" "${MANAGE_RECALLS_API_NAME}"
-wait_for "http://localhost:3000/ping" "${MANAGE_RECALLS_UI_NAME}"
+wait_for "http://localhost:9091/health" "${MANAGE_RECALLS_API_NAME}"
+wait_for "http://localhost:3000/health" "${MANAGE_RECALLS_UI_NAME}"
 
 echo "Logs can be found by running:"
 echo "  less ${MANAGE_RECALLS_API_LOG_FILE}"
