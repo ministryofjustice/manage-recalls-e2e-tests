@@ -12,10 +12,12 @@
     "reporterEnabled": "spec, mocha-junit-reporter",
     "reporterOptions": {
       "mochaFile": "cypress/junit/results-[hash].xml"
-    }
+    },
+    "viewportHeight": 1080,
+    "viewportWidth": 1920
   },
   "retries": {
-    "runMode": 2,
+    "runMode": 1,
     "openMode": 0
   }
 }
