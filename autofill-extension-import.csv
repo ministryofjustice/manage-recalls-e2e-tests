@@ -63,43 +63,73 @@ r103,0,"^dossierEmailSentDateDay$","13","/persons/[^\/]+/recalls/[^\/]+/dossier-
 r104,0,"^dossierEmailSentDateMonth$","11","/persons/[^\/]+/recalls/[^\/]+/dossier-email",0,c1
 r105,0,"^dossierEmailSentDateYear$","2021","/persons/[^\/]+/recalls/[^\/]+/dossier-email",0,c1
 r106,3,"^confirmDossierEmailSent$","1","/persons/[^\/]+/recalls/[^\/]+/dossier-email",0,c1
-r108,0,"^PART_A_RECALL_REPORT$","C:\fakepath\part_a_recall_report.pdf","/persons/[^\/]+/recalls/[^\/]+/upload-documents",0,c1
-r109,0,"^LICENCE$","C:\fakepath\part_a_recall_report.pdf","/persons/[^\/]+/recalls/[^\/]+/upload-documents",0,c1
-r110,0,"^PREVIOUS_CONVICTIONS_SHEET$","C:\fakepath\part_a_recall_report.pdf","/persons/[^\/]+/recalls/[^\/]+/upload-documents",0,c1
-r111,0,"^PRE_SENTENCING_REPORT$","C:\fakepath\part_a_recall_report.pdf","/persons/[^\/]+/recalls/[^\/]+/upload-documents",0,c1
 r126,0,"^localDeliveryUnit$","Central Audit Team","/persons/[^\/]+/recalls/[^\/]+/probation-officer",0,c1
 r129,2,"^sentencingCourt$","""BLKPCT""","/persons/[^\/]+/recalls/[^\/]+/last-release",0,c1
 r130,0,"^missingDocumentsDetail$","Chased","/persons/[^\/]+/recalls/[^\/]+/last-release/missing-documents",0,c1
-r131,3,"FIRST_LAST","1","/persons/[^\/]+/recalls/[^\/]+/licence-name",0,c1
-r132,3,"FIRST_MIDDLE_LAST","1","/persons/[^\/]+/recalls/[^\/]+/pre-cons-name",0,c1
+r131,3,"^FIRST_LAST","1","/persons/[^\/]+/recalls/[^\/]+/licence-name",0,c1
+r132,3,"^FIRST_MIDDLE_LAST","1","/persons/[^\/]+/recalls/[^\/]+/pre-cons-name",0,c1
 r136,0,"^missingDocumentsDetail$","Chased the missing documents on 6/12/21
 Email uploaded","/persons/[^\/]+/recalls/[^\/]+/missing-documents",0,c1
 r137,0,"^localPoliceForceIdInput$","City of London Police","/persons/[^\/]+/recalls/[^\/]+/prison-police",0,c1
 r138,2,"^localPoliceForceId$","""city-of-london""","/persons/[^\/]+/recalls/[^\/]+/prison-police",0,c1
 r140,3,"^arrestIssues$","10","/persons/[^\/]+/recalls/[^\/]+/issues-needs",0,c1
 r144,0,"^arrestIssuesDetail$","Arrest issue detail...","/persons/[^\/]+/recalls/[^\/]+/issues-needs",0,c1
-r145,3,"^inCustody$","10","/persons/[^\/]+/recalls/[^\/]+/custody-status",0,c1
+r145,3,"^inCustodyAtBooking$","10","/persons/[^\/]+/recalls/[^\/]+/custody-status",0,c1
 r146,3,"^lastKnownAddressOption$","10","/persons/[^\/]+/recalls/[^\/]+/last-known-address",0,c1
 r147,0,"^postcode$","E151JZ","/persons/[^\/]+/recalls/[^\/]+/find-address",0,c1
 r148,0,"^line1$","345 Porchester Road","/persons/[^\/]+/recalls/[^\/]+/address-manual",0,c1
 r149,0,"^line2$","Southsea","/persons/[^\/]+/recalls/[^\/]+/address-manual",0,c1
 r150,0,"^town$","Portsmouth","/persons/[^\/]+/recalls/[^\/]+/address-manual",0,c1
 r151,0,"^postcode$","PO1 4OY","/persons/[^\/]+/recalls/[^\/]+/address-manual",0,c1
+r152,0,"^postcode$","PE14 7DF","/persons/[^\/]+/recalls/[^\/]+/postcode-lookup",0,c1
+r153,2,"^addressUprn$","""100090995355""","/persons/[^\/]+/recalls/[^\/]+/postcode-results",0,c1
+r154,0,"^rescindRequestEmailReceivedDateDay$","16","/persons/[^\/]+/recalls/[^\/]+/rescind-request",0,c1
+r155,0,"^rescindRequestEmailReceivedDateMonth$","02","/persons/[^\/]+/recalls/[^\/]+/rescind-request",0,c1
+r156,0,"^rescindRequestEmailReceivedDateYear$","2022","/persons/[^\/]+/recalls/[^\/]+/rescind-request",0,c1
+r158,0,"^rescindRequestDetail$","Incorrect recall initiated, should be rescinded","/persons/[^\/]+/recalls/[^\/]+/rescind-request",0,c1
+r159,0,"^rescindDecisionEmailSentDateDay$","16","/persons/[^\/]+/recalls/[^\/]+/rescind-decision",0,c1
+r160,0,"^rescindDecisionEmailSentDateMonth$","02","/persons/[^\/]+/recalls/[^\/]+/rescind-decision",0,c1
+r161,0,"^rescindDecisionEmailSentDateYear$","2022","/persons/[^\/]+/recalls/[^\/]+/rescind-decision",0,c1
+r163,3,"^approveRescindDecision$","10","/persons/[^\/]+/recalls/[^\/]+/rescind-decision",0,c1
+r164,3,"^confirmEmailSent$","1","/persons/[^\/]+/recalls/[^\/]+/rescind-decision",0,c1
+r165,0,"^rescindDecisionDetail$","Confirmed that the rescind is valid.","/persons/[^\/]+/recalls/[^\/]+/rescind-decision",0,c1
+r166,0,"^returnedToCustodyDateTimeDay$","21","/persons/[^\/]+/recalls/[^\/]+/rtc-dates",0,c1
+r167,0,"^returnedToCustodyDateTimeMonth$","02","/persons/[^\/]+/recalls/[^\/]+/rtc-dates",0,c1
+r168,0,"^returnedToCustodyDateTimeYear$","2022","/persons/[^\/]+/recalls/[^\/]+/rtc-dates",0,c1
+r169,0,"^returnedToCustodyDateTimeHour$","08","/persons/[^\/]+/recalls/[^\/]+/rtc-dates",0,c1
+r170,0,"^returnedToCustodyDateTimeMinute$","09","/persons/[^\/]+/recalls/[^\/]+/rtc-dates",0,c1
+r171,0,"^returnedToCustodyNotificationDateTimeDay$","21","/persons/[^\/]+/recalls/[^\/]+/rtc-dates",0,c1
+r172,0,"^returnedToCustodyNotificationDateTimeMonth$","02","/persons/[^\/]+/recalls/[^\/]+/rtc-dates",0,c1
+r173,0,"^returnedToCustodyNotificationDateTimeYear$","2022","/persons/[^\/]+/recalls/[^\/]+/rtc-dates",0,c1
+r174,0,"^returnedToCustodyNotificationDateTimeHour$","08","/persons/[^\/]+/recalls/[^\/]+/rtc-dates",0,c1
+r175,0,"^returnedToCustodyNotificationDateTimeMinute$","15","/persons/[^\/]+/recalls/[^\/]+/rtc-dates",0,c1
+r176,3,"^NO$","1","/persons/[^\/]+/recalls/[^\/]+/assess-custody-status",0,c1
+r177,0,"^currentPrisonInput$","Belmarsh (HMP)","/persons/[^\/]+/recalls/[^\/]+/dossier-prison",0,c1
+r178,2,"^currentPrison$","""BAI""","/persons/[^\/]+/recalls/[^\/]+/dossier-prison",0,c1
+r179,3,"^YES$","1","/persons/[^\/]+/recalls/[^\/]+/dossier-nsy-email",0,c1
+r180,3,"^NO$","1","/persons/[^\/]+/recalls/[^\/]+/address-list",0,c1
+r181,3,"^STANDARD$","1","/persons/[^\/]+/recalls/[^\/]+/recall-type",0,c1
+r182,0,"^warrantReferenceNumber$","02RC/1234567C12345","/persons/[^\/]+/recalls/[^\/]+/warrant-reference",0,c1
 ### AUTOFILL OPTIONS ###,,,,,,
 advanced,"[]",,,,,
 exceptions,"[]",,,,,
 textclips,"[]",,,,,
 variables,"[]",,,,,
-backup,0,30,,,,
-manual,1,,,,,
-delay,0,1,,,,
-labelmatch,0,,,,,
-overwrite,0,,,,,
-vars,1,,,,,
-sound,0,,,,,
-voice,0,1,,,,
-debug,0,,,,,
-mask,1,,,,,
-scale,1,,,,,
-menu,1,,,,,
+activecat,1,,,,,
 autoimport,0,,,,,
+backup,0,30,,,,
+badge,1,,,,,
+closeinfobar,1,1,,,,
+debug,0,,,,,
+delay,0,1,,,,
+fluid,1,,,,,
+hidebackup,0,,,,,
+manual,1,,,,,
+mask,1,,,,,
+menu,1,,,,,
+overwrite,0,,,,,
+sitefilters,1,,,,,
+skiphidden,0,,,,,
+sound,0,,,,,
+vars,1,,,,,
+voice,0,1,,,,
