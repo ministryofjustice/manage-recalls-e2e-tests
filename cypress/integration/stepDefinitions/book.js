@@ -42,6 +42,16 @@ When('Maria confirms the person is in custody', () => {
     cy.clickButton('Continue')
 })
 
+defineParameterType({
+    name: "recallType",
+    regexp: new RegExp(("Standard|Fixed")),
+});
+
+When('Maria confirms the recall type as {recallType}', (recallType) => {
+    cy.selectRadio('What type of recall is being recommended?', recallType)
+    cy.clickButton('Continue')
+})
+
 When('Maria confirms the person is not in custody', () => {
     cy.get('@firstLastName').then((firstLastName) =>
         cy.selectRadio(`Is ${firstLastName} in custody?`, 'No')
@@ -241,6 +251,10 @@ When('Maria can check their answers', () => {
     cy.recallInfo('OASys report').should('equal', 'Missing')
     cy.recallInfo('Details', {parent: '#missing-documents'}).should('equal', 'Chased')
     cy.recallInfo('Email uploaded', {parent: '#missing-documents'}).should('equal', 'email.msg')
+})
+
+When('Maria confirms the standard recall type on Check your answers', () => {
+    cy.recallInfo('Recall type').should('equal', 'Standard')
 })
 
 When('Maria can check their answers for the not in custody recall', () => {
