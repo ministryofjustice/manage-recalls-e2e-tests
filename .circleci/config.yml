@@ -31,9 +31,9 @@ jobs:
       - run:
           name: Build, pull and run docker containers
           command: |
-            docker compose build
-            docker compose pull
-            docker compose up -d
+            docker-compose build
+            docker-compose pull
+            docker-compose up -d
       - restore_cache:
           keys:
             - v2-deps-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}
