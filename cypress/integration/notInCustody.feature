@@ -13,6 +13,7 @@ Feature: Not in custody
     And Maria looks up an address by postcode
     And Maria types an address
     And Maria can see the addresses listed
+    And Maria sets the recall type as Fixed term
     And Maria submits the date and email of the recall request received from probation service
     And Maria submits the sentence, offence and release details
     And Maria submits the police contact details

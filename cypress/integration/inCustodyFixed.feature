@@ -11,7 +11,7 @@ Feature: In custody (Fixed term)
     And Maria enters the licence name
     And Maria enters the pre-convictions name
     And Maria confirms the person is in custody
-    And Maria confirms the recall type as Fixed term
+    And Maria sets the recall type as Fixed term
     And Maria submits the date and email of the recall request received from probation service
     And Maria submits the sentence, offence and release details
     And Maria submits the police contact details
