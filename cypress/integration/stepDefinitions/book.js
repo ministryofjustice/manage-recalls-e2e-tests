@@ -42,6 +42,16 @@ When('Maria confirms the person is in custody', () => {
     cy.clickButton('Continue')
 })
 
+defineParameterType({
+    name: "recallType",
+    regexp: new RegExp(("Standard|Fixed term")),
+});
+
+When('Maria sets the recall type as {recallType}', (recallType) => {
+    cy.selectRadio('What type of recall is being recommended?', recallType)
+    cy.clickButton('Continue')
+})
+
 When('Maria confirms the person is not in custody', () => {
     cy.get('@firstLastName').then((firstLastName) =>
         cy.selectRadio(`Is ${firstLastName} in custody?`, 'No')
@@ -201,6 +211,8 @@ When('Maria can check their answers', () => {
     cy.recallInfo('Custody status at booking').should('equal', 'In custody')
 
     // Recall details
+    cy.recallInfo('Recall type').should('equal', 'Fixed term')
+    cy.recallInfo('Recall length').should('equal', '28 days')
     cy.recallInfo('Recall email received').should('equal', formatIsoDate(recall.recallEmailReceivedDateTime))
     cy.recallInfo('Recall email uploaded').should('equal', 'email.msg')
 
@@ -243,8 +255,14 @@ When('Maria can check their answers', () => {
     cy.recallInfo('Email uploaded', {parent: '#missing-documents'}).should('equal', 'email.msg')
 })
 
+When('Maria confirms the standard recall type on Check your answers', () => {
+    cy.recallInfo('Recall type').should('equal', 'Standard')
+})
+
 When('Maria can check their answers for the not in custody recall', () => {
     // Custody details
+    cy.recallInfo('Recall type').should('equal', 'Fixed term')
+    cy.recallInfo('Recall length').should('equal', '28 days')
     cy.recallInfo('Custody status at booking').should('equal', 'Not in custody')
     cy.recallInfo('Arrest issues').should('equal', recall.arrestIssuesDetail)
     const address1 = recall.lastKnownAddresses[0]
