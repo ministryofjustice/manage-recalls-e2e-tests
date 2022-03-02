@@ -40,6 +40,18 @@ export const recall = {
     months: 3,
     days: 0,
   },
+  notes: [
+    {
+      noteId: "678",
+      subject: "another note subject",
+      details: "another note, this one with document",
+      index: 3,
+      documentId: "834",
+      fileName: "my-note-attachment.doc",
+      createdByUserName: "Bobby Badger",
+      createdDateTime: "2021-03-12T12:24:03.000Z"
+    }
+  ],
   lastKnownAddressOption: "YES",
   lastKnownAddresses: [
     {

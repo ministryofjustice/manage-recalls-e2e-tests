@@ -126,7 +126,7 @@ When('Maria enters the pre-convictions name', () => {
 
 When('Maria submits the date and email of the recall request received from probation service', () => {
     cy.enterDateTimeFromRecall('recallEmailReceivedDateTime')
-    cy.uploadEmail({field: 'recallRequestEmailFileName', file: 'email.msg'})
+    cy.uploadEmail({field: 'recallRequestEmailFileName'})
     cy.clickButton('Continue')
 })
 
@@ -194,7 +194,7 @@ When('Maria does not upload any documents', () => {
 })
 
 When('Maria submits the reason for missing documents', () => {
-    cy.uploadEmail({field: 'missingDocumentsEmailFileName', file: 'email.msg'})
+    cy.uploadEmail({field: 'missingDocumentsEmailFileName'})
     cy.fillInput('Provide more detail', 'Chased', {clearExistingText: true})
     cy.clickButton('Continue')
     cy.pageHeading().should('equal', 'Check the details before booking this recall')
