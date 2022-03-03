@@ -10,8 +10,7 @@ const twoYearsAgo = DateTime.now().minus({ years: 2 });
 
 export const recall = {
   recallType: "Fixed term",
-  agreeWithRecall: "YES",
-  agreeWithRecallDetail: "Reasons...",
+  confirmedRecallTypeDetail: "Reasons...",
   previousConvictionMainName: "Walter Holt",
   licenceNameCategory: "FIRST_LAST",
   previousConvictionMainNameCategory: "FIRST_LAST",
