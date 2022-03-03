@@ -177,6 +177,14 @@ Cypress.Commands.add('uploadEmail', ({ field }) => {
     cy.uploadFile({ field, file: 'email.msg', encoding: 'binary', mimeType: 'application/octet-stream' })
 })
 
+Cypress.Commands.add('uploadDocx', ({ field }) => {
+    cy.uploadFile({
+        field,
+        file: 'lorem-ipsum-msword.docx',
+        mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    })
+})
+
 // =================================== DATES ================================
 
 Cypress.Commands.add('enterDateTimeFromRecall', (propertyName) => {

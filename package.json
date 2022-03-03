@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "cypress": "rm -rf cypress/downloads && npx cypress open",
-    "cypress:ci": "npx cypress run --browser chrome --spec ./cypress/integration/*.feature",
+    "cypress:ci": "npx cypress run --browser chrome --spec \"./cypress/integration/*.feature\"",
     "cypress:report": "node cypress/cucumber-report.js"
   },
   "engines": {
