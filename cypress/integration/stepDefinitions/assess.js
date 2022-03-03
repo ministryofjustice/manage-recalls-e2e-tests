@@ -34,8 +34,8 @@ When('Maria starts the assessment process for the recall', () => {
 })
 
 When('Maria confirms the recall length of 28 days', () => {
-    cy.selectRadio('Do you agree with the fixed term 28 day recall recommendation?', 'Yes, proceed with the recommended fixed recall type')
-    cy.fillInput('Provide more detail', recall.agreeWithRecallDetail, {parent: '#conditional-agreeWithRecall'})
+    cy.selectRadio('Do you agree with the fixed term 28 day recall recommendation?', 'Yes, proceed with the recommended fixed term recall')
+    cy.fillInput('Provide more detail', recall.confirmedRecallTypeDetail, {parent: '#conditional-confirmedRecallType'})
     cy.clickButton('Continue')
 })
 
@@ -106,7 +106,6 @@ When('Maria confirms the details captured during assessment', () => {
         cy.getElement({qaAttr: `reasonsForRecall-${reason}`}).should('exist')
     )
     cy.recallInfo('Recall assessed by').should('equal', `${firstName} ${lastName}`)
-    cy.recallInfo('Assessment notes').should('equal', recall.agreeWithRecallDetail)
     cy.recallInfo('Custody status at booking').should('equal', 'In custody')
     cy.recallInfo('Prison held in').should('equal', recall.currentPrisonLabel)
 })
