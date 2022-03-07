@@ -47,14 +47,29 @@ When('Maria has checked and created the reasons for recall document', () => {
     cy.recallInfo('NOMIS').should('equal', nomsNumber)
     cy.recallInfo('Booking number').should('equal', recall.bookingNumber)
     cy.recallInfo('Licence conditions breached').should('equal', recall.licenceConditionsBreached)
-    cy.recallInfo('Recall type').should('equal', recall.recallType)
-    cy.recallInfo('Recall length').should('equal', '28 days')
+    cy.get('@recallType').then( recallType => {
+        cy.recallInfo('Recall type').should('equal', recallType)
+        if (recallType === 'Fixed term') {
+            cy.recallInfo('Recall length').should('equal', '28 days')
+        }
+    })
     cy.clickLink('Continue')
 })
 
-When('Maria can open the dossier and letter', () => {
-    cy.downloadPdf('Dossier').should('contain', '28 Day FTR 12 months & over')
-    cy.downloadPdf('Letter to prison').should('contain', '28 DAY FIXED TERM RECALL')
+When('Maria can open the dossier and letter to prison', () => {
+    cy.get('@recallType').then(recallType => {
+        let dossierText;
+        let letterToPrisonText;
+        if ('Fixed term' === recallType) {
+            dossierText = '28 Day FTR 12 months & over';
+            letterToPrisonText = '28 DAY FIXED TERM RECALL';
+        } else {
+            dossierText = 'Standard 255c recall review';
+            letterToPrisonText = 'Dont know yet';
+        }
+        cy.downloadPdf('Dossier').should('contain', dossierText)
+        cy.downloadPdf('Letter to prison').should('contain', letterToPrisonText)
+    })
 })
 
 When('Maria has reviewed the dossier', () => {

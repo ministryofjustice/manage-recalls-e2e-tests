@@ -8,8 +8,8 @@ Feature: In custody (Fixed term)
     Given Maria searches for the environment specific NOMS number
     ### Book a recall
     When Maria clicks on the Book a recall link
-    And Maria enters the licence name
-    And Maria enters the pre-convictions name
+    And Maria selects the licence name
+    And Maria selects the pre-convictions name
     And Maria confirms the person is in custody
     And Maria sets the recall type as Fixed term
     And Maria submits the date and email of the recall request received from probation service
@@ -46,7 +46,7 @@ Feature: In custody (Fixed term)
     Then Maria is able to see the recall information before creating a dossier
     And Maria submits the information for the prison letter
     And Maria has checked and created the reasons for recall document
-    And Maria can open the dossier and letter
+    And Maria can open the dossier and letter to prison
     And Maria has reviewed the dossier
     And Maria records that the dossier was emailed
     Then Maria sees confirmation that the dossier creation is complete

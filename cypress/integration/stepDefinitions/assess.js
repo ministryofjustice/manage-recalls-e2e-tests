@@ -39,6 +39,12 @@ When('Maria confirms the recall length of 28 days', () => {
     cy.clickButton('Continue')
 })
 
+When('Maria confirms the standard recall', () => {
+    cy.selectRadio('Do you agree with the standard recall recommendation?', 'Yes, proceed with the recommended standard recall')
+    cy.fillInput('Provide more detail', recall.confirmedRecallTypeDetail, {parent: '#conditional-confirmedRecallType'})
+    cy.clickButton('Continue')
+})
+
 When('Maria submits the licence breach details', () => {
     cy.fillInput('Licence conditions breached', recall.licenceConditionsBreached)
     cy.selectCheckboxes('Reasons for recall', recall.reasonsForRecall, {findByValue: true})

@@ -5,7 +5,7 @@ Feature: Stop recall
     And Maria enters their user details
     And Maria searches for the environment specific NOMS number
     And Maria clicks on the Book a recall link
-    And Maria enters the licence name
+    And Maria selects the licence name
 
   Scenario: Stop a recall
     And Maria stops the recall
