@@ -4,8 +4,8 @@ Feature: Not in custody
     And Maria enters their user details
     And Maria searches for the environment specific NOMS number
     And Maria clicks on the Book a recall link
-    And Maria enters the licence name
-    And Maria enters the pre-convictions name
+    And Maria selects the licence name
+    And Maria selects the pre-convictions name
 
   Scenario: Book and assess a recall
     When Maria confirms the person is not in custody
@@ -19,8 +19,7 @@ Feature: Not in custody
     And Maria submits the police contact details
     And Maria submits any vulnerability, contraband and arrest issues for the offender
     And Maria submits the probation officer details
-    And Maria uploads some documents
-    And Maria submits the reason for missing documents
+    And Maria uploads all required documents
     And Maria can check their answers for the not in custody recall
     And Maria deletes one of the last known addresses
     Then Maria completes the booking
@@ -46,7 +45,7 @@ Feature: Not in custody
     And Maria uploads the email sent to New Scotland Yard
     And Maria submits the information for the prison letter
     And Maria has checked and created the reasons for recall document
-    And Maria can open the dossier and letter
+    And Maria can open the dossier and letter to prison
     And Maria has reviewed the dossier
     And Maria records that the dossier was emailed
     Then Maria sees confirmation that the dossier creation is complete

@@ -49,6 +49,7 @@ defineParameterType({
 
 When('Maria sets the recall type as {recallType}', (recallType) => {
     cy.selectRadio('What type of recall is being recommended?', recallType)
+    cy.wrap(recallType).as('recallType')
     cy.clickButton('Continue')
 })
 
@@ -110,14 +111,14 @@ When('Maria deletes one of the last known addresses', () => {
     cy.recallInfo('Address').should('not.contain', address1.line1.toUpperCase())
 })
 
-When('Maria enters the licence name', () => {
+When('Maria selects the licence name', () => {
     cy.get('@firstLastName').then((firstLastName) =>
         cy.selectRadio(`How does ${firstLastName}\'s name appear on the licence?`, recall.licenceNameCategory, {findByValue: true})
     )
     cy.clickButton('Continue')
 })
 
-When('Maria enters the pre-convictions name', () => {
+When('Maria selects the pre-convictions name', () => {
     cy.get('@firstLastName').then((firstLastName) =>
         cy.selectRadio(`How does ${firstLastName}'s name appear on the previous convictions sheet (pre-cons)?`, recall.previousConvictionMainNameCategory, {findByValue: true})
     )
@@ -181,11 +182,21 @@ When('Maria submits the probation officer details', () => {
     cy.clickButton('Continue')
 })
 
-When('Maria uploads some documents', () => {
+function uploadLicenceAndPartA() {
     cy.uploadPDF({field: 'documents', file: 'Licence.pdf'})
     cy.suggestedCategoryFor('Licence.pdf').should('equal', 'LICENCE')
     cy.uploadPDF({field: 'documents', file: 'Part A for FTR.pdf'})
     cy.suggestedCategoryFor('Part A for FTR.pdf').should('equal', 'PART_A_RECALL_REPORT')
+}
+
+When('Maria uploads some documents', () => {
+    uploadLicenceAndPartA();
+    cy.clickButton('Continue')
+})
+
+When('Maria uploads all required documents', () => {
+    uploadLicenceAndPartA();
+    uploadPreConsAndOasys();
     cy.clickButton('Continue')
 })
 
@@ -276,13 +287,17 @@ When('Maria can check their answers for the not in custody recall', () => {
     cy.recallInfo('Address 2').should('contain', address2.postcode)
 })
 
-When('Maria uploads missing documents', () => {
-    cy.clickLink('Add Previous convictions sheet')
-    cy.pageHeading().should('equal', 'Upload documents')
+function uploadPreConsAndOasys() {
     cy.uploadPDF({field: 'documents', file: 'Pre cons.pdf'})
     cy.suggestedCategoryFor('Pre cons.pdf').should('equal', 'PREVIOUS_CONVICTIONS_SHEET')
     cy.uploadPDF({field: 'documents', file: 'OASys.pdf'})
     cy.suggestedCategoryFor('OASys.pdf').should('equal', 'OASYS_RISK_ASSESSMENT')
+}
+
+When('Maria uploads missing documents', () => {
+    cy.clickLink('Add Previous convictions sheet')
+    cy.pageHeading().should('equal', 'Upload documents')
+    uploadPreConsAndOasys();
     cy.clickButton('Continue')
     cy.recallInfo('Previous convictions sheet').should('equal', 'Pre Cons.pdf')
     cy.recallInfo('OASys report').should('equal', 'OASys.pdf')
