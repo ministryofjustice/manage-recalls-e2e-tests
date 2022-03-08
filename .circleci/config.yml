@@ -82,6 +82,7 @@ jobs:
 
             export E2E_RESULT=$?
             npm run cypress:report
+            node scripts/fix-junit-reports.js
 
             set -e
             exit $E2E_RESULT
@@ -99,6 +100,9 @@ jobs:
       - store_artifacts:
           path: cypress/reports
           destination: reports
+      - store_artifacts:
+          path: cypress/junit
+          destination: junit
       - store_test_results:
           path: cypress/junit
 
@@ -144,6 +148,7 @@ jobs:
             echo "${CIRCLE_NODE_TOTAL}" > "workspace/env-output/TOTAL_NODES"
 
             npm run cypress:report
+            node scripts/fix-junit-reports.js
 
             # NOTE: We *always* exit cleanly here so we can report results, we'll use the exit code later
             exit 0
@@ -157,6 +162,9 @@ jobs:
       - store_artifacts:
           path: cypress/reports
           destination: reports
+      - store_artifacts:
+          path: cypress/junit
+          destination: junit
       - store_test_results:
           path: cypress/junit
 
