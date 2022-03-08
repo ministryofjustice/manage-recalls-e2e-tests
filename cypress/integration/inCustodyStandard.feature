@@ -35,7 +35,7 @@ Feature: In custody (Standard)
     Then Maria is able to see the recall information before creating a dossier
     And Maria submits the information for the prison letter
     And Maria has checked and created the reasons for recall document
-#    And Maria can open the dossier and letter to prison -- awaiting fix for letter
+    And Maria can open the dossier and letter to prison
     And Maria has reviewed the dossier
     And Maria records that the dossier was emailed
     Then Maria sees confirmation that the dossier creation is complete
