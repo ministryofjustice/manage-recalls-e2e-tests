@@ -5,7 +5,7 @@
   "video": false,
   "reporter": "cypress-multi-reporters",
   "reporterOptions": {
-    "reportDir": "cypress/report",
+    "reportDir": "cypress/reports",
     "charts": true,
     "reportPageTitle": "Manage a recall E2E tests",
     "embeddedScreenshots": true,
