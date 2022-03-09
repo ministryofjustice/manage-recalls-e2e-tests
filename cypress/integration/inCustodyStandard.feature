@@ -40,4 +40,5 @@ Feature: In custody (Standard)
     And Maria records that the dossier was emailed
     Then Maria sees confirmation that the dossier creation is complete
     ### confirm the details captured during the dossier creation journey are displayed
+    And Maria can see that the recall appears on the Awaiting part B tab
     And Maria confirms the details captured during dossier creation

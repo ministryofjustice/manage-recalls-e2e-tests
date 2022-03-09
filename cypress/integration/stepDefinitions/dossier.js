@@ -89,16 +89,28 @@ When('Maria sees confirmation that the dossier creation is complete', () => {
     cy.get('@firstLastName').then((firstLastName) => {
         cy.pageHeading().should('equal', `Dossier created and sent for ${firstLastName}`)
     })
+})
+
+When('Maria sees recall is in the complete tab with Dossier issued status', () => {
     cy.clickLink('Back to recalls')
     cy.clickLink('Completed')
     cy.get('@recallId').then(recallId => {
         cy.getRecallItemFromList({recallId, columnQaAttr: 'status'}).should('equal', 'Dossier issued')
-        cy.clickLink({qaAttr: `view-recall-${recallId}`})
     })
 })
 
 When('Maria confirms the details captured during dossier creation', () => {
-    cy.getText('recallStatus').should('equal', 'Dossier complete')
+    cy.get('@recallId').then(recallId => {
+        cy.clickLink({qaAttr: `view-recall-${recallId}`})
+    })
+    cy.get('@recallType').then(recallType => {
+        let expectedStatus
+        if (recallType === 'Fixed term')
+            expectedStatus = 'Dossier complete'
+        else
+            expectedStatus = 'Awaiting part B'
+        cy.getText('recallStatus').should('equal', expectedStatus)
+    })
     const {firstName, lastName} = caseworker
     cy.recallInfo('Dossier created by').should('equal', `${firstName} ${lastName}`)
     cy.recallInfo('Dossier sent').should('equal', formatIsoDate(getIsoDateForToday(), {dateOnly: true}))
@@ -106,6 +118,9 @@ When('Maria confirms the details captured during dossier creation', () => {
 })
 
 When('Maria confirms recall information for the "not in custody" recall', () => {
+    cy.get('@recallId').then(recallId => {
+        cy.clickLink({qaAttr: `view-recall-${recallId}`})
+    })
     cy.recallInfo('NSY email uploaded').should('equal', 'email.msg')
 })
 
@@ -125,5 +140,13 @@ When('Maria can regenerate the reasons for recall and dossier', () => {
     cy.fillInput('Provide more detail', 'Details have changed')
     cy.clickButton('Continue')
     cy.recallInfo('Reasons for recall', { parent: '#generated-documents'}).should('contain', '(version 2)')
+})
+
+When('Maria can see that the recall appears on the Awaiting part B tab', () => {
+    cy.clickLink('Recalls')
+    cy.clickLink('Awaiting part B')
+    cy.get('@recallId').then(recallId => {
+        cy.getRecallItemFromList({recallId, columnQaAttr: 'assignedTo'}).should('equal', '')
+    })
 })
 

@@ -50,6 +50,7 @@ Feature: In custody (Fixed term)
     And Maria has reviewed the dossier
     And Maria records that the dossier was emailed
     Then Maria sees confirmation that the dossier creation is complete
+    And Maria sees recall is in the complete tab with Dossier issued status
     ### confirm the details captured during the dossier creation journey are displayed
     And Maria confirms the details captured during dossier creation
     And Maria can download the dossier email
