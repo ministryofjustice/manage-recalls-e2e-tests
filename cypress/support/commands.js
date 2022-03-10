@@ -21,7 +21,7 @@ Cypress.Commands.add('pageHeading', () =>
 
 Cypress.Commands.add('getRecallIdFromUrl', () =>
     cy.location('pathname').then(path => {
-        const re = /\/persons\/(?<nomsNumber>[A-Z0-9]+)\/recalls\/(?<recallId>[^\/]+)/
+        const re = /recalls\/(?<recallId>[^\/]+)/
         const {groups} = path.match(re)
         return groups.recallId
     })
