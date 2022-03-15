@@ -5,10 +5,9 @@ Feature: In custody (Standard)
     And Maria enters their user details
 
   Scenario: Book and assess a recall
-    Given Maria searches for the environment specific NOMS number
+    Given Maria searches for an offender with no middle name
     ### Book a recall
     When Maria clicks on the Book a recall link
-    And Maria selects the licence name
     And Maria selects the pre-convictions name
     And Maria confirms the person is in custody
     And Maria sets the recall type as Standard

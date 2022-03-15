@@ -44,7 +44,9 @@ When('Maria has checked and created the reasons for recall document', () => {
     cy.get('@firstLastName').then((firstLastName) => {
         cy.recallInfo('Name').should('equal', firstLastName)
     })
-    cy.recallInfo('NOMIS').should('equal', nomsNumber)
+    cy.get('@nomsNumber').then(nomsNumber =>
+        cy.recallInfo('NOMIS').should('equal', nomsNumber)
+    )
     cy.recallInfo('Booking number').should('equal', recall.bookingNumber)
     cy.recallInfo('Licence conditions breached').should('equal', recall.licenceConditionsBreached)
     cy.get('@recallType').then( recallType => {

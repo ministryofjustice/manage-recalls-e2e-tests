@@ -3,7 +3,7 @@ Feature: Rescind recall
   Background:
     Given Maria signs in
     And Maria enters their user details
-    And Maria searches for the environment specific NOMS number
+    And Maria searches for an offender
     And Maria clicks on the Book a recall link
     And Maria selects the licence name
 
