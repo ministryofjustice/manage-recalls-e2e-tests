@@ -24,19 +24,11 @@ When('Maria enters their user details', () => {
 })
 
 When('Maria searches for an offender', () => {
-    cy.clickLink('Find a person')
-    cy.fillInput('NOMIS number', nomsNumber)
-    cy.wrap(nomsNumber).as('nomsNumber')
-    cy.clickButton('Search')
-    cy.getText('name').as('firstLastName')
+    cy.findOffenderByNomsNumber(nomsNumber)
 })
 
 When('Maria searches for an offender with no middle name', () => {
-    cy.clickLink('Find a person')
-    cy.fillInput('NOMIS number', nomsNumberNoMiddleName)
-    cy.wrap(nomsNumberNoMiddleName).as('nomsNumber')
-    cy.clickButton('Search')
-    cy.getText('name').as('firstLastName')
+    cy.findOffenderByNomsNumber(nomsNumberNoMiddleName)
 })
 
 When('Maria clicks on the Book a recall link', () => {

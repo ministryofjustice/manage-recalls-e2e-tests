@@ -1,5 +1,6 @@
 import {exactMatchIgnoreWhitespace, splitIsoDateToParts} from "./utils";
 import {recall} from "../fixtures/recall";
+import {nomsNumberNoMiddleName} from "../fixtures";
 
 const userName = Cypress.env('USERNAME') || 'PPUD_USER'
 const password = Cypress.env('PASSWORD') || 'password123456'
@@ -37,6 +38,14 @@ const clickElement = (label, tagName, opts = {parent: 'body'}) => {
         cy.get(opts.parent).find(tagName).contains(label).click()
     }
 }
+
+Cypress.Commands.add('findOffenderByNomsNumber', (nomsNumber) => {
+    cy.clickLink('Find a person')
+    cy.fillInput('NOMIS number', nomsNumber)
+    cy.wrap(nomsNumber).as('nomsNumber')
+    cy.clickButton('Search')
+    cy.getText('name').as('firstLastName')
+})
 
 Cypress.Commands.add('clickButton', (label, opts = {parent: 'body'}) =>
     clickElement(label, 'button', opts)
