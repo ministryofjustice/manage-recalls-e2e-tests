@@ -1,5 +1,5 @@
 import {When} from "cypress-cucumber-preprocessor/steps";
-import {recall, caseworker, nomsNumber} from "../../fixtures";
+import {recall, caseworker, nomsNumber, nomsNumberNoMiddleName} from "../../fixtures";
 import {booleanToYesNo, formatIsoDate} from "../../support/utils";
 
 When('Maria signs in', () => {
@@ -23,11 +23,12 @@ When('Maria enters their user details', () => {
     cy.pageHeading().should('equal', 'Recalls')
 })
 
-When('Maria searches for the environment specific NOMS number', () => {
-    cy.clickLink('Find a person')
-    cy.fillInput('NOMIS number', nomsNumber)
-    cy.clickButton('Search')
-    cy.getText('name').as('firstLastName')
+When('Maria searches for an offender', () => {
+    cy.findOffenderByNomsNumber(nomsNumber)
+})
+
+When('Maria searches for an offender with no middle name', () => {
+    cy.findOffenderByNomsNumber(nomsNumberNoMiddleName)
 })
 
 When('Maria clicks on the Book a recall link', () => {

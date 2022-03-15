@@ -5,7 +5,7 @@ Feature: In custody (Fixed term)
     And Maria enters their user details
 
   Scenario: Book and assess a recall
-    Given Maria searches for the environment specific NOMS number
+    Given Maria searches for an offender
     ### Book a recall
     When Maria clicks on the Book a recall link
     And Maria selects the licence name

@@ -134,7 +134,7 @@ jobs:
             set +e
 
             npx cypress run \
-              --env USERNAME=${CYPRESS_USERNAME_<< pipeline.parameters.invoked-by >>_<< parameters.environment >>},PASSWORD=${CYPRESS_PASSWORD_<< pipeline.parameters.invoked-by >>_<< parameters.environment >>},NOMS_NUMBER=${NOMS_NUMBER_<< parameters.environment >>} \
+              --env USERNAME=${CYPRESS_USERNAME_<< pipeline.parameters.invoked-by >>_<< parameters.environment >>},PASSWORD=${CYPRESS_PASSWORD_<< pipeline.parameters.invoked-by >>_<< parameters.environment >>},NOMS_NUMBER=${NOMS_NUMBER_<< parameters.environment >>},NOMS_NUMBER_NO_MIDDLE_NAME=${NOMS_NUMBER_NO_MIDDLE_NAME_<< parameters.environment >>} \
               --config baseUrl=https://manage-recalls-<< parameters.environment >>.hmpps.service.justice.gov.uk \
               --browser chrome \
               --record false \

@@ -150,6 +150,7 @@ To activate the autofill feature on a Manage a recall form, press Option + F
 ## Changing the person that E2E tests run against
 
 On dev or pre-prod, change the NOMS_NUMBER_dev or NOMS_NUMBER_preprod env var accordingly ([CircleCI page](https://app.circleci.com/settings/project/github/ministryofjustice/manage-recalls-e2e-tests/environment-variables?return-to=https%3A%2F%2Fapp.circleci.com%2Fpipelines%2Fgithub%2Fministryofjustice%2Fmanage-recalls-e2e-tests))
+Also, NOMS_NUMBER_NO_MIDDLE_NAME_[dev/preprod] is used for one of the tests.
 
 ## Clicking on step definitions
 In Intellij, you need 'Cucumber for .js' plugin installed and then the step definitions are 'clickable'
