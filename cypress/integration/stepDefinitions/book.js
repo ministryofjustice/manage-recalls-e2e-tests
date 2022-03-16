@@ -77,7 +77,7 @@ When('Maria looks up an address by postcode', () => {
 })
 
 When('Maria types an address', () => {
-    cy.pageHeading().should('equal', 'Address added')
+    cy.pageHeading().should('equal', 'Last known addresses')
     cy.selectRadio('Do you want to add another address?', 'Yes')
     cy.clickButton('Continue')
     cy.clickLink("I can't find the postcode")
