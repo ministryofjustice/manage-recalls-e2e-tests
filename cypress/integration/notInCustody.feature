@@ -46,7 +46,8 @@ Feature: Not in custody
     And Maria submits the information for the prison letter
     And Maria has checked and created the reasons for recall document
     And Maria can open the dossier and letter to prison
-    And Maria has reviewed the dossier
+    And Maria can open the letter to probation
+    And Maria has reviewed the dossier, letter to prison and letter to probation
     And Maria records that the dossier was emailed
     Then Maria sees confirmation that the dossier creation is complete
     And Maria sees recall is in the complete tab with Dossier issued status

@@ -47,7 +47,7 @@ Feature: In custody (Fixed term)
     And Maria submits the information for the prison letter
     And Maria has checked and created the reasons for recall document
     And Maria can open the dossier and letter to prison
-    And Maria has reviewed the dossier
+    And Maria has reviewed the dossier and letter to prison
     And Maria records that the dossier was emailed
     Then Maria sees confirmation that the dossier creation is complete
     And Maria sees recall is in the complete tab with Dossier issued status

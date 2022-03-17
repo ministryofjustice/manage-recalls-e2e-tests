@@ -70,7 +70,7 @@ When('Maria opens the not in custody recall notification', () => {
 })
 
 When('Maria records the issuance of recall notification', () => {
-    cy.selectCheckboxes('I have sent the email to all recipients', ['I have sent the email to all recipients'])
+    cy.selectConfirmationCheckbox('I have sent the email to all recipients')
     const fiveMinutesAgo = getIsoDateForMinutesAgo(5)
     cy.enterDateTime(fiveMinutesAgo)
     cy.uploadEmail({field: 'recallNotificationEmailFileName'})
