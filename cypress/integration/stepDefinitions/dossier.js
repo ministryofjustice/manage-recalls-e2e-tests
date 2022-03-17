@@ -1,5 +1,5 @@
 import {When} from "cypress-cucumber-preprocessor/steps";
-import {recall, caseworker, nomsNumber} from "../../fixtures";
+import {recall, caseworker} from "../../fixtures";
 import {
     booleanToYesNo,
     formatIsoDate,
@@ -25,7 +25,7 @@ When('Maria is able to see the recall information before creating a dossier', ()
 })
 
 When('Maria uploads the email sent to New Scotland Yard', () => {
-    cy.selectCheckboxes('I have sent the email', ['I have sent the email'])
+    cy.selectConfirmationCheckbox('I have sent the email')
     cy.uploadEmail({field: 'nsyEmailFileName'})
     cy.clickButton('Continue')
 })
@@ -75,13 +75,23 @@ When('Maria can open the dossier and letter to prison', () => {
     })
 })
 
-When('Maria has reviewed the dossier', () => {
-    cy.selectCheckboxes('I have checked the dossier', ['I have checked the information in the dossier and letter is correct'])
+When('Maria can open the letter to probation', () => {
+    let letterToProbationText = '28 DAY FIXED TERM RECALL';
+    cy.downloadPdf('Letter to probation').should('contain', letterToProbationText)
+})
+
+When('Maria has reviewed the dossier and letter to prison', () => {
+    cy.selectConfirmationCheckbox('I have checked the information in the dossier and letter is correct')
+    cy.clickButton('Continue')
+})
+
+When('Maria has reviewed the dossier, letter to prison and letter to probation', () => {
+    cy.selectConfirmationCheckbox('I have checked the information in the dossier and letters is correct')
     cy.clickButton('Continue')
 })
 
 When('Maria records that the dossier was emailed', () => {
-    cy.selectCheckboxes('I have sent the email to all recipients', ['I have sent the email to all recipients'])
+    cy.selectConfirmationCheckbox('I have sent the email to all recipients')
     cy.enterDateTime(getIsoDateForToday())
     cy.uploadEmail({field: 'dossierEmailFileName'})
     cy.clickButton('Complete dossier creation')
