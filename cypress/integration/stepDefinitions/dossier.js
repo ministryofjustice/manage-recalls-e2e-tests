@@ -65,13 +65,12 @@ When('Maria can open the dossier and letter to prison', () => {
         if ('Fixed term' === recallType) {
             dossierText = '28 Day FTR 12 months & over';
             letterToPrisonText = '28 DAY FIXED TERM RECALL';
-            cy.downloadPdf('Letter to prison').should('contain', letterToPrisonText) //FIXME: When letter to prison fixed for standard recalls
         } else {
             dossierText = 'Standard 255c recall review';
-            letterToPrisonText = 'Dont know yet';
+            letterToPrisonText = 'STANDARD RECALL';
         }
         cy.downloadPdf('Dossier').should('contain', dossierText)
-        // cy.downloadPdf('Letter to prison').should('contain', letterToPrisonText) //FIXME: When letter to prison fixed for standard recalls
+        cy.downloadPdf('Letter to prison').should('contain', letterToPrisonText)
     })
 })
 
