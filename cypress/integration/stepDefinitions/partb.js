@@ -4,6 +4,13 @@ import {formatIsoDate} from "../../support/utils";
 
 const partBRecord = recall.partBRecords[0]
 
+When('Maria can see on the recall information page that the part B is missing', () => {
+    cy.getText('recallStatus').should('equal', 'Awaiting part B')
+    cy.getText('partBDueText').should('contain', 'Part B report will be due on ')
+    cy.recallInfo('Part B report').should('equal', 'Missing')
+    cy.getLinkHref('Add part B report').should('contain', '/part-b?fromPage=view-recall')
+})
+
 When('Maria uploads the part B report', () => {
     cy.clickLink('Recalls')
     cy.clickLink('Awaiting part B')
@@ -25,10 +32,6 @@ When('Maria views the part B details', () => {
     cy.getText('confirmationHeading').should('equal', 'Part B added')
     cy.getText('confirmationBody').should('contain', 'Part B report and OASys uploaded.')
     cy.getText('confirmationBody').should('contain', 'Part B email and note added.')
-    cy.getText('confirmationBody').should(
-        'contain',
-        'Re-release recommendation added and recall moved to Dossier team list'
-    )
 
     cy.recallInfo('OASys report').should('contain', 'OASys.pdf')
 

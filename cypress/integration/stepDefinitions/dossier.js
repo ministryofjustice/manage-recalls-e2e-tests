@@ -115,12 +115,9 @@ When('Maria confirms the details captured during dossier creation', () => {
         cy.clickLink({qaAttr: `view-recall-${recallId}`})
     })
     cy.get('@recallType').then(recallType => {
-        let expectedStatus
-        if (recallType === 'Fixed term')
-            expectedStatus = 'Dossier complete'
-        else
-            expectedStatus = 'Awaiting part B'
-        cy.getText('recallStatus').should('equal', expectedStatus)
+        if (recallType === 'Fixed term') {
+            cy.getText('recallStatus').should('equal', 'Dossier complete')
+        }
     })
     const {firstName, lastName} = caseworker
     cy.recallInfo('Dossier created by').should('equal', `${firstName} ${lastName}`)

@@ -55,6 +55,10 @@ Cypress.Commands.add('clickLink', (label, opts = {parent: 'body'}) => {
     clickElement(label, 'a', opts)
 })
 
+Cypress.Commands.add('getLinkHref', (selector, opts = { parent: 'body' }) =>
+    cy.getElement(selector, opts).invoke('attr', 'href')
+)
+
 // =============================== GET TEXT ===============================
 
 Cypress.Commands.add('getText', (qaAttr) =>
@@ -63,8 +67,8 @@ Cypress.Commands.add('getText', (qaAttr) =>
 
 // ============================ GET ELEMENT ===============================
 
-Cypress.Commands.add('getElement', ({qaAttr}) =>
-    cy.get(`[data-qa="${qaAttr}"]`)
+Cypress.Commands.add('getElement', (selector, opts = { parent: 'body' }) =>
+    selector.qaAttr ? cy.get(`[data-qa="${selector.qaAttr}"]`) : cy.get(opts.parent || 'body').contains(selector)
 )
 
 // ========================== CONFIRMATION BANNER ===============================
