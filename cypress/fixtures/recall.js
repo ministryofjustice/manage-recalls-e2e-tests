@@ -52,6 +52,22 @@ export const recall = {
       createdDateTime: "2021-03-12T12:24:03.000Z"
     }
   ],
+  partBRecords: [
+    {
+      "partBRecordId": "123",
+      "details": "Part B received",
+      "partBReceivedDate": "2022-03-05",
+      "version": 1,
+      "partBDocumentId": "456",
+      "partBFileName": "2022 part B.pdf",
+      "emailId": "789",
+      "emailFileName": "part B.msg",
+      "oasysDocumentId": "012",
+      "oasysFileName": "offender oasys.pdf",
+      "createdByUserName": "Bobby Badger",
+      "createdDateTime": "2022-03-05T14:15:43.000Z"
+    }
+  ],
   lastKnownAddressOption: "YES",
   lastKnownAddresses: [
     {
