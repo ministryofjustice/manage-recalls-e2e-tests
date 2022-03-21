@@ -30,10 +30,11 @@ When('Maria views the part B details', () => {
         'Re-release recommendation added and recall moved to Dossier team list'
     )
 
+    cy.recallInfo('OASys report').should('contain', 'OASys.pdf')
+
     // part B details
     cy.recallInfo('Part B report').should('contain', 'Part B.pdf')
     cy.recallInfo('Part B email received').should('equal', formatIsoDate(partBRecord.partBReceivedDate))
-    cy.recallInfo('Part B report').should('contain', 'Part B.pdf')
     cy.recallInfo('Part B uploaded by').should('equal', `${caseworker.firstName} ${caseworker.lastName}`)
     cy.recallInfo('Part B email uploaded').should('equal', 'email.msg')
 })
