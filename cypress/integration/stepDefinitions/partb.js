@@ -4,11 +4,22 @@ import {formatIsoDate} from "../../support/utils";
 
 const partBRecord = recall.partBRecords[0]
 
-When('Maria can see on the recall information page that the part B is missing', () => {
+When('Maria chases the missing part B report', () => {
     cy.getText('recallStatus').should('equal', 'Awaiting part B')
     cy.getText('partBDueText').should('contain', 'Part B report will be due on ')
     cy.recallInfo('Part B report').should('equal', 'Missing')
     cy.getLinkHref('Add part B report').should('contain', '/part-b?fromPage=view-recall')
+    // chase
+    cy.clickLink('Add note to this section')
+    cy.uploadEmail({ field: 'missingDocumentsEmailFileName' })
+    const detail = 'Chased up part B'
+    cy.fillInput('Provide more detail', detail, { clearExistingText: true })
+    cy.clickButton('Continue')
+
+    cy.getText('confirmation').should('equal', 'Chase note added.')
+    cy.getElement('Show 1 note').click()
+    cy.getText('missingDocumentsRecordDetail-1').should('equal', detail)
+    cy.getText('missingDocumentsRecordEmail-1').should('equal', 'email.msg')
 })
 
 When('Maria uploads the part B report', () => {
