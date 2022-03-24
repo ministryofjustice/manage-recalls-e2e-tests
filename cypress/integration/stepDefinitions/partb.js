@@ -1,6 +1,6 @@
 import {When} from "cypress-cucumber-preprocessor/steps";
 import { recall, caseworker } from "../../fixtures";
-import {formatIsoDate} from "../../support/utils";
+import {booleanToYesNo, formatIsoDate} from "../../support/utils";
 
 const partBRecord = recall.partBRecords[0]
 
@@ -35,6 +35,9 @@ When('Maria uploads the part B report', () => {
     cy.fillInput('Provide more detail', partBRecord.details)
     cy.enterDateTime(partBRecord.partBReceivedDate)
     cy.uploadEmail({field: 'emailFileName'})
+    cy.clickButton('Continue')
+
+    cy.selectRadio('Do probation support re-release?', booleanToYesNo(recall.rereleaseSupported))
     cy.clickButton('Continue')
 })
 
