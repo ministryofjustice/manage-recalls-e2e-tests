@@ -41,6 +41,15 @@ When('Maria uploads the part B report', () => {
     cy.clickButton('Continue')
 })
 
+
+When('Maria can see that the recall is on the list of recalls on the Dossier Check tab', () => {
+    cy.clickLink('Recalls')
+    cy.clickLink('Dossier check')
+    cy.get('@recallId').then(recallId => {
+        cy.getRecallItemFromList({recallId, columnQaAttr: 'assignedTo'}).should('equal', ``)
+    })
+})
+
 When('Maria views the part B details', () => {
     // confirmation banner
     cy.getText('confirmationHeading').should('equal', 'Part B added')
