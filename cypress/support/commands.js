@@ -155,6 +155,7 @@ Cypress.Commands.add('selectFromDropdown', (label, option, opts = {parent: 'body
 Cypress.Commands.add('downloadPdf', (linkText) => {
     return cy.contains('a', linkText)
         .then($link => {
+            cy.wrap($link).invoke('attr', 'download', 'download')
             const url = $link.attr('href')
             return cy.request({
                 url, encoding: 'base64',
