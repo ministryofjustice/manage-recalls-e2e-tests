@@ -47,3 +47,4 @@ Feature: In custody (Standard)
     And Maria views the part B details
     ### Recall is on the list of recalls awaiting Dossier Check
     And Maria can see that the recall is on the list of recalls on the Dossier Check tab
+    And Maria begins to prepare the dossier
