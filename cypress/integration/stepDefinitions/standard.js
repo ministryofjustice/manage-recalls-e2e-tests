@@ -41,7 +41,7 @@ When('Maria uploads the part B report', () => {
     cy.clickButton('Continue')
 })
 
-When('Maria can see that the recall is on the list of recalls on the Dossier Check tab', () => {
+When('Maria can see the recall has moved to the Dossier check list', () => {
     cy.clickLink('Recalls')
     cy.clickLink('Dossier check')
     cy.get('@recallId').then(recallId => {
@@ -56,6 +56,7 @@ When('Maria begins to prepare the dossier', () => {
         cy.clickButton({qaAttr: `prepare-dossier-${recallId}`})
     })
     cy.getText('recallStatus').should('equal', 'Preparation in progress')
+    cy.clickLink('Prepare and send dossier')
 })
 
 When('Maria views the part B details', () => {
@@ -79,6 +80,38 @@ When('Maria views the part B details', () => {
         'contain',
         booleanToYesNo(recall.rereleaseSupported)
     )
+})
+
+When('Maria enters details for legal representative and senior probation officer', () => {
+    const {
+        fullName: legalRepName,
+        email: legalRepEmail,
+        phoneNumber: legalRepPhone,
+    } = recall.legalRepresentativeInfo
+    cy.fillInput('Name', legalRepName)
+    cy.fillInput('Email address', legalRepEmail)
+    cy.fillInput('Phone number', legalRepPhone)
+    cy.clickButton('Continue')
+    // senior probation officer
+    const {
+        fullName: probationOfficerName,
+        email: probationOfficerEmail,
+        phoneNumber: probationOfficerPhone,
+        functionalEmail,
+    } = recall.seniorProbationOfficerInfo
+    cy.fillInput('Name', probationOfficerName)
+    cy.fillInput('Email address', probationOfficerEmail)
+    cy.fillInput('Phone number', probationOfficerPhone)
+    cy.fillInput('Probation functional email address', functionalEmail)
+    cy.clickButton('Continue')
+    // view recall
+    cy.getText('legalRepresentativeInfo_fullName').should('equal', legalRepName)
+    cy.getText('legalRepresentativeInfo_email').should('equal', legalRepEmail)
+    cy.getText('legalRepresentativeInfo_phoneNumber').should('equal', legalRepPhone)
+    cy.getText('seniorProbationOfficerInfo_fullName').should('equal', probationOfficerName)
+    cy.getText('seniorProbationOfficerInfo_email').should('equal', probationOfficerEmail)
+    cy.getText('seniorProbationOfficerInfo_phoneNumber').should('equal', probationOfficerPhone)
+    cy.getText('seniorProbationOfficerInfo_functionalEmail').should('equal', functionalEmail)
 })
 
 

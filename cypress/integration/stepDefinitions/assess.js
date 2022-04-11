@@ -147,7 +147,7 @@ When('Maria adds a warrant reference number', () => {
         cy.clickLink('Add warrant reference', {parent: `[data-qa="recall-id-${recallId}"]`})
     })
     cy.fillInput('What is the warrant reference number?', recall.warrantReferenceNumber)
-    cy.clickButton('Continue')
+    cy.clickButton('Save and return')
     cy.getText('confirmation').should('equal', 'Warrant reference number has been added.')
     cy.clickLink('View')
     cy.recallInfo('Warrant reference number').should('equal', recall.warrantReferenceNumber)

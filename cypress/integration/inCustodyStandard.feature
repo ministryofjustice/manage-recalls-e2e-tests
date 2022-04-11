@@ -45,6 +45,7 @@ Feature: In custody (Standard)
     ### Upload part B
     And Maria uploads the part B report
     And Maria views the part B details
-    ### Recall is on the list of recalls awaiting Dossier Check
-    And Maria can see that the recall is on the list of recalls on the Dossier Check tab
+    ### Secondary dossier preparation
+    And Maria can see the recall has moved to the Dossier check list
     And Maria begins to prepare the dossier
+    And Maria enters details for legal representative and senior probation officer
