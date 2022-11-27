@@ -20,17 +20,15 @@ services:
       - manage-recalls-e2e
 
   hmpps-auth:
-    image: quay.io/hmpps/hmpps-auth:2021-12-16.12506.3e1e93a
+    build:
+      context: ./fake-hmpps-auth/
     networks:
       - manage-recalls-e2e
-    container_name: hmpps-auth-e2e
+    container_name: fake-hmpps-auth-e2e
     ports:
       - "9090:8080"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/auth/health"]
-    environment:
-      - SPRING_PROFILES_ACTIVE=dev
-      - DELIUS_ENABLED=false
 
   fake-prisoner-offender-search-api:
     image: quay.io/hmpps/ppud-fake-prisoner-offender-search-api:latest
